@@ -1,0 +1,11 @@
+{
+  "_meta": {
+    "name": "swat/cli",
+    "origin": "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/swat_cli.json"
+  },
+  "type": "stdio",
+  "command": "swat",
+  "args": [
+    "--mcp-only"
+  ]
+}
