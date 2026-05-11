@@ -41,9 +41,9 @@ Code review for the [emploke](https://github.com/LangSensei/emploke) control pla
 
 ### Setup
 
-1. Set up worktree using git-pr skill: bare clone to `$(repo_cache_dir)/emploke/`, worktree into `repo/`
+1. Set up worktree using git-pr skill: bare clone to `$(repos_dir)/emploke/`, worktree into `repo/`
 2. Repository: `https://github.com/LangSensei/emploke`
-3. For emploke-marketplace tasks: bare clone to `$(repo_cache_dir)/emploke-marketplace/`, worktree into `repo/`
+3. For emploke-marketplace tasks: bare clone to `$(repos_dir)/emploke-marketplace/`, worktree into `repo/`
 4. Repository: `https://github.com/LangSensei/emploke-marketplace`
 5. Identify the target PR or audit scope from the operation brief
 

@@ -2,7 +2,7 @@
 
 ## 1.2.0 (2026-05-11)
 
-- Drop SWAT-era cache path. The bazi reference repo is now provisioned under `<repo-cache>/china-testing-bazi/` where `<repo-cache>` is `<workspace>/.cache/repos/` when a `workspace.json` marker is found by walking up from cwd, or `${XDG_CACHE_HOME:-~/.cache}/skill-repos/` otherwise. `WORKSPACE_DIR` / `EMPLOKE_WORKSPACE` env vars override the marker walk-up. Existing users can keep the old clone (it is harmless) or delete it and let auto-provisioning re-clone (`rm -rf ~/.swat/repos/china-testing-bazi`).
+- Drop SWAT-era cache path. The bazi reference repo is now provisioned under `<repos-dir>/china-testing-bazi/` where `<repos-dir>` is `<workspace>/.repos/` when a `workspace.json` marker is found by walking up from cwd, or `./.repos/` (cwd-relative) otherwise. `WORKSPACE_DIR` / `EMPLOKE_WORKSPACE` env vars override the marker walk-up. Existing users can keep the old clone (it is harmless) or delete it and let auto-provisioning re-clone (`rm -rf ~/.swat/repos/china-testing-bazi`).
 
 ## 1.1.0 (2026-04-13)
 

@@ -9,10 +9,10 @@ version: 1.3.0
 
 ## Repository Setup
 
-Bare clones are cached so subsequent operations re-fetch instead of re-cloning. The cache location is resolved by walking up from the current directory to find a `workspace.json` marker (which emploke writes at the workspace root); when found, the cache lives under `<workspace>/.cache/repos/`. With no workspace context, the cache falls back to `${XDG_CACHE_HOME:-~/.cache}/skill-repos/`. The `WORKSPACE_DIR` env var (or `EMPLOKE_WORKSPACE`) overrides both, so a host can pin the workspace root explicitly.
+Bare clones are cached so subsequent operations re-fetch instead of re-cloning. The cache location is resolved by walking up from the current directory to find a `workspace.json` marker (which emploke writes at the workspace root); when found, the cache lives under `<workspace>/.repos/`. With no workspace context, it falls back to `./.repos/` (cwd-relative). The `WORKSPACE_DIR` env var (or `EMPLOKE_WORKSPACE`) overrides both, so a host can pin the workspace root explicitly.
 
 ```bash
-# --- workspace + repo-cache resolver (paste once at the top of the playbook) ---
+# --- workspace + repos-dir resolver (paste once at the top of the playbook) ---
 project_root() {
   if [ -n "${WORKSPACE_DIR:-}" ]; then echo "$WORKSPACE_DIR"; return; fi
   if [ -n "${EMPLOKE_WORKSPACE:-}" ]; then echo "$EMPLOKE_WORKSPACE"; return; fi
@@ -23,27 +23,27 @@ project_root() {
   done
 }
 
-repo_cache_dir() {
+repos_dir() {
   local root
   root="$(project_root)"
   if [ -n "$root" ]; then
-    echo "$root/.cache/repos"
+    echo "$root/.repos"
   else
-    echo "${XDG_CACHE_HOME:-$HOME/.cache}/skill-repos"
+    echo "$(pwd)/.repos"
   fi
 }
 
 # --- per-repo bare clone ---
 REPO_NAME="<repo-name>"  # e.g. emploke
 REPO_URL="<repo-url>"    # e.g. https://github.com/LangSensei/emploke
-REPO_CACHE="$(repo_cache_dir)"
-REPO_DIR="$REPO_CACHE/$REPO_NAME"
+REPOS_ROOT="$(repos_dir)"
+REPO_DIR="$REPOS_ROOT/$REPO_NAME"
 
 # First time: clone. Subsequent: fetch.
 if [ -d "$REPO_DIR" ]; then
   cd "$REPO_DIR" && git fetch --all --prune
 else
-  mkdir -p "$REPO_CACHE"
+  mkdir -p "$REPOS_ROOT"
   git clone --bare "$REPO_URL" "$REPO_DIR"
   cd "$REPO_DIR"
   git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
@@ -168,5 +168,5 @@ Steps to verify.
 - **One logical change per commit**
 - **PR title follows conventional commits**
 - **Branch name is a descriptive `<type>/<slug>`** — no fixed prefix; the slug describes the change (`chore/remove-deprecated-paths`, not `op/<opaque-id>`)
-- **Bare clone goes to the resolved repo-cache dir** (`$(repo_cache_dir)`), never into the operation dir directly
+- **Bare clone goes to the resolved repos dir** (`$(repos_dir)`), never into the operation dir directly
 - **Always clean up worktree at seal** — do not leave orphaned worktrees

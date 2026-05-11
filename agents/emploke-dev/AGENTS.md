@@ -34,16 +34,16 @@ Development and maintenance of the [emploke](https://github.com/LangSensei/emplo
 
 ## Write Access
 
-- `<workspace>/.cache/repos/emploke/` — bare clone created by the git-pr skill, where `<workspace>` is resolved by walking up from cwd to a `workspace.json` marker (or `${XDG_CACHE_HOME:-~/.cache}/skill-repos/` when no workspace is found)
-- `<workspace>/.cache/repos/emploke-marketplace/` — same resolution
+- `<workspace>/.repos/emploke/` — bare clone created by the git-pr skill, where `<workspace>` is resolved by walking up from cwd to a `workspace.json` marker (or `./.repos/` cwd-relative when no workspace is found)
+- `<workspace>/.repos/emploke-marketplace/` — same resolution
 
 ## Agent Playbook
 
 ### Setup
 
-1. Set up worktree using git-pr skill: bare clone to `$(repo_cache_dir)/emploke/`, worktree into `repo/`
+1. Set up worktree using git-pr skill: bare clone to `$(repos_dir)/emploke/`, worktree into `repo/`
 2. Repository: `https://github.com/LangSensei/emploke`
-3. For emploke-marketplace tasks: bare clone to `$(repo_cache_dir)/emploke-marketplace/`, worktree into `repo/`
+3. For emploke-marketplace tasks: bare clone to `$(repos_dir)/emploke-marketplace/`, worktree into `repo/`
 4. Repository: `https://github.com/LangSensei/emploke-marketplace`
 5. If the brief specifies an existing branch (e.g. fixing review comments), use git-pr Mode B (resume existing branch) instead of creating a new one
 
@@ -70,7 +70,7 @@ Development and maintenance of the [emploke](https://github.com/LangSensei/emplo
 1. Push and open PR: `git push origin HEAD && gh pr create --title "..." --body "..." --base main`
    - If resuming an existing branch with an open PR, push and comment on the existing PR instead of creating a new one
 2. PR description must include: What, Why, Changes, How to Test
-3. Clean up worktree (mandatory): `cd "$(repo_cache_dir)/emploke" && git worktree remove "$(pwd)/repo" --force` (use the matching repo path for marketplace work)
+3. Clean up worktree (mandatory): `cd "$(repos_dir)/emploke" && git worktree remove "$(pwd)/repo" --force` (use the matching repo path for marketplace work)
 
 ### Constraints
 

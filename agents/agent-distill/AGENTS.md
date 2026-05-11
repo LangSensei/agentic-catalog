@@ -33,13 +33,13 @@ Cross-operation analysis and optimization of existing agents and skills in [empl
 
 ## Write Access
 
-- `<workspace>/.cache/repos/emploke-marketplace/` — bare clone created by the git-pr skill (workspace resolution and XDG fallback are documented in git-pr SKILL.md)
+- `<workspace>/.repos/emploke-marketplace/` — bare clone created by the git-pr skill (workspace resolution and cwd fallback are documented in git-pr SKILL.md)
 
 ## Agent Playbook
 
 ### Setup
 
-1. Set up worktree using git-pr skill: bare clone to `$(repo_cache_dir)/emploke-marketplace/`, worktree into `repo/`
+1. Set up worktree using git-pr skill: bare clone to `$(repos_dir)/emploke-marketplace/`, worktree into `repo/`
 2. Repository: `https://github.com/LangSensei/emploke-marketplace`
 
 ### Input Resolution
@@ -104,7 +104,7 @@ Based on analysis, make changes to marketplace files:
    - Evidence summary: which operations were analyzed
    - Changes made with justification
    - Reference entries pruned (if any)
-4. Clean up worktree (mandatory): `cd "$(repo_cache_dir)/emploke-marketplace" && git worktree remove "$(pwd)/repo" --force`
+4. Clean up worktree (mandatory): `cd "$(repos_dir)/emploke-marketplace" && git worktree remove "$(pwd)/repo" --force`
 
 ### Constraints
 

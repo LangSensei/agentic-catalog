@@ -55,21 +55,20 @@ def _project_root():
         cur = parent
 
 
-def _repo_cache_dir():
-    """Resolve the bare-clone cache root.
+def _repos_dir():
+    """Resolve the bare-clone root.
 
-    Workspace-local under ``<workspace>/.cache/repos`` when a workspace is
-    detected; XDG-cache fallback otherwise (``$XDG_CACHE_HOME/skill-repos``).
+    Workspace-local under ``<workspace>/.repos`` when a workspace is
+    detected; cwd-relative ``./.repos`` fallback otherwise.
     """
     root = _project_root()
     if root:
-        return os.path.join(root, ".cache", "repos")
-    xdg = os.environ.get("XDG_CACHE_HOME") or os.path.join(os.path.expanduser("~"), ".cache")
-    return os.path.join(xdg, "skill-repos")
+        return os.path.join(root, ".repos")
+    return os.path.join(os.getcwd(), ".repos")
 
 
 # Auto-provision the bazi calculation repo on first run
-_BAZI_BARE = os.path.join(_repo_cache_dir(), "china-testing-bazi")
+_BAZI_BARE = os.path.join(_repos_dir(), "china-testing-bazi")
 BAZI_REPO = os.path.join(_BAZI_BARE, "worktrees", "readonly")
 _PINNED_COMMIT = "c425f0c"
 

@@ -19,10 +19,10 @@ Chinese traditional calendar calculations, BaZi (Four Pillars of Destiny) analys
 
 **Runtime auto-provisioning** — on first run, the shared library (`scripts/lib/__init__.py`) automatically:
 
-1. Bare-clones `china-testing/bazi` to `<repo-cache>/china-testing-bazi/`
-2. Creates a detached worktree at `<repo-cache>/china-testing-bazi/worktrees/readonly/` pinned to commit `c425f0c`
+1. Bare-clones `china-testing/bazi` to `<repos-dir>/china-testing-bazi/`
+2. Creates a detached worktree at `<repos-dir>/china-testing-bazi/worktrees/readonly/` pinned to commit `c425f0c`
 
-`<repo-cache>` is resolved by walking up from cwd to find a `workspace.json` marker (emploke writes one at the workspace root) — when found, the cache lives under `<workspace>/.cache/repos/`. Otherwise it falls back to `${XDG_CACHE_HOME:-~/.cache}/skill-repos/`. Set `WORKSPACE_DIR` to override.
+`<repos-dir>` is resolved by walking up from cwd to find a `workspace.json` marker (emploke writes one at the workspace root) — when found, repos live under `<workspace>/.repos/`. Otherwise it falls back to `./.repos/` (cwd-relative). Set `WORKSPACE_DIR` to override.
 
 This happens silently on first invocation. Subsequent runs reuse the cached clone.
 
@@ -142,5 +142,5 @@ python3 scripts/date-selection.py --event business --year 2026 --month-start 1 -
 - All scripts accept solar (Gregorian) dates — lunar conversion is automatic
 - All scripts support `--help` for usage information
 - Output is always JSON to stdout; errors go to stderr
-- The bazi reference repo is auto-provisioned to `<repo-cache>/china-testing-bazi/worktrees/readonly/` on first run (see Setup for how `<repo-cache>` is resolved)
+- The bazi reference repo is auto-provisioned to `<repos-dir>/china-testing-bazi/worktrees/readonly/` on first run (see Setup for how `<repos-dir>` is resolved)
 - Birth hour significantly affects the hour pillar; when omitted, the hour pillar is marked as "unknown" with `hour_known: false`
