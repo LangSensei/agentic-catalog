@@ -2,6 +2,11 @@
 
 All notable changes to the `gusu-scribe` squad.
 
+## 1.3.0 (2026-05-11)
+
+### Removed
+- `sop` skill dependency — methodology skills are being redesigned and are no longer a hard dependency for this squad
+
 ## 1.2.0 (2026-04-14)
 
 ### Added

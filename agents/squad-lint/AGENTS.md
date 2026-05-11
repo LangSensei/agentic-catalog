@@ -2,13 +2,10 @@
 name: squad-lint
 scope: langsensei
 description: "Validates structural and semantic compliance of squads and skills in swat-marketplace"
-version: 1.2.0
+version: 1.3.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sop"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
-  mcps:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/swat_cli.json"
 ---
 
 # Squad Lint Squad
@@ -88,7 +85,6 @@ For each `squads/*/MANIFEST.md`:
 - Required fields present: `name`, `version`, `description`
 - `name` matches the folder name (kebab-case)
 - `version` follows semver format (`X.Y.Z`)
-- `dependencies.skills` includes at least one methodology skill (`sop` or `scientific-method`)
 - Each skill in `dependencies.skills` exists in `skills/`
 - Each MCP in `dependencies.mcps` exists in `mcps/`
 - Required sections present: `## Domain`, `## Boundary`, `## Write Access`, `## Squad Playbook`

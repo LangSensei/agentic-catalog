@@ -2,13 +2,10 @@
 name: squad-forge
 scope: langsensei
 description: "Creates new SWAT squads and skills — generates MANIFEST.md, SKILL.md, and CHANGELOG.md, then opens a PR to the marketplace"
-version: 1.1.0
+version: 1.2.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sop"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
-  mcps:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/swat_cli.json"
 ---
 
 # Squad Forge Squad

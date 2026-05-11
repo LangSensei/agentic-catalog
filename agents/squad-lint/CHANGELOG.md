@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0 (2026-05-11)
+
+### Removed
+- `sop` skill dependency — methodology skills are being redesigned and are no longer a hard dependency for this squad
+- `swat/cli` MCP dependency — `swat_cli` MCP is deprecated alongside SWAT
+- Phase 2 check: `dependencies.skills includes at least one methodology skill (sop or scientific-method)` — methodology dependency is no longer required
+
 ## 1.2.0 (2026-04-25)
 
 ### Added

@@ -2,10 +2,9 @@
 name: dye-finish-advisor
 scope: langsensei
 description: "Full-stack technical advisor for dyeing and finishing of woven synthetic fiber fabrics"
-version: 1.1.0
+version: 1.2.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sop"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/fabric-fiber-analyst"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/dye-process-advisor"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/finish-compliance-advisor"

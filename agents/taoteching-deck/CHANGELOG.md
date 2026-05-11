@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0 (2026-05-11)
+
+### Removed
+- `sop` skill dependency — methodology skills are being redesigned and are no longer a hard dependency for this squad
+
 ## 1.0.0 (2026-05-02)
 
 - Initial release

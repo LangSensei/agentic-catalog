@@ -2,10 +2,9 @@
 name: xiaohongshu-research
 scope: langsensei
 description: "Xiaohongshu research and knowledge extraction — search posts, rank relevant results, synthesize structured notes"
-version: 1.2.0
+version: 1.3.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/scientific-method"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/xiaohongshu"
 ---
 

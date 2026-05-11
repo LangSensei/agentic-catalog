@@ -1,5 +1,12 @@
 # Debrief Skill — Changelog
 
+## 4.0.0 (2026-05-11)
+
+### Breaking Changes
+- Drop the `swat/cli` MCP dependency — `swat_cli` MCP is deprecated alongside SWAT
+- Replace hard-coded `swat_notify` / `swat_dispatch` MCP tool calls with runtime-agnostic prose; the contract this skill enforces is the *content* of the notification or dispatch brief, not the transport
+- Refresh terminology from squad/MANIFEST → agent/AGENTS.md to match emploke
+
 ## 3.2.0 (2026-04-28)
 
 ### Added

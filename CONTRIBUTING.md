@@ -57,9 +57,9 @@ description: "What the agent does, one line."
 version: 1.0.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sop"
+    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
   mcps:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/swat_cli.json"
+    - "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
 ---
 # Agent body
 ```

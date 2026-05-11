@@ -6,8 +6,8 @@ This repo is the Phase-2 successor to [`swat-marketplace`](https://github.com/La
 
 ## Contents
 
-- **`agents/`** — Specialized agent personas (e.g. `swat-dev`, `wedding-planner`, `a-share-analyst`). Each agent ships an `AGENTS.md` with frontmatter and a markdown body.
-- **`skills/`** — Reusable capabilities consumed by agents (e.g. `git-pr`, `scientific-method`, `xiaohongshu`). Each skill ships a `SKILL.md` plus any scripts, templates, hooks, and reference material it needs.
+- **`agents/`** — Specialized agent personas (e.g. `emploke-dev`, `wedding-planner`, `a-share-analyst`). Each agent ships an `AGENTS.md` with frontmatter and a markdown body.
+- **`skills/`** — Reusable capabilities consumed by agents (e.g. `git-pr`, `debrief`, `xiaohongshu`). Each skill ships a `SKILL.md` plus any scripts, templates, hooks, and reference material it needs.
 - **`mcps/`** — Model Context Protocol server configs (`<namespace>_<short>.json`), each carrying a top-level `_meta` block with the FQN and origin URL.
 
 ## Install
@@ -24,7 +24,7 @@ Examples:
 
 ```
 https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr
-https://github.com/LangSensei/emploke-marketplace/tree/main/agents/swat-dev
+https://github.com/LangSensei/emploke-marketplace/tree/main/agents/emploke-dev
 https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json
 ```
 

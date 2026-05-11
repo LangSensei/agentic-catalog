@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 (2026-05-11)
+
+### Removed
+- `sop` skill dependency — methodology skills are being redesigned and are no longer a hard dependency for this squad
+
 ## 1.4.0 (2026-04-19)
 
 - **feat:** add promotions column to report table — summarize booking coupons from 订房优惠

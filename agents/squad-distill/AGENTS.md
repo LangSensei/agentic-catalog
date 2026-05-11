@@ -2,10 +2,9 @@
 name: squad-distill
 scope: langsensei
 description: "Analyzes squad operation history to optimize MANIFEST playbooks, distill reusable skills, and prune stale INTEL — opens PRs to the marketplace"
-version: 1.1.0
+version: 1.2.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sop"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
 ---
 
