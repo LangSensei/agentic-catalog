@@ -6,7 +6,7 @@
  * Usage:
  *   node detail.js --id <note_id> [--xsec-token <token>] [--output detail.json] [--screenshot detail.png]
  *
- * Requires: playwright, storage-state at <workspace>/.playwright-state/xiaohongshu/storage-state.json (auto-resolved)
+ * Requires: playwright, storage-state at <workspace>/.playwright/storage-state.json (auto-resolved)
  */
 
 const { chromium } = require('playwright');
@@ -24,7 +24,7 @@ const NOTE_ID = getArg('--id', '');
 const XSEC_TOKEN = getArg('--xsec-token', '');
 const OUTPUT = getArg('--output', '');
 const SCREENSHOT = getArg('--screenshot', '');
-const STORAGE_STATE = getArg('--storage-state', defaultStorageStatePath('xiaohongshu'));
+const STORAGE_STATE = getArg('--storage-state', defaultStorageStatePath());
 
 if (!NOTE_ID) {
   console.error('Usage: node detail.js --id <note_id> [--xsec-token <token>] [--output detail.json]');

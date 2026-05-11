@@ -2,7 +2,7 @@
 
 ## 1.3.0 (2026-05-11)
 
-- Drop SWAT-era playwright state path. Storage state moved from `~/.swat/playwright/ctrip-storage-state.json` to `<workspace>/.playwright-state/ctrip/storage-state.json` (per-workspace isolation; workspace resolved by walking up from cwd to a `workspace.json` marker, fallback `${XDG_DATA_HOME:-~/.local/share}/playwright-state/ctrip/storage-state.json`). Existing users need to copy the file into each workspace they want to use the skill in (`mkdir -p "$WS/.playwright-state/ctrip" && cp ~/.swat/playwright/ctrip-storage-state.json "$WS/.playwright-state/ctrip/storage-state.json"`).
+- Drop SWAT-era playwright state path. Storage state moved from `~/.swat/playwright/ctrip-storage-state.json` to `<workspace>/.playwright/storage-state.json` (per-workspace isolation; workspace resolved by walking up from cwd to a `workspace.json` marker, fallback `./.playwright/storage-state.json`). The state file is now shared with other playwright-using skills and the playwright MCP in the same workspace, so a single login serves every component (playwright dedups cookies by name+domain+path on save). Auth flow now loads existing state before login so other sites' cookies are preserved; to switch ctrip accounts, delete the state file first. Existing users need to copy the file into each workspace they want to use the skill in (`mkdir -p "$WS/.playwright" && cp ~/.swat/playwright/ctrip-storage-state.json "$WS/.playwright/storage-state.json"`).
 
 ## 1.2.0 (2026-04-19)
 

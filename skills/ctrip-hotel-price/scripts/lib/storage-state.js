@@ -4,15 +4,19 @@
 //   1. WORKSPACE_DIR env var (explicit override)
 //   2. EMPLOKE_WORKSPACE env var (legacy override)
 //   3. Walk up from cwd looking for `workspace.json` (emploke marker)
-//   4. XDG data home fallback (~/.local/share/playwright-state/<site>/storage-state.json)
+//   4. cwd fallback (treats current dir as the workspace)
 //
-// When a workspace is found, the path is
-// <workspace>/.playwright-state/<site>/storage-state.json so multiple skills
-// targeting the same site can share one logged-in session within a workspace.
+// All playwright-using components in the same workspace share one
+// `<workspace>/.playwright/storage-state.json`. Auth scripts pass the file
+// to `browser.newContext({ storageState })` so existing cookies for other
+// sites are preserved; saving via `context.storageState({ path })` then
+// writes the union (other sites' cookies untouched + the freshly logged-in
+// site's cookies replacing any same-key stale ones).
+//
+// To switch accounts on the same site, delete the file and re-authenticate.
 
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 
 function projectRoot() {
   if (process.env.WORKSPACE_DIR) return process.env.WORKSPACE_DIR;
@@ -25,13 +29,9 @@ function projectRoot() {
   return null;
 }
 
-function defaultStorageStatePath(site) {
-  const root = projectRoot();
-  if (root) {
-    return path.join(root, '.playwright-state', site, 'storage-state.json');
-  }
-  const dataHome = process.env.XDG_DATA_HOME || path.join(os.homedir(), '.local', 'share');
-  return path.join(dataHome, 'playwright-state', site, 'storage-state.json');
+function defaultStorageStatePath() {
+  const root = projectRoot() || process.cwd();
+  return path.join(root, '.playwright', 'storage-state.json');
 }
 
 module.exports = { defaultStorageStatePath, projectRoot };

@@ -10,6 +10,6 @@
     "@playwright/mcp@latest",
     "--headless",
     "--storage-state",
-    "${workspaceDir}/.playwright-state/storage-state.json"
+    "${workspaceDir}/.playwright/storage-state.json"
   ]
 }
