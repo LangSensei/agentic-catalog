@@ -2,7 +2,7 @@
 
 ## 1.3.0 (2026-05-11)
 
-- Drop SWAT-era playwright state path. Storage state moved from `~/.swat/playwright/ctrip-storage-state.json` to `~/.playwright-state/ctrip-storage-state.json` (machine-level, cross-workspace shared). Existing users need to move the file (`mkdir -p ~/.playwright-state && mv ~/.swat/playwright/ctrip-storage-state.json ~/.playwright-state/`).
+- Drop SWAT-era playwright state path. Storage state moved from `~/.swat/playwright/ctrip-storage-state.json` to `<workspace>/.playwright-state/ctrip/storage-state.json` (per-workspace isolation; workspace resolved by walking up from cwd to a `workspace.json` marker, fallback `${XDG_DATA_HOME:-~/.local/share}/playwright-state/ctrip/storage-state.json`). Existing users need to copy the file into each workspace they want to use the skill in (`mkdir -p "$WS/.playwright-state/ctrip" && cp ~/.swat/playwright/ctrip-storage-state.json "$WS/.playwright-state/ctrip/storage-state.json"`).
 
 ## 1.2.0 (2026-04-19)
 

@@ -14,7 +14,7 @@ dependencies:
 
 ## Storage State
 
-This skill requires a pre-authenticated browser state at `~/.playwright-state/xiaohongshu-storage-state.json`. If missing or expired, fail the operation — debrief will notify the user to re-authenticate via OpenClaw.
+This skill requires a pre-authenticated browser state at `<workspace>/.playwright-state/xiaohongshu/storage-state.json` (auto-resolved by walking up from cwd to find `workspace.json`; falls back to `${XDG_DATA_HOME:-~/.local/share}/playwright-state/xiaohongshu/storage-state.json` when no workspace context is found). All scripts accept `--storage-state <path>` to override per-invocation. If missing or expired, fail the operation — debrief will notify the user to re-authenticate via OpenClaw.
 
 ## CLI Scripts
 
@@ -67,7 +67,7 @@ The search and detail scripts include:
 
 For operations that need interactive browsing beyond search/detail, use playwright MCP with storage state:
 ```
---storage-state ~/.playwright-state/xiaohongshu-storage-state.json
+--storage-state <workspace>/.playwright-state/xiaohongshu/storage-state.json
 ```
 
 ## Notes

@@ -2,7 +2,7 @@
 
 ## 1.3.0 (2026-05-11)
 
-- Drop SWAT-era playwright state path. Storage state moved from `~/.swat/playwright/storage-state.json` to `~/.playwright-state/xiaohongshu-storage-state.json` (machine-level, cross-workspace shared; renamed for clarity to disambiguate from other playwright-using skills). Existing users need to move and rename the file (`mkdir -p ~/.playwright-state && mv ~/.swat/playwright/storage-state.json ~/.playwright-state/xiaohongshu-storage-state.json`).
+- Drop SWAT-era playwright state path. Storage state moved from `~/.swat/playwright/storage-state.json` to `<workspace>/.playwright-state/xiaohongshu/storage-state.json` (per-workspace isolation; workspace resolved by walking up from cwd to a `workspace.json` marker, fallback `${XDG_DATA_HOME:-~/.local/share}/playwright-state/xiaohongshu/storage-state.json`). All scripts still accept `--storage-state <path>` to override per-invocation. Existing users need to copy the file into each workspace they want to use the skill in (`mkdir -p "$WS/.playwright-state/xiaohongshu" && cp ~/.swat/playwright/storage-state.json "$WS/.playwright-state/xiaohongshu/storage-state.json"`).
 
 ## 1.2.1 (2026-04-12)
 - Fix Windows compatibility: `process.env.HOME` → `os.homedir()`, `/tmp/` → `os.tmpdir()`, `process.getuid()` → `os.userInfo().username`

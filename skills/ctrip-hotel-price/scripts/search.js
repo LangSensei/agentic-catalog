@@ -7,11 +7,9 @@
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
+const { defaultStorageStatePath } = require('./lib/storage-state');
 
-const STORAGE_PATH = path.join(
-  process.env.HOME || process.env.USERPROFILE,
-  '.playwright-state', 'ctrip-storage-state.json'
-);
+const STORAGE_PATH = defaultStorageStatePath('ctrip');
 
 const BROWSER_OPTS = {
   userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',

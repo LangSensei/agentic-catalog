@@ -6,13 +6,14 @@
  * Usage:
  *   node detail.js --id <note_id> [--xsec-token <token>] [--output detail.json] [--screenshot detail.png]
  *
- * Requires: playwright, storage-state at ~/.playwright-state/xiaohongshu-storage-state.json
+ * Requires: playwright, storage-state at <workspace>/.playwright-state/xiaohongshu/storage-state.json (auto-resolved)
  */
 
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { defaultStorageStatePath } = require('./lib/storage-state');
 
 function getArg(name, fallback) {
   const idx = process.argv.indexOf(name);
@@ -23,7 +24,7 @@ const NOTE_ID = getArg('--id', '');
 const XSEC_TOKEN = getArg('--xsec-token', '');
 const OUTPUT = getArg('--output', '');
 const SCREENSHOT = getArg('--screenshot', '');
-const STORAGE_STATE = getArg('--storage-state', path.join(os.homedir(), '.playwright-state', 'xiaohongshu-storage-state.json'));
+const STORAGE_STATE = getArg('--storage-state', defaultStorageStatePath('xiaohongshu'));
 
 if (!NOTE_ID) {
   console.error('Usage: node detail.js --id <note_id> [--xsec-token <token>] [--output detail.json]');

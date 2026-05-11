@@ -11,7 +11,7 @@ prereqs: |
 
 ## Storage State
 
-This skill requires a pre-authenticated browser state at `~/.playwright-state/ctrip-storage-state.json`. If missing or expired, fail the operation — debrief will notify the user to re-authenticate.
+This skill requires a pre-authenticated browser state at `<workspace>/.playwright-state/ctrip/storage-state.json` (auto-resolved by walking up from cwd to find `workspace.json`; falls back to `${XDG_DATA_HOME:-~/.local/share}/playwright-state/ctrip/storage-state.json` when no workspace context is found). If missing or expired, fail the operation — debrief will notify the user to re-authenticate.
 
 ## CLI Scripts
 

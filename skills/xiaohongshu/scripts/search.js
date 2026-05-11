@@ -6,13 +6,14 @@
  * Usage:
  *   node search.js --keyword "独墅湖租房" [--sort general|time_descending|popularity_descending] [--type all|normal|video] [--pages 1] [--output results.json] [--screenshot search.png]
  *
- * Requires: playwright, storage-state at ~/.playwright-state/xiaohongshu-storage-state.json
+ * Requires: playwright, storage-state at <workspace>/.playwright-state/xiaohongshu/storage-state.json (auto-resolved)
  */
 
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { defaultStorageStatePath } = require('./lib/storage-state');
 
 // --- Arg parsing ---
 function getArg(name, fallback) {
@@ -26,7 +27,7 @@ const NOTE_TYPE = getArg('--type', 'all'); // all | normal (图文) | video
 const PAGES = parseInt(getArg('--pages', '1'), 10);
 const OUTPUT = getArg('--output', '');
 const SCREENSHOT = getArg('--screenshot', '');
-const STORAGE_STATE = getArg('--storage-state', path.join(os.homedir(), '.playwright-state', 'xiaohongshu-storage-state.json'));
+const STORAGE_STATE = getArg('--storage-state', defaultStorageStatePath('xiaohongshu'));
 
 if (!KEYWORD) {
   console.error('Usage: node search.js --keyword "关键词" [--sort general] [--type all] [--pages 1] [--output results.json]');
