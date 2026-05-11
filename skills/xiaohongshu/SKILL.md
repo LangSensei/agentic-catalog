@@ -54,7 +54,7 @@ Add `--screenshot detail.png` to capture a full-page screenshot of the note page
 NODE_PATH=$(npm root -g) node scripts/auth.js --check
 ```
 
-Exits 0 if logged in, 1 if expired. If expired, fail the operation — debrief will notify the user to re-authenticate via OpenClaw. Do NOT attempt login from within a squad.
+Exits 0 if logged in, 1 if expired. If expired, fail the operation — debrief will notify the user to re-authenticate via OpenClaw. Do NOT attempt login from within an agent.
 
 ## Anti-Detection
 

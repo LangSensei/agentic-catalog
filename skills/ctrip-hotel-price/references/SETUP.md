@@ -1,6 +1,6 @@
 # Ctrip Hotel Price Setup Guide
 
-This guide helps users complete prerequisites before squads can use this skill.
+This guide helps users complete prerequisites before agents can use this skill.
 Run checks in order — each step depends on the previous one.
 
 ## 1. Playwright

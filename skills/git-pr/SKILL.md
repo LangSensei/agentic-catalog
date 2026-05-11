@@ -112,7 +112,7 @@ git worktree remove "$WORK_DIR/repo" --force
 
 ## Worktree Cleanup
 
-**Mandatory at seal time.** After push (Mode A/B) or after reading (Mode C), clean up. Squads using this skill must clean up in their playbook's seal/delivery phase.
+**Mandatory at seal time.** After push (Mode A/B) or after reading (Mode C), clean up. Agents using this skill must clean up in their playbook's seal/delivery phase.
 
 ```bash
 cd "$REPO_DIR"
