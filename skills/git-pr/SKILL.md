@@ -2,7 +2,7 @@
 name: git-pr
 scope: langsensei
 description: "Git branch management and GitHub PR workflow using worktrees"
-version: 1.2.1
+version: 1.2.2
 ---
 
 # Git PR Skill
@@ -12,8 +12,8 @@ version: 1.2.1
 All repos are cached at `~/.swat/repos/`. First time clones, subsequent operations reuse.
 
 ```bash
-REPO_NAME="<repo-name>"  # e.g. swat
-REPO_URL="<repo-url>"    # e.g. https://github.com/LangSensei/swat
+REPO_NAME="<repo-name>"  # e.g. emploke
+REPO_URL="<repo-url>"    # e.g. https://github.com/LangSensei/emploke
 REPO_DIR="$HOME/.swat/repos/$REPO_NAME"
 
 # First time: clone. Subsequent: fetch.

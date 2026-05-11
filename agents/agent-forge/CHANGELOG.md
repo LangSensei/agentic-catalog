@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.0 (2026-05-11)
+
+### Breaking Changes
+- Renamed agent from `squad-forge` to `agent-forge` (folder + frontmatter `name`). emploke uses "agent" as the unit name; "squad" was SWAT terminology.
+- Body rewritten to drop SWAT-specific concepts (`MANIFEST.md` → `AGENTS.md`, `squads/` → `agents/`, removed dead links to `blueprints/squads/_framework/TEMPLATE.md` and `PROTOCOL.md` in the deprecated SWAT repo).
+- The marketplace it authors against is now `LangSensei/emploke-marketplace` instead of the deprecated `LangSensei/swat-marketplace`.
+- Removed the mandatory "Debrief Rules" section that hard-coded a dispatch to `squad-lint`. Without the deprecated SWAT MCP there is no in-process dispatch channel.
+
+### Added
+- New section: "Schema reference" pointing at `CONTRIBUTING.md` and the four authoritative validators in the emploke catalog package.
+- New section: "Creating an MCP" — with the cross-platform rules from `CONTRIBUTING.md` (no `bash -c`, no `$HOME` / `${VAR}`, only `${workspaceDir}` / `${globalDir}` placeholders).
+
+### Migration provenance
+Renamed and retargeted from `squad-forge` v1.2.0.
+
 ## 1.2.0 (2026-05-11)
 
 ### Removed

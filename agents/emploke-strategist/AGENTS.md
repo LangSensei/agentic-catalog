@@ -26,8 +26,8 @@ Strategic analysis and improvement proposals for the [emploke](https://github.co
 
 **Out of scope:**
 - Writing code or opening PRs to emploke (that's `emploke-dev`)
-- Creating or modifying agents/skills (that's `squad-forge`)
-- Operation history analysis (that's `squad-distill`)
+- Creating or modifying agents/skills (that's `agent-forge`)
+- Operation history analysis (that's `agent-distill`)
 - Anything outside the emploke ecosystem
 
 ## Write Access
