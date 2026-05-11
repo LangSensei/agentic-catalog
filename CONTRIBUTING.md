@@ -89,6 +89,71 @@ Rules:
 - Pretty-print with 2-space indent and a trailing newline.
 - Other `_meta.*` keys (e.g. registry sub-objects) survive untouched on re-write.
 
+### Cross-platform rules
+
+The MCP spec at modelcontextprotocol.io has **no** shell-style variable
+expansion: `command` is an executable name, `args` is an array of literal
+strings, `env` is an explicit map. Wrapping commands in `bash -c "..."`
+to get `$HOME` / `$PATH` expansion is a tempting workaround on POSIX
+that **breaks Windows immediately** (no `bash` on PATH; no POSIX env
+var names). MCP specs in this marketplace MUST be cross-platform.
+
+The four rules:
+
+1. **`command` is a bare executable name** — `npx`, `node`, `python`,
+   `uvx`. Let the OS PATH resolve it (Windows ships `npx.cmd` shims for
+   Node tooling; the same name works on every host). Do NOT hardcode
+   `bash`, `/usr/bin/...`, or any other absolute interpreter.
+2. **No shell wrappers** — `["bash", "-c", "..."]` and friends are
+   forbidden. If you need command composition, write a tiny `node`
+   script inside your MCP project and call it directly.
+3. **`args` are literal strings** — no `$HOME`, no `${VAR}`, no `~/`.
+   The MCP server receives every arg verbatim.
+4. **For paths that can't be hardcoded, use emploke's placeholder
+   substitution** (see below). emploke resolves these at provision
+   time, before the MCP child is spawned, so the path the server sees
+   is already absolute and platform-correct.
+
+### emploke placeholder substitution
+
+Two placeholders are supported in any string field of an MCP spec
+(`command`, any element of `args`, any value of `env`, plus nested
+strings inside any custom object you put in the spec):
+
+| Placeholder        | Resolves to                                                                 | Use for                                                          |
+| ------------------ | --------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `${workspaceDir}`  | The absolute path of the active emploke workspace.                           | State scoped to a single project (per-workspace cookies, repo-local credentials). |
+| `${globalDir}`     | A stable per-machine directory (`<EMPLOKE_HOME>/shared` by default).        | State shared across every workspace + session + task on the machine (one playwright login the user wants every project to reuse, a global API token cache). |
+
+emploke substitutes both before writing `.mcp.json` to the session/task
+workdir. The substituted paths use forward slashes regardless of host
+OS, so the same JSON value bytes ship to Windows and POSIX. A typo in
+a placeholder (`${workspceDir}`) is rejected at install time with a
+clear error — placeholders aren't silently passed through.
+
+Example — playwright with a per-machine login state file:
+
+```json
+{
+  "_meta": {
+    "name": "io.playwright/mcp",
+    "origin": "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
+  },
+  "type": "stdio",
+  "command": "npx",
+  "args": [
+    "-y",
+    "@playwright/mcp@latest",
+    "--headless",
+    "--storage-state",
+    "${globalDir}/playwright/storage-state.json"
+  ]
+}
+```
+
+Pick `${workspaceDir}` over `${globalDir}` when each project should get
+its own fresh state.
+
 Authoritative validator: [`packages/catalog/src/mcp/mcp-format.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/mcp/mcp-format.ts).
 
 ## Naming rules
