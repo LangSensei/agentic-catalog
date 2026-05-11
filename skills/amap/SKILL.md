@@ -17,7 +17,7 @@ Wraps the Amap (Gaode Maps) Web Service REST API. All scripts output structured 
 
 Scripts resolve the key in order:
 1. `AMAP_WEBSERVICE_KEY` environment variable
-2. `<SKILL_CREDS_DIR>/.env` file (`AMAP_WEBSERVICE_KEY=xxx`) — `SKILL_CREDS_DIR` defaults to `~/.config/skill-creds/`
+2. `~/.amap/.env` file (`AMAP_WEBSERVICE_KEY=xxx`)
 
 If neither is set, scripts exit with a clear error message.
 

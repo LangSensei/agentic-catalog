@@ -2,7 +2,7 @@
 
 ## 1.2.0 (2026-05-11)
 
-- Drop SWAT-era cred path. Credentials now load from `<SKILL_CREDS_DIR>/.env` (default `~/.config/skill-creds/.env`); `SKILL_CREDS_DIR` env var overrides the directory. Existing users with `~/.swat/.env` need to copy or move that file (`mv ~/.swat/.env ~/.config/skill-creds/.env`).
+- Drop SWAT-era cred path. Credentials now load from `~/.qq-email/.env` (per-app dot-dir under `$HOME`, matching the convention used by `aws`, `kubectl`, `docker`, `npm`). Existing users with `~/.swat/.env` need to copy the relevant keys (`mkdir -p ~/.qq-email && grep -E '^QQ_EMAIL_(USER|AUTH_CODE)=' ~/.swat/.env >> ~/.qq-email/.env`).
 
 ## 1.1.0 (2026-04-19)
 

@@ -23,7 +23,7 @@ Enable SMTP service and generate an authorization code in QQ Mail settings.
 
 ### Check
 ```bash
-CREDS_FILE="${SKILL_CREDS_DIR:-$HOME/.config/skill-creds}/.env"
+CREDS_FILE="$HOME/.qq-email/.env"
 grep -q 'QQ_EMAIL_USER=' "$CREDS_FILE" 2>/dev/null && grep -q 'QQ_EMAIL_AUTH_CODE=' "$CREDS_FILE" 2>/dev/null && echo "OK" || echo "MISSING"
 ```
 
@@ -33,12 +33,11 @@ grep -q 'QQ_EMAIL_USER=' "$CREDS_FILE" 2>/dev/null && grep -q 'QQ_EMAIL_AUTH_COD
 2. Go to Settings > Account > POP3/IMAP/SMTP/Exchange/CardDAV
 3. Enable SMTP service
 4. Generate an authorization code (follow the SMS verification prompt)
-5. Add credentials to the shared skill-creds env file:
+5. Add credentials to the qq-email config file:
    ```bash
-   CREDS_DIR="${SKILL_CREDS_DIR:-$HOME/.config/skill-creds}"
-   mkdir -p "$CREDS_DIR"
-   echo 'QQ_EMAIL_USER=your_qq_email@qq.com' >> "$CREDS_DIR/.env"
-   echo 'QQ_EMAIL_AUTH_CODE=your_authorization_code' >> "$CREDS_DIR/.env"
+   mkdir -p ~/.qq-email
+   echo 'QQ_EMAIL_USER=your_qq_email@qq.com' >> ~/.qq-email/.env
+   echo 'QQ_EMAIL_AUTH_CODE=your_authorization_code' >> ~/.qq-email/.env
    ```
 
 ## 3. Verify

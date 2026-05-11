@@ -21,7 +21,7 @@ An API key from the Amap developer console is required for all API calls.
 
 ### Check
 ```bash
-grep -q 'AMAP_WEBSERVICE_KEY=' "${SKILL_CREDS_DIR:-$HOME/.config/skill-creds}/.env" 2>/dev/null && echo "OK" || echo "MISSING"
+grep -q 'AMAP_WEBSERVICE_KEY=' "$HOME/.amap/.env" 2>/dev/null && echo "OK" || echo "MISSING"
 ```
 
 ### Steps
@@ -34,11 +34,10 @@ grep -q 'AMAP_WEBSERVICE_KEY=' "${SKILL_CREDS_DIR:-$HOME/.config/skill-creds}/.e
    - Key name: any name (e.g., "webservice")
    - Service type: **Web Service** (Web服务) — this is critical, not "Web端" or "Android"
    - Submit and copy the generated key
-5. Add the key to the shared skill-creds env file:
+5. Add the key to the amap config file:
    ```bash
-   CREDS_DIR="${SKILL_CREDS_DIR:-$HOME/.config/skill-creds}"
-   mkdir -p "$CREDS_DIR"
-   echo 'AMAP_WEBSERVICE_KEY=your_key_here' >> "$CREDS_DIR/.env"
+   mkdir -p ~/.amap
+   echo 'AMAP_WEBSERVICE_KEY=your_key_here' >> ~/.amap/.env
    ```
 
 ### Verify
@@ -47,8 +46,7 @@ node -e "
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const credsDir = process.env.SKILL_CREDS_DIR || path.join(os.homedir(), '.config', 'skill-creds');
-const envFile = path.join(credsDir, '.env');
+const envFile = path.join(os.homedir(), '.amap', '.env');
 const env = fs.readFileSync(envFile, 'utf8');
 const match = env.match(/AMAP_WEBSERVICE_KEY=(\S+)/);
 if (!match) { console.log('MISSING'); process.exit(1); }

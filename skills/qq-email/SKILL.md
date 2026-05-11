@@ -16,7 +16,7 @@ prereqs: |
 | `QQ_EMAIL_USER` | QQ Mail address (sender) | `123456@qq.com` |
 | `QQ_EMAIL_AUTH_CODE` | SMTP authorization code | (from QQ Mail settings) |
 
-Credentials are auto-loaded from `<SKILL_CREDS_DIR>/.env` (defaults to `~/.config/skill-creds/.env`). Environment variables take precedence over file values. See `references/SETUP.md` for setup instructions.
+Credentials are auto-loaded from `~/.qq-email/.env`. Environment variables take precedence over file values. See `references/SETUP.md` for setup instructions.
 
 ## CLI Scripts
 
@@ -113,5 +113,5 @@ NODE_PATH=$(npm root -g) node scripts/send.js \
 
 - The `--attach` flag can be repeated multiple times for multiple attachments
 - HTML body is read from a file path, not inline HTML string
-- All credentials come from `<SKILL_CREDS_DIR>/.env` (default `~/.config/skill-creds/.env`) or environment variables — never hardcode
+- All credentials come from `~/.qq-email/.env` or environment variables — never hardcode
 - nodemailer must be globally installed (`npm install -g nodemailer`)
