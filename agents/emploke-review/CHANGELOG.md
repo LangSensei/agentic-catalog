@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 (2026-05-11)
+
+- Drop SWAT-era worktree paths. Setup, Write Access, and audit-mode cleanup steps now use `$(repo_cache_dir)` from the git-pr skill instead of hard-coded `~/.swat/repos/`.
+
 ## 1.0.0 (2026-05-11)
 
 ### Breaking Changes

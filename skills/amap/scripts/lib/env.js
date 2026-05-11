@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 // env.js — Shared environment loader for Amap Web Service scripts
-// Resolves AMAP_WEBSERVICE_KEY from env var or ~/.swat/.env file
+// Resolves AMAP_WEBSERVICE_KEY from env var or shared skill-creds .env file
 
 const fs = require('fs');
 const path = require('path');
 
 const os = require('os');
-const ENV_FILE = path.join(os.homedir(), '.swat', '.env');
+const CREDS_DIR = process.env.SKILL_CREDS_DIR || path.join(os.homedir(), '.config', 'skill-creds');
+const ENV_FILE = path.join(CREDS_DIR, '.env');
 const KEY_NAME = 'AMAP_WEBSERVICE_KEY';
 
 /**
@@ -35,7 +36,8 @@ function loadEnvFile(filePath) {
 
 /**
  * Resolve the Amap Web Service API key.
- * Priority: AMAP_WEBSERVICE_KEY env var > ~/.swat/.env file
+ * Priority: AMAP_WEBSERVICE_KEY env var > <SKILL_CREDS_DIR>/.env file
+ *           (default SKILL_CREDS_DIR is ~/.config/skill-creds/)
  * Exits with error if not found.
  */
 function getApiKey() {
@@ -43,7 +45,7 @@ function getApiKey() {
   if (process.env[KEY_NAME]) {
     return process.env[KEY_NAME];
   }
-  // 2. Check ~/.swat/.env file
+  // 2. Check the shared skill-creds .env file
   const envVars = loadEnvFile(ENV_FILE);
   if (envVars[KEY_NAME]) {
     return envVars[KEY_NAME];
@@ -51,7 +53,7 @@ function getApiKey() {
   // 3. Not found — error with clear message
   console.error(JSON.stringify({
     error: 'AMAP_WEBSERVICE_KEY not found',
-    message: `Set the AMAP_WEBSERVICE_KEY environment variable or add AMAP_WEBSERVICE_KEY=<your-key> to ${ENV_FILE}`,
+    message: `Set the AMAP_WEBSERVICE_KEY environment variable or add AMAP_WEBSERVICE_KEY=<your-key> to ${ENV_FILE} (override the directory with the SKILL_CREDS_DIR env var)`,
     hint: 'Get your key from https://lbs.amap.com → Console → My Apps → Create App → Add Key (Web Service type)'
   }, null, 2));
   process.exit(1);

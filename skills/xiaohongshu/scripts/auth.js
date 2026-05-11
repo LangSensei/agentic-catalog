@@ -27,7 +27,7 @@ function getArg(name, defaultVal) {
   return idx >= 0 && args[idx + 1] ? args[idx + 1] : defaultVal;
 }
 
-const STATE_PATH = getArg('--state-path', path.join(os.homedir(), '.swat/playwright/storage-state.json'));
+const STATE_PATH = getArg('--state-path', path.join(os.homedir(), '.playwright-state', 'xiaohongshu-storage-state.json'));
 const SMS_CODE_PATH = getArg('--sms-code-path', path.join(os.tmpdir(), 'xhs-sms-code.txt'));
 
 // --- Check mode ---

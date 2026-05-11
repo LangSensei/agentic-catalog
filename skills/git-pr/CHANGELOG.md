@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 (2026-05-11)
+
+- Drop SWAT-era paths and naming. Bare clones now live under `$(repo_cache_dir)` — resolved as `<workspace>/.cache/repos/` when a `workspace.json` marker is found by walking up from cwd, falling back to `${XDG_CACHE_HOME:-~/.cache}/skill-repos/`. `WORKSPACE_DIR` / `EMPLOKE_WORKSPACE` env vars override the marker walk-up.
+- Replace fixed `swat/{operation-id}` branch template with descriptive conventional-commit slugs (`<type>/<slug>`, e.g. `chore/remove-swat-references`). No fixed prefix; the agent names the branch based on what the PR is changing.
+
 ## 1.2.2 (2026-05-11)
 
 - Update example `REPO_NAME` / `REPO_URL` from `swat` to `emploke` (SWAT is being deprecated; emploke is the going-forward target)

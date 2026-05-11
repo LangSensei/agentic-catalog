@@ -82,7 +82,7 @@ Authoritative validator: [`packages/catalog/src/agent/agent-frontmatter.ts`](htt
 
 Rules:
 
-- `_meta.name` is the MCP spec FQN. Reverse-DNS namespaces are preferred (`io.playwright/mcp`); single-segment vendor names (`swat/cli`, `azure/mcp`) are also OK.
+- `_meta.name` is the MCP spec FQN. Reverse-DNS namespaces are preferred (`io.playwright/mcp`); single-segment vendor names (`acme/cli`, `azure/mcp`) are also OK.
 - The on-disk filename is `<namespace>_<short>.json` (replace `/` in the FQN with `_`).
 - `_meta.origin` MUST point at this same file's GitHub URL.
 - Other fields (`type`, `command`, `args`, `env`, …) follow the MCP client-config convention.

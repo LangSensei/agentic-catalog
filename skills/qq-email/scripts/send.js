@@ -7,7 +7,8 @@ const path = require("path");
 const os = require("os");
 
 function loadEnv() {
-  const envFile = path.join(os.homedir(), ".swat", ".env");
+  const credsDir = process.env.SKILL_CREDS_DIR || path.join(os.homedir(), ".config", "skill-creds");
+  const envFile = path.join(credsDir, ".env");
   if (!fs.existsSync(envFile)) return;
   const lines = fs.readFileSync(envFile, "utf8").split("\n");
   for (const line of lines) {

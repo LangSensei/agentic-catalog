@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 (2026-05-11)
+
+- Drop SWAT-era cred path. Credentials now load from `<SKILL_CREDS_DIR>/.env` (default `~/.config/skill-creds/.env`); `SKILL_CREDS_DIR` env var overrides the directory. Existing users with `~/.swat/.env` need to copy or move that file (`mv ~/.swat/.env ~/.config/skill-creds/.env`).
+
 ## 1.1.0 (2026-04-19)
 
 - Auto-load credentials from `~/.swat/.env` (env vars take precedence)

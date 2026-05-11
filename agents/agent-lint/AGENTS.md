@@ -2,7 +2,7 @@
 name: agent-lint
 scope: langsensei
 description: "Validates structural and semantic compliance of agents, skills, and MCPs in emploke-marketplace"
-version: 2.0.0
+version: 2.0.1
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -40,7 +40,7 @@ Structural and semantic validation of agents, skills, and MCPs in the [emploke-m
 
 ### Setup
 
-1. Set up worktree using git-pr skill: bare clone to `~/.swat/repos/emploke-marketplace/`, worktree into `repo/`
+1. Set up worktree using git-pr skill: bare clone to `$(repo_cache_dir)/emploke-marketplace/`, worktree into `repo/`
 2. Repository: `https://github.com/LangSensei/emploke-marketplace`
 3. Use git-pr Mode C (read-only) — agent-lint does not push changes
 
@@ -160,7 +160,7 @@ Beyond structural and content-level checks, review hook scripts, templates, and 
 ### Delivery
 
 1. Compile all check results into a structured report
-2. Clean up worktree (mandatory): `cd ~/.swat/repos/emploke-marketplace && git worktree remove "$(pwd)/repo" --force`
+2. Clean up worktree (mandatory): `cd "$(repo_cache_dir)/emploke-marketplace" && git worktree remove "$(pwd)/repo" --force`
 
 ### Constraints
 

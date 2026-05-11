@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0 (2026-05-11)
+
+- Drop SWAT-era playwright state path. Storage state moved from `~/.swat/playwright/ctrip-storage-state.json` to `~/.playwright-state/ctrip-storage-state.json` (machine-level, cross-workspace shared). Existing users need to move the file (`mkdir -p ~/.playwright-state && mv ~/.swat/playwright/ctrip-storage-state.json ~/.playwright-state/`).
+
 ## 1.2.0 (2026-04-19)
 
 - **feat:** detail page navigation — extract hotel ID from list page, visit detail page for rich data

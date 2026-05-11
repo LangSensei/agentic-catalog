@@ -2,7 +2,7 @@
 name: xiaohongshu
 scope: langsensei
 description: "Xiaohongshu (小红书) browser automation skill. Use when browsing/searching content, extracting post data, or interacting with the platform via playwright. Requires pre-authenticated storage state."
-version: 1.2.1
+version: 1.3.0
 prereqs: |
   Requires: Playwright, Chromium, Chinese Fonts, Auth. See `references/SETUP.md` for step-by-step setup instructions.
 dependencies:
@@ -14,7 +14,7 @@ dependencies:
 
 ## Storage State
 
-This skill requires a pre-authenticated browser state at `~/.swat/playwright/storage-state.json`. If missing or expired, fail the operation — debrief will notify the user to re-authenticate via OpenClaw.
+This skill requires a pre-authenticated browser state at `~/.playwright-state/xiaohongshu-storage-state.json`. If missing or expired, fail the operation — debrief will notify the user to re-authenticate via OpenClaw.
 
 ## CLI Scripts
 
@@ -67,7 +67,7 @@ The search and detail scripts include:
 
 For operations that need interactive browsing beyond search/detail, use playwright MCP with storage state:
 ```
---storage-state ~/.swat/playwright/storage-state.json
+--storage-state ~/.playwright-state/xiaohongshu-storage-state.json
 ```
 
 ## Notes

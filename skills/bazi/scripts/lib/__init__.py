@@ -31,14 +31,52 @@ if _missing:
 
 SKILL_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+
+def _project_root():
+    """Find the workspace root by walking up from cwd looking for ``workspace.json``.
+
+    Resolution order:
+        1. ``WORKSPACE_DIR`` env var (explicit override)
+        2. ``EMPLOKE_WORKSPACE`` env var (legacy override)
+        3. Nearest ancestor directory containing ``workspace.json``
+        4. ``None`` if no marker found
+    """
+    if os.environ.get("WORKSPACE_DIR"):
+        return os.environ["WORKSPACE_DIR"]
+    if os.environ.get("EMPLOKE_WORKSPACE"):
+        return os.environ["EMPLOKE_WORKSPACE"]
+    cur = os.getcwd()
+    while True:
+        if os.path.isfile(os.path.join(cur, "workspace.json")):
+            return cur
+        parent = os.path.dirname(cur)
+        if parent == cur:
+            return None
+        cur = parent
+
+
+def _repo_cache_dir():
+    """Resolve the bare-clone cache root.
+
+    Workspace-local under ``<workspace>/.cache/repos`` when a workspace is
+    detected; XDG-cache fallback otherwise (``$XDG_CACHE_HOME/skill-repos``).
+    """
+    root = _project_root()
+    if root:
+        return os.path.join(root, ".cache", "repos")
+    xdg = os.environ.get("XDG_CACHE_HOME") or os.path.join(os.path.expanduser("~"), ".cache")
+    return os.path.join(xdg, "skill-repos")
+
+
 # Auto-provision the bazi calculation repo on first run
-_BAZI_BARE = os.path.expanduser("~/.swat/repos/china-testing-bazi")
+_BAZI_BARE = os.path.join(_repo_cache_dir(), "china-testing-bazi")
 BAZI_REPO = os.path.join(_BAZI_BARE, "worktrees", "readonly")
 _PINNED_COMMIT = "c425f0c"
 
 if not os.path.isdir(BAZI_REPO):
     try:
         if not os.path.isdir(_BAZI_BARE):
+            os.makedirs(os.path.dirname(_BAZI_BARE), exist_ok=True)
             subprocess.run(
                 ["git", "clone", "--bare",
                  "https://github.com/china-testing/bazi.git", _BAZI_BARE],

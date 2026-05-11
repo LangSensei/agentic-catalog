@@ -2,7 +2,7 @@
 name: ctrip-hotel-price
 scope: langsensei
 description: "Ctrip (携程) hotel price query tool. Use when checking hotel prices, comparing rates, or monitoring price changes on Ctrip via Playwright browser automation. Requires pre-authenticated storage state."
-version: 1.2.0
+version: 1.3.0
 prereqs: |
   Requires: Playwright, Chromium, Chinese Fonts, Auth. See `references/SETUP.md` for step-by-step setup instructions.
 ---
@@ -11,7 +11,7 @@ prereqs: |
 
 ## Storage State
 
-This skill requires a pre-authenticated browser state at `~/.swat/playwright/ctrip-storage-state.json`. If missing or expired, fail the operation — debrief will notify the user to re-authenticate.
+This skill requires a pre-authenticated browser state at `~/.playwright-state/ctrip-storage-state.json`. If missing or expired, fail the operation — debrief will notify the user to re-authenticate.
 
 ## CLI Scripts
 

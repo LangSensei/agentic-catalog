@@ -2,7 +2,7 @@
 name: agent-forge
 scope: langsensei
 description: "Creates new agents and skills for emploke-marketplace — generates AGENTS.md / SKILL.md / CHANGELOG.md and opens a PR"
-version: 2.0.0
+version: 2.0.1
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -31,13 +31,13 @@ Authoring new agents and skills for the [emploke-marketplace](https://github.com
 
 ## Write Access
 
-- `~/.swat/repos/emploke-marketplace/` — worktree created via git-pr skill
+- `<workspace>/.cache/repos/emploke-marketplace/` — bare clone created by the git-pr skill (workspace resolution and XDG fallback are documented in git-pr SKILL.md)
 
 ## Agent Playbook
 
 ### Setup
 
-1. Set up worktree using git-pr skill: bare clone to `~/.swat/repos/emploke-marketplace/`, worktree into `repo/`
+1. Set up worktree using git-pr skill: bare clone to `$(repo_cache_dir)/emploke-marketplace/`, worktree into `repo/`
 2. Repository: `https://github.com/LangSensei/emploke-marketplace`
 
 ### Schema reference
@@ -98,7 +98,7 @@ The validators that gate every install live alongside the schema:
 
 1. Push and open PR against `main`
 2. PR title follows conventional commits (`feat:`, `fix:`, `chore:`, `docs:`, …)
-3. Clean up worktree (mandatory): `cd ~/.swat/repos/emploke-marketplace && git worktree remove "$(pwd)/repo" --force`
+3. Clean up worktree (mandatory): `cd "$(repo_cache_dir)/emploke-marketplace" && git worktree remove "$(pwd)/repo" --force`
 
 ### Constraints
 

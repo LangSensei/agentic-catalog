@@ -10,7 +10,7 @@ const fs = require('fs');
 
 const STORAGE_PATH = path.join(
   process.env.HOME || process.env.USERPROFILE,
-  '.swat', 'playwright', 'ctrip-storage-state.json'
+  '.playwright-state', 'ctrip-storage-state.json'
 );
 
 const BROWSER_OPTS = {
