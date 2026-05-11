@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 (2026-05-11)
+
+- Drop SWAT-era cred path. Credentials now load from `~/.qq-email/.env` (per-app dot-dir under `$HOME`, matching the convention used by `aws`, `kubectl`, `docker`, `npm`). Existing users with `~/.swat/.env` need to copy the relevant keys (`mkdir -p ~/.qq-email && grep -E '^QQ_EMAIL_(USER|AUTH_CODE)=' ~/.swat/.env >> ~/.qq-email/.env`).
+
 ## 1.1.0 (2026-04-19)
 
 - Auto-load credentials from `~/.swat/.env` (env vars take precedence)

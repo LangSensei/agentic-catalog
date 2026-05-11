@@ -19,6 +19,7 @@
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+const { defaultStorageStatePath } = require('./lib/storage-state');
 
 const args = process.argv.slice(2);
 function hasFlag(name) { return args.includes(name); }
@@ -27,7 +28,7 @@ function getArg(name, defaultVal) {
   return idx >= 0 && args[idx + 1] ? args[idx + 1] : defaultVal;
 }
 
-const STATE_PATH = getArg('--state-path', path.join(os.homedir(), '.swat/playwright/storage-state.json'));
+const STATE_PATH = getArg('--state-path', defaultStorageStatePath());
 const SMS_CODE_PATH = getArg('--sms-code-path', path.join(os.tmpdir(), 'xhs-sms-code.txt'));
 
 // --- Check mode ---
@@ -71,10 +72,18 @@ if (fs.existsSync(SMS_CODE_PATH)) fs.unlinkSync(SMS_CODE_PATH);
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
-  const ctx = await browser.newContext({
+  const contextOpts = {
     viewport: { width: 1280, height: 800 },
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-  });
+  };
+  // Load existing state if any so logging in does not wipe other sites'
+  // cookies (e.g. ctrip). Playwright then dedups cookies by (name, domain,
+  // path) on save, so freshly logged-in xhs cookies replace stale ones
+  // automatically. To switch xhs accounts, delete the state file first.
+  if (fs.existsSync(STATE_PATH)) {
+    contextOpts.storageState = STATE_PATH;
+  }
+  const ctx = await browser.newContext(contextOpts);
   const page = await ctx.newPage();
 
   try {

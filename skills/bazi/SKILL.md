@@ -2,7 +2,7 @@
 name: bazi
 scope: langsensei
 description: "Chinese traditional calendar and BaZi (Four Pillars of Destiny) skill. Provides CLI scripts for birth chart analysis, marriage compatibility, and auspicious date selection. Wraps the china-testing/bazi library with lunar-python."
-version: 1.1.0
+version: 1.2.0
 prereqs: |
   Requires: Python 3.8+, Python Packages, Git. See `references/SETUP.md` for step-by-step setup instructions.
 ---
@@ -19,8 +19,10 @@ Chinese traditional calendar calculations, BaZi (Four Pillars of Destiny) analys
 
 **Runtime auto-provisioning** — on first run, the shared library (`scripts/lib/__init__.py`) automatically:
 
-1. Bare-clones `china-testing/bazi` to `~/.swat/repos/china-testing-bazi/`
-2. Creates a detached worktree at `~/.swat/repos/china-testing-bazi/worktrees/readonly/` pinned to commit `c425f0c`
+1. Bare-clones `china-testing/bazi` to `<repos-dir>/china-testing-bazi/`
+2. Creates a detached worktree at `<repos-dir>/china-testing-bazi/worktrees/readonly/` pinned to commit `c425f0c`
+
+`<repos-dir>` is resolved by walking up from cwd to find a `workspace.json` marker (emploke writes one at the workspace root) — when found, repos live under `<workspace>/.repos/`. Otherwise it falls back to `./.repos/` (cwd-relative). Set `WORKSPACE_DIR` to override.
 
 This happens silently on first invocation. Subsequent runs reuse the cached clone.
 
@@ -140,5 +142,5 @@ python3 scripts/date-selection.py --event business --year 2026 --month-start 1 -
 - All scripts accept solar (Gregorian) dates — lunar conversion is automatic
 - All scripts support `--help` for usage information
 - Output is always JSON to stdout; errors go to stderr
-- The bazi reference repo is auto-provisioned to `~/.swat/repos/china-testing-bazi/worktrees/readonly/` on first run
+- The bazi reference repo is auto-provisioned to `<repos-dir>/china-testing-bazi/worktrees/readonly/` on first run (see Setup for how `<repos-dir>` is resolved)
 - Birth hour significantly affects the hour pillar; when omitted, the hour pillar is marked as "unknown" with `hour_known: false`

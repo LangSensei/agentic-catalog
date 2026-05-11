@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1 (2026-05-11)
+
+- Drop SWAT-era worktree paths. Setup, Write Access, and cleanup steps now use `$(repos_dir)` from the git-pr skill instead of hard-coded `~/.swat/repos/emploke-marketplace/`.
+
 ## 2.0.0 (2026-05-11)
 
 ### Breaking Changes

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 (2026-05-11)
+
+- Drop SWAT-era worktree paths. Setup, Write Access, and cleanup steps now use `$(repos_dir)` from the git-pr skill instead of hard-coded `~/.swat/repos/`. The git-pr skill resolves the repos dir to `<workspace>/.repos/` (when a `workspace.json` marker is found) or `./.repos/` (cwd-relative) otherwise.
+
 ## 1.0.0 (2026-05-11)
 
 ### Breaking Changes

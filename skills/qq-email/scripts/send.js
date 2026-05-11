@@ -7,7 +7,7 @@ const path = require("path");
 const os = require("os");
 
 function loadEnv() {
-  const envFile = path.join(os.homedir(), ".swat", ".env");
+  const envFile = path.join(os.homedir(), ".qq-email", ".env");
   if (!fs.existsSync(envFile)) return;
   const lines = fs.readFileSync(envFile, "utf8").split("\n");
   for (const line of lines) {

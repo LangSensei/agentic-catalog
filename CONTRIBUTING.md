@@ -82,7 +82,7 @@ Authoritative validator: [`packages/catalog/src/agent/agent-frontmatter.ts`](htt
 
 Rules:
 
-- `_meta.name` is the MCP spec FQN. Reverse-DNS namespaces are preferred (`io.playwright/mcp`); single-segment vendor names (`swat/cli`, `azure/mcp`) are also OK.
+- `_meta.name` is the MCP spec FQN. Reverse-DNS namespaces are preferred (`io.playwright/mcp`); single-segment vendor names (`acme/cli`, `azure/mcp`) are also OK.
 - The on-disk filename is `<namespace>_<short>.json` (replace `/` in the FQN with `_`).
 - `_meta.origin` MUST point at this same file's GitHub URL.
 - Other fields (`type`, `command`, `args`, `env`, …) follow the MCP client-config convention.
@@ -122,8 +122,8 @@ strings inside any custom object you put in the spec):
 
 | Placeholder        | Resolves to                                                                 | Use for                                                          |
 | ------------------ | --------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `${workspaceDir}`  | The absolute path of the active emploke workspace.                           | State scoped to a single project (per-workspace cookies, repo-local credentials). |
-| `${globalDir}`     | A stable per-machine directory (`<EMPLOKE_HOME>/shared` by default).        | State shared across every workspace + session + task on the machine (one playwright login the user wants every project to reuse, a global API token cache). |
+| `${workspaceDir}`  | The absolute path of the active emploke workspace.                           | State scoped to a single project (per-workspace cookies, repo-local credentials, browser login state that should reset between projects). |
+| `${globalDir}`     | A stable per-machine directory (`<EMPLOKE_HOME>/shared` by default).        | State that genuinely belongs to the user account, not any single project (a global API token cache, a shared CA bundle, model weights downloaded once per machine). |
 
 emploke substitutes both before writing `.mcp.json` to the session/task
 workdir. The substituted paths use forward slashes regardless of host
@@ -131,7 +131,7 @@ OS, so the same JSON value bytes ship to Windows and POSIX. A typo in
 a placeholder (`${workspceDir}`) is rejected at install time with a
 clear error — placeholders aren't silently passed through.
 
-Example — playwright with a per-machine login state file:
+Example — playwright with a per-workspace login state file (matches what `mcps/io.playwright_mcp.json` ships):
 
 ```json
 {
@@ -146,13 +146,12 @@ Example — playwright with a per-machine login state file:
     "@playwright/mcp@latest",
     "--headless",
     "--storage-state",
-    "${globalDir}/playwright/storage-state.json"
+    "${workspaceDir}/.playwright/storage-state.json"
   ]
 }
 ```
 
-Pick `${workspaceDir}` over `${globalDir}` when each project should get
-its own fresh state.
+Pick `${globalDir}` over `${workspaceDir}` only when the state genuinely belongs to the user account rather than the project — e.g. a model download cache or a global API token jar.
 
 Authoritative validator: [`packages/catalog/src/mcp/mcp-format.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/mcp/mcp-format.ts).
 

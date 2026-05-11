@@ -1,2 +1,7 @@
 node_modules/
 .DS_Store
+__pycache__/
+*.pyc
+# workspace-local dirs created by skills at runtime (bare clones, playwright state)
+.repos/
+.playwright/

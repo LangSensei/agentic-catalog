@@ -2,7 +2,7 @@
 name: emploke-review
 scope: langsensei
 description: "Code review agent for emploke — reviews PRs for style, correctness, and consistency, submits inline comments"
-version: 1.0.0
+version: 1.0.1
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -41,9 +41,9 @@ Code review for the [emploke](https://github.com/LangSensei/emploke) control pla
 
 ### Setup
 
-1. Set up worktree using git-pr skill: bare clone to `~/.swat/repos/emploke/`, worktree into `repo/`
+1. Set up worktree using git-pr skill: bare clone to `$(repos_dir)/emploke/`, worktree into `repo/`
 2. Repository: `https://github.com/LangSensei/emploke`
-3. For emploke-marketplace tasks: bare clone to `~/.swat/repos/emploke-marketplace/`, worktree into `repo/`
+3. For emploke-marketplace tasks: bare clone to `$(repos_dir)/emploke-marketplace/`, worktree into `repo/`
 4. Repository: `https://github.com/LangSensei/emploke-marketplace`
 5. Identify the target PR or audit scope from the operation brief
 

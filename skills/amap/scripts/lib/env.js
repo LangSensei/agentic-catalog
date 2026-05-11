@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // env.js — Shared environment loader for Amap Web Service scripts
-// Resolves AMAP_WEBSERVICE_KEY from env var or ~/.swat/.env file
+// Resolves AMAP_WEBSERVICE_KEY from env var or `~/.amap/.env`
 
 const fs = require('fs');
 const path = require('path');
 
 const os = require('os');
-const ENV_FILE = path.join(os.homedir(), '.swat', '.env');
+const ENV_FILE = path.join(os.homedir(), '.amap', '.env');
 const KEY_NAME = 'AMAP_WEBSERVICE_KEY';
 
 /**
@@ -35,7 +35,7 @@ function loadEnvFile(filePath) {
 
 /**
  * Resolve the Amap Web Service API key.
- * Priority: AMAP_WEBSERVICE_KEY env var > ~/.swat/.env file
+ * Priority: AMAP_WEBSERVICE_KEY env var > `~/.amap/.env`
  * Exits with error if not found.
  */
 function getApiKey() {
@@ -43,7 +43,7 @@ function getApiKey() {
   if (process.env[KEY_NAME]) {
     return process.env[KEY_NAME];
   }
-  // 2. Check ~/.swat/.env file
+  // 2. Check the per-skill .env file under the user's home
   const envVars = loadEnvFile(ENV_FILE);
   if (envVars[KEY_NAME]) {
     return envVars[KEY_NAME];

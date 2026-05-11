@@ -2,7 +2,7 @@
 name: amap
 scope: langsensei
 description: "Amap (Gaode Maps) Web Service API skill. Provides CLI scripts for POI search, route planning, geocoding, and weather queries. Zero dependencies — uses Node.js native fetch (Node 18+)."
-version: 1.0.1
+version: 1.1.0
 prereqs: |
   Requires: Node.js 18+, Amap Web Service Key. See `references/SETUP.md` for step-by-step setup instructions.
 ---
@@ -17,7 +17,7 @@ Wraps the Amap (Gaode Maps) Web Service REST API. All scripts output structured 
 
 Scripts resolve the key in order:
 1. `AMAP_WEBSERVICE_KEY` environment variable
-2. `~/.swat/.env` file (`AMAP_WEBSERVICE_KEY=xxx`)
+2. `~/.amap/.env` file (`AMAP_WEBSERVICE_KEY=xxx`)
 
 If neither is set, scripts exit with a clear error message.
 

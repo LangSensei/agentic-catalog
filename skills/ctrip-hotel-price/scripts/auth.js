@@ -7,11 +7,9 @@
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
+const { defaultStorageStatePath } = require('./lib/storage-state');
 
-const STORAGE_PATH = path.join(
-  process.env.HOME || process.env.USERPROFILE,
-  '.swat', 'playwright', 'ctrip-storage-state.json'
-);
+const STORAGE_PATH = defaultStorageStatePath();
 
 const BROWSER_OPTS = {
   userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -78,8 +76,16 @@ async function login(timeout) {
     fs.mkdirSync(dir, { recursive: true });
   }
 
+  // Load existing state if any so logging in does not wipe other sites'
+  // cookies (e.g. xiaohongshu). Playwright dedups cookies by (name, domain,
+  // path) on save, so freshly logged-in ctrip cookies replace stale ones
+  // automatically. To switch ctrip accounts, delete the state file first.
+  const contextOpts = { ...BROWSER_OPTS };
+  if (fs.existsSync(STORAGE_PATH)) {
+    contextOpts.storageState = STORAGE_PATH;
+  }
   const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext(BROWSER_OPTS);
+  const context = await browser.newContext(contextOpts);
   const page = await context.newPage();
 
   try {

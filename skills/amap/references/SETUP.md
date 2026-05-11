@@ -1,6 +1,6 @@
 # Amap Web Service Key Setup Guide
 
-This guide is for OpenClaw to help users complete prerequisites before squads can use this skill.
+This guide helps users complete prerequisites before agents can use this skill.
 Run checks in order — each step depends on the previous one.
 
 ## 1. Node.js 18+
@@ -21,30 +21,33 @@ An API key from the Amap developer console is required for all API calls.
 
 ### Check
 ```bash
-grep -q 'AMAP_WEBSERVICE_KEY=' ~/.swat/.env 2>/dev/null && echo "OK" || echo "MISSING"
+grep -q 'AMAP_WEBSERVICE_KEY=' "$HOME/.amap/.env" 2>/dev/null && echo "OK" || echo "MISSING"
 ```
 
 ### Steps
 1. Go to https://lbs.amap.com and sign in (or create an account)
 2. Navigate to Console (控制台) → My Apps (我的应用)
 3. Click "Create App" (创建新应用):
-   - App name: any name (e.g., "SWAT")
+   - App name: any name (e.g., "amap-skill")
    - Platform: choose any
 4. Under your app, click "Add Key" (添加Key):
    - Key name: any name (e.g., "webservice")
    - Service type: **Web Service** (Web服务) — this is critical, not "Web端" or "Android"
    - Submit and copy the generated key
-5. Add the key to the SWAT env file:
+5. Add the key to the amap config file:
    ```bash
-   mkdir -p ~/.swat
-   echo 'AMAP_WEBSERVICE_KEY=your_key_here' >> ~/.swat/.env
+   mkdir -p ~/.amap
+   echo 'AMAP_WEBSERVICE_KEY=your_key_here' >> ~/.amap/.env
    ```
 
 ### Verify
 ```bash
 node -e "
 const fs = require('fs');
-const env = fs.readFileSync(process.env.HOME + '/.swat/.env', 'utf8');
+const path = require('path');
+const os = require('os');
+const envFile = path.join(os.homedir(), '.amap', '.env');
+const env = fs.readFileSync(envFile, 'utf8');
 const match = env.match(/AMAP_WEBSERVICE_KEY=(\S+)/);
 if (!match) { console.log('MISSING'); process.exit(1); }
 const key = match[1];

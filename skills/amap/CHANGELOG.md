@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2026-05-11)
+
+- Drop SWAT-era cred path. Credentials now load from `~/.amap/.env` (per-app dot-dir under `$HOME`, matching the convention used by `aws`, `kubectl`, `docker`, `npm`). Existing users with `~/.swat/.env` need to copy the relevant key (`mkdir -p ~/.amap && grep AMAP_WEBSERVICE_KEY ~/.swat/.env >> ~/.amap/.env`).
+
 ## 1.0.1 (2026-04-12)
 
 - Fix Windows compatibility: `process.env.HOME` → `os.homedir()` in `scripts/lib/env.js`
