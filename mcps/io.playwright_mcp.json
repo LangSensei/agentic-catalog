@@ -4,9 +4,12 @@
     "origin": "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
   },
   "type": "stdio",
-  "command": "bash",
+  "command": "npx",
   "args": [
-    "-c",
-    "npx @playwright/mcp@latest --headless --storage-state $HOME/.swat/playwright/storage-state.json"
+    "-y",
+    "@playwright/mcp@latest",
+    "--headless",
+    "--storage-state",
+    "${globalDir}/playwright/storage-state.json"
   ]
 }
