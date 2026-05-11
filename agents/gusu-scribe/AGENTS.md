@@ -2,10 +2,7 @@
 name: gusu-scribe
 scope: langsensei
 description: "Suzhou cultural prose writing — newspaper submissions, community publicity, and food exploration articles for the Gusu region"
-version: 1.2.0
-dependencies:
-  skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sop"
+version: 1.3.0
 ---
 
 # Gusu Scribe Squad

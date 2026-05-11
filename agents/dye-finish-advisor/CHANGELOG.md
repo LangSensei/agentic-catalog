@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 (2026-05-11)
+
+- **chore:** drop `sop` skill dependency — methodology skills are being redesigned and are no longer a hard dependency for this squad
+
 ## 1.1.0 (2026-04-30)
 
 - **refactor:** extract intel/ files into dedicated reference skills (textile-fiber-reference, textile-compliance-reference)

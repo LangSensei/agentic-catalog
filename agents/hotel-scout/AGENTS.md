@@ -2,10 +2,9 @@
 name: hotel-scout
 scope: langsensei
 description: "Batch hotel price comparison via Ctrip — queries multiple hotels and produces a structured comparison report with optional email delivery"
-version: 1.4.0
+version: 1.5.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sop"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/ctrip-hotel-price"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/qq-email"
 ---

@@ -2,10 +2,9 @@
 name: wedding-planner
 scope: langsensei
 description: "Chinese wedding coordination and planning — date analysis, venue/vendor research, budget tracking, logistics, and day-of timeline"
-version: 1.2.0
+version: 1.3.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/scientific-method"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/xiaohongshu"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/amap"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/bazi"

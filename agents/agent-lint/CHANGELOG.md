@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.0.0 (2026-05-11)
+
+### Breaking Changes
+- Renamed agent from `squad-lint` to `agent-lint` (folder + frontmatter `name`). emploke uses "agent" as the unit name; "squad" was SWAT terminology.
+- Body rewritten — Phase 2 now validates `AGENTS.md` (not `MANIFEST.md`), explicitly rejects `prereqs:` on agents (per `CONTRIBUTING.md`), and the marketplace under inspection is `LangSensei/emploke-marketplace` instead of the deprecated `LangSensei/swat-marketplace`.
+- Removed the mandatory "Debrief Rules" section that hard-coded a dispatch to `squad-forge`. Without the deprecated SWAT MCP there is no in-process dispatch channel; lint failures are reported in the operation summary.
+
+### Added
+- Phase 3: dedicated MCP spec validation — `_meta.name` / `_meta.origin` correctness, on-disk filename derived from FQN, and the cross-platform rules from `CONTRIBUTING.md` (no `bash` / shell wrappers, no `$HOME` / `${VAR}`, correct spelling of `${workspaceDir}` / `${globalDir}` placeholders).
+- Phase 2 now requires the body sections `## Domain`, `## Boundary`, `## Write Access` (matching the `CONTRIBUTING.md` schema for agents).
+
+### Migration provenance
+Renamed and retargeted from `squad-lint` v1.3.0.
+
+## 1.3.0 (2026-05-11)
+
+### Removed
+- `sop` skill dependency — methodology skills are being redesigned and are no longer a hard dependency for this squad
+- `swat/cli` MCP dependency — `swat_cli` MCP is deprecated alongside SWAT
+- Phase 2 check: `dependencies.skills includes at least one methodology skill (sop or scientific-method)` — methodology dependency is no longer required
+
 ## 1.2.0 (2026-04-25)
 
 ### Added

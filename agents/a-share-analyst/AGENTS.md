@@ -2,10 +2,9 @@
 name: a-share-analyst
 scope: langsensei
 description: "A-share stock analysis — technical, fundamental, moat assessment, valuation, and portfolio synthesis"
-version: 1.6.0
+version: 1.7.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/scientific-method"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/eastmoney-data"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/fund-holdings"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sina-quote"

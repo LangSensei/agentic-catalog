@@ -2,10 +2,9 @@
 name: taoteching-deck
 scope: langsensei
 description: "Tao Te Ching (Daodejing) chapter HTML slide-deck generator — single-file, ink-style, 10-page narrative (cover / concept overview / original text / five-paragraph analysis / key line / chapter summary) with paired ancient-modern case studies"
-version: 1.0.0
+version: 1.1.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sop"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/taoteching-deck-template"
 ---
 
