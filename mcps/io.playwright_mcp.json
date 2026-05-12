@@ -1,7 +1,6 @@
 {
   "_meta": {
-    "name": "io.playwright/mcp",
-    "origin": "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
+    "name": "io.playwright/mcp"
   },
   "type": "stdio",
   "command": "npx",
