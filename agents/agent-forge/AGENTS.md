@@ -6,6 +6,7 @@ version: 3.0.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
+    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/meta-agent-schema"
 ---
 
 # Agent Forge Agent
@@ -50,25 +51,9 @@ If Remote was requested but the target is unreachable (no network, no push right
 
 ### Schema reference
 
-Catalogs are emploke-compatible, so the schema is fixed regardless of which catalog you target. Two reference surfaces:
+Catalogs are emploke-compatible, so the schema is fixed regardless of which catalog you target. **Load the `meta-agent-schema` skill in full before authoring anything** — it is the agent-facing single source of truth for layout, naming, frontmatter (skill / agent / mcp), MCP cross-platform rules, origin URI grammar, and CHANGELOG conventions.
 
-1. **The validators in `emploke`'s `packages/catalog/`.** These are authoritative — what they reject, the runtime rejects on install.
-   - Skills: [`packages/catalog/src/skill/skill-frontmatter.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/skill/skill-frontmatter.ts), [`validate.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/skill/validate.ts)
-   - Agents: [`packages/catalog/src/agent/agent-frontmatter.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/agent/agent-frontmatter.ts), [`validate.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/agent/validate.ts)
-   - MCPs: [`packages/catalog/src/mcp/mcp-format.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/mcp/mcp-format.ts), [`validate.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/mcp/validate.ts)
-   - Origins: [`packages/catalog-fetcher/src/origin.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog-fetcher/src/origin.ts)
-2. **Any published `CONTRIBUTING.md`** (e.g. [`LangSensei/emploke-marketplace/CONTRIBUTING.md`](https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md)) — the schema written as prose.
-
-Concrete examples: read 2-3 existing entries in any reachable catalog (`agents/`, `skills/`, `mcps/` directories of any emploke marketplace).
-
-Schema points to keep in mind regardless of target:
-
-- Layout: `agents/<name>/AGENTS.md`, `skills/<name>/SKILL.md`, `mcps/<namespace>_<short>.json`
-- Folder name MUST equal `frontmatter.name` (kebab-case `[a-z0-9-]+`)
-- `scope:` is set per-catalog (this catalog uses `langsensei`; another catalog might use a different scope — check existing entries)
-- `prereqs:` is **rejected on agents**; if an agent needs setup, put it in the body as a `## Setup` section
-- Dependency origin URIs are bare strings: `https://github.com/<owner>/<repo>/tree/<ref>/<path>`
-- MCP specs MUST be cross-platform: no `bash -c` wrappers, no `$HOME` / `${VAR}` — use `${workspaceDir}` / `${globalDir}` placeholders
+Concrete examples to study after loading the schema: read 2-3 existing entries in any reachable catalog (`agents/`, `skills/`, `mcps/` directories of any emploke marketplace).
 
 ### Setup
 
@@ -85,39 +70,26 @@ In what follows, **"catalog root"** means `<workDir>` in Local mode and `<workDi
 ### Creating an Agent
 
 1. Study 2-3 existing agents in the catalog root's `agents/` for reference (or any emploke marketplace if the catalog root is empty)
-2. Create `<catalog-root>/agents/<new-name>/AGENTS.md` with:
-   - Required frontmatter: `name`, `scope`, `description`, `version` (start at `1.0.0`), optional `dependencies.skills` / `dependencies.mcps`
-   - Body sections: `## Domain`, `## Boundary` (with `**In scope:**` / `**Out of scope:**`), `## Write Access`, `## Agent Playbook`
-3. Create `<catalog-root>/agents/<new-name>/CHANGELOG.md` with the initial release entry
+2. Create `<catalog-root>/agents/<new-name>/AGENTS.md` following the format defined in the `meta-agent-schema` skill
+3. Create `<catalog-root>/agents/<new-name>/CHANGELOG.md` with the initial release entry (format per `meta-agent-schema`)
 
 ### Creating a Skill
 
 1. Study 2-3 existing skills in the catalog root's `skills/` for structure reference (or any emploke marketplace if the catalog root is empty)
-2. Create `<catalog-root>/skills/<new-name>/SKILL.md` with:
-   - Required frontmatter (same fields as agents); `prereqs:` is allowed and may be a YAML literal-block string pointing at a sibling `references/SETUP.md`
-   - Body: practical how-to guide with copy-paste-ready commands
+2. Create `<catalog-root>/skills/<new-name>/SKILL.md` following the format defined in the `meta-agent-schema` skill (skills may declare `prereqs:`; agents may not)
 3. If the skill needs supporting files: scripts go in `scripts/`, templates in `templates/`, hook configs in `hooks/<runtime>/`, reference material in `references/`
 4. Create `<catalog-root>/skills/<new-name>/CHANGELOG.md`
 
 ### Creating an MCP
 
-1. File path: `<catalog-root>/mcps/<namespace>_<short>.json` (replace `/` in the FQN with `_`)
-2. Required `_meta` block:
-   ```json
-   "_meta": {
-     "name": "<namespace>/<short>",
-     "origin": "https://github.com/<catalog-owner>/<catalog-repo>/tree/main/mcps/<namespace>_<short>.json"
-   }
-   ```
-   The `origin` URL points at the catalog the file ships from. In Local mode (where the file is not yet committed to a repo), use a placeholder URL and document it in the report; the user will fix it before publishing.
-3. The remainder of the file follows the MCP client-config convention (`type`, `command`, `args`, `env`, …)
-4. Pretty-print with 2-space indent and a trailing newline
+Follow the format and naming rules in the `meta-agent-schema` skill:
 
-### Naming Conventions
+- File path: `<catalog-root>/mcps/<namespace>_<short>.json` (replace `/` in the FQN with `_`)
+- `_meta.name` is the FQN; `_meta.origin` is the file's GitHub URL
+- All cross-platform rules apply (no `bash -c`, no `$HOME`, use `${workspaceDir}` / `${globalDir}` for paths)
+- Pretty-print with 2-space indent and a trailing newline
 
-- Agent / skill names: kebab-case, lowercase `[a-z0-9-]+`, must match folder name exactly
-- Frontmatter `name:` field must equal the folder name
-- MCP filename: `<namespace>_<short>.json` matching the FQN in `_meta.name`
+In Local mode where the file is not yet committed to a repo, use a placeholder URL for `_meta.origin` and document it in the report; the user will fix it before publishing.
 
 ### Delivery
 
@@ -132,12 +104,12 @@ In what follows, **"catalog root"** means `<workDir>` in Local mode and `<workDi
 ### Constraints
 
 - **All content in English** — no Chinese in source files
+- **Follow `meta-agent-schema`** — that skill is the format contract; do not improvise frontmatter, naming, or layout from memory
 - **Reuse existing skills** — don't recreate what already exists; check the catalog (or any reachable emploke marketplace) first
 - **One PR per run** in Remote mode; in Local mode, one set of files per run
 - **Boundary format: In scope / Out of scope** — use `**In scope:**` and `**Out of scope:**` bullet groups
 - **Title: human-readable** — `# {Agent Name} Agent`, can differ from the kebab-case frontmatter `name:`
 - **One version bump per PR** — do not bump version in multiple commits within the same PR
-- **CHANGELOG format** — version headers must use `## X.Y.Z (YYYY-MM-DD)` format. Example: `## 1.2.0 (2026-04-17)`
-- **Version bump guidance** — patch (`X.Y.Z+1`) for bug fixes and minor edits; minor (`X.Y+1.0`) for new features or behavioral changes; major (`X+1.0.0`) for breaking changes (rename, dropping a public dependency, removing a tool)
+- **CHANGELOG format and version-bump guidance** are defined in the `meta-agent-schema` skill — follow it
 
 Report should include: which mode was used (Local / Remote, with reason if a fallback occurred), the catalog root path, the list of files created or modified, design decisions, justifications for key choices, and (Local mode) any placeholders the user needs to fix before publishing.

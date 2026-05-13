@@ -6,13 +6,22 @@
 - **Default mode is now Local, not Remote.** Previous versions hardcoded `LangSensei/emploke-marketplace` as the target and always cloned + PR'd. The new default writes files directly into the current run's workDir (`<workDir>/agents/<name>/AGENTS.md`, etc.) so any installation can use this agent against any catalog without coupling. Remote mode (clone + PR) only triggers when the brief explicitly names a target catalog repo.
 - Drop hardcoded `LangSensei/emploke-marketplace` from Domain, Boundary, Write Access, Setup, and Delivery. The agent is now catalog-target-agnostic.
 - New top-level **"Mode Selection"** subsection in the playbook with a Local-vs-Remote decision table; states the trigger and behavior for each.
-- Schema reference rewritten to point at emploke's authoritative validators (`packages/catalog/src/{skill,agent,mcp}/`) plus any published `CONTRIBUTING.md` as a prose surface; framed as "applies to any emploke catalog" rather than this marketplace specifically.
 - Setup split into Local (no setup) vs. Remote (load `git-pr` skill + clone + worktree) flows.
 - Creating an Agent / Skill / MCP sections now reference `<catalog-root>` (which resolves to `<workDir>` in Local and `<workDir>/repo` in Remote) instead of hardcoded paths.
 - Delivery split into Local (file list, no git) vs. Remote (push + PR + worktree cleanup).
-- MCP `_meta.origin` guidance now explicitly notes Local-mode files use a placeholder URL the user fixes before publishing.
 
-Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target).
+### Added
+- **Hard dependency on the `meta-agent-schema` skill** (1.0.0+). The schema for emploke-compatible agents, skills, and MCPs is now the single source of truth for frontmatter, naming, layout, MCP cross-platform rules, origin URI grammar, and CHANGELOG conventions. agent-forge loads it in full at the start of every run.
+- New "Schema reference" subsection now points operators at the schema skill instead of inlining 30 lines of frontmatter rules + brittle GitHub source-code links. Concrete example study (read 2-3 entries in any reachable catalog) preserved as an addendum.
+- New constraint: "Follow `meta-agent-schema` — that skill is the format contract; do not improvise frontmatter, naming, or layout from memory."
+
+### Removed
+- "Schema reference" prose block citing `packages/catalog/src/{skill,agent,mcp}/*.ts` and `packages/catalog-fetcher/src/origin.ts` directly. These were fragile (one of the cited paths was already stale) and required the agent to either fetch and parse TypeScript at runtime or invent the rules from memory. The schema is now in `meta-agent-schema`.
+- Inline frontmatter / MCP `_meta` examples in "Creating an Agent / Skill / MCP" — moved to the `meta-agent-schema` skill so the format is defined in one place.
+- Inline "Naming Conventions" subsection — same content lives in `meta-agent-schema`.
+- "CHANGELOG format" and "Version bump guidance" Constraints bullets — same content lives in `meta-agent-schema`.
+
+Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target; no fragile code-path links).
 
 ## 2.2.0 (2026-05-13)
 

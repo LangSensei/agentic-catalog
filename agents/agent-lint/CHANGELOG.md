@@ -14,11 +14,15 @@
 - Delivery: lint report saved to `<workDir>/lint-report.md` (was: produced inline). Remote-catalog mode also cleans up the read-only worktree.
 - New constraint: "No hardcoded catalog target — the catalog under inspection is supplied by the brief; never default to a specific marketplace."
 
+### Added
+- **Hard dependency on the `meta-agent-schema` skill** (1.0.0+). The schema skill is now the authoritative format spec that every Phase 1-9 check validates against. The Lint Checks intro instructs operators to load the schema skill in full at the start of the run.
+- Domain paragraph updated to call out the schema-skill dependency explicitly.
+
 ### Other
 - Write Access clarified: still none, but explicitly noted "no git operations of any kind" since lint never pushes.
 - `git-pr` kept as a `dependencies.skills` entry — required for Remote-catalog mode (resolution rule 2). Local-catalog and workDir modes do not invoke it.
 
-Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target).
+Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target; no fragile code-path links).
 
 ## 2.2.0 (2026-05-13)
 

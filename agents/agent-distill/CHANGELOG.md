@@ -11,7 +11,14 @@
 - Prune recommendations now ship as `<output-root>/prune-report.md` rather than being pushed back to a marketplace.
 - Delivery split into Local (file list, no git) vs. Remote (push + PR + worktree cleanup).
 
-Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target).
+### Added
+- **Hard dependency on the `meta-agent-schema` skill** (1.0.0+). When the Extract-Skill workflow writes a new `SKILL.md`, the format comes from `meta-agent-schema` instead of from prose embedded in this agent.
+- New constraint: "Follow `meta-agent-schema` — frontmatter, naming, and CHANGELOG conventions for any file you write must match the schema skill; do not improvise from memory."
+
+### Removed
+- Implicit reliance on `agent-forge`'s in-prose schema reference for the Extract-Skill workflow. The two agents now share the `meta-agent-schema` dependency directly.
+
+Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target; no fragile code-path links).
 
 ## 2.2.0 (2026-05-13)
 

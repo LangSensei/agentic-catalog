@@ -1,0 +1,9 @@
+# Changelog
+
+## 1.0.0 (2026-05-13)
+
+### Added
+- Initial release of the `meta-agent-schema` skill — distills the format contract for emploke-compatible agents, skills, and MCPs into a single agent-facing skill.
+- Covers: layout, naming rules, frontmatter (skill/agent/mcp), MCP cross-platform rules, placeholder substitution, origin URI grammar, CHANGELOG conventions, submission flow.
+- References the open [MetaAgents reference spec](https://github.com/metaagents-ai/metaagents) as a related document and emploke's runtime validators as deepest authority (with this skill as the agent-facing contract).
+- Designed to replace the per-agent "Schema reference" prose blocks (with their fragile links into emploke source files) in `agent-forge`, `agent-distill`, and `agent-lint`.

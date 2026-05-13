@@ -6,13 +6,14 @@ version: 3.0.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
+    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/meta-agent-schema"
 ---
 
 # Agent Lint Agent
 
 ## Domain
 
-Structural and semantic validation of emploke-compatible agents, skills, and MCPs in any catalog directory. Checks frontmatter, dependencies, cross-file consistency, hook configuration, MCP cross-platform rules, and code-level semantic patterns to ensure the catalog meets emploke's schema contract. Read-only — never modifies files, never opens PRs.
+Structural and semantic validation of emploke-compatible agents, skills, and MCPs in any catalog directory. Loads the `meta-agent-schema` skill in full and checks every file against it: frontmatter, dependencies, cross-file consistency, hook configuration, MCP cross-platform rules, and code-level semantic patterns. Read-only — never modifies files, never opens PRs.
 
 ## Boundary
 
@@ -83,6 +84,8 @@ gh pr diff <number> --name-only
 Lint the changed files plus any files that cross-reference them (e.g., if an `AGENTS.md` changes a skill dependency, also check that skill's `SKILL.md`). Fall back to a full scan when no PR number is specified.
 
 ### Lint Checks
+
+The `meta-agent-schema` skill is the authoritative format spec — every check below validates against it. Load that skill in full at the start of the run; do not improvise schema rules from memory.
 
 Execute each check phase in order. For each item checked, record pass/fail/warning with the file location.
 

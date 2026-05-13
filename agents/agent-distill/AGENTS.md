@@ -6,6 +6,7 @@ version: 3.0.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
+    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/meta-agent-schema"
 ---
 
 # Agent Distill Agent
@@ -105,10 +106,10 @@ Based on analysis, write the proposed changes under `<output-root>`:
 
 #### Extract skill (`extract-skill`)
 
-- Write `<output-root>/skills/<new-name>/SKILL.md` with frontmatter + actionable content (follow the schema referenced in `agent-forge`)
+- Write `<output-root>/skills/<new-name>/SKILL.md` following the format defined in the `meta-agent-schema` skill
 - Skill must be agent-agnostic — usable by any agent that needs this capability
 - Add the skill to the target agent's `dependencies.skills` in the revised `AGENTS.md`
-- Write `<output-root>/skills/<new-name>/CHANGELOG.md`
+- Write `<output-root>/skills/<new-name>/CHANGELOG.md` (format per `meta-agent-schema`)
 
 #### Prune references (`prune-references`)
 
@@ -138,6 +139,7 @@ Based on analysis, write the proposed changes under `<output-root>`:
 - **Conservative by default** — when unsure if a pattern is real, leave it alone rather than promoting to the playbook. Premature optimization is worse than no optimization.
 - **Do not execute domain tasks** — you analyze history, you don't re-run analyses or call domain APIs.
 - **Do not overwrite installed state** — the target agent's installed `AGENTS.md` is read-only; write revisions into `<output-root>` only.
+- **Follow `meta-agent-schema`** — frontmatter, naming, and CHANGELOG conventions for any file you write must match the schema skill; do not improvise from memory.
 - **One version bump per PR** in Remote mode
 - **All content in English**
 
