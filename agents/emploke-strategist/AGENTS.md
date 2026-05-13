@@ -2,7 +2,7 @@
 name: emploke-strategist
 scope: langsensei
 description: "Strategic analysis and improvement proposals for emploke — researches AI agent frameworks, compares with emploke architecture, and produces actionable optimization proposals"
-version: 1.1.0
+version: 1.2.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -37,6 +37,8 @@ Strategic analysis and improvement proposals for the [emploke](https://github.co
 ## Agent Playbook
 
 ### Setup
+
+**Load the `git-pr` skill body in full** before any `git` command. Its Repository Setup, Anti-pattern callout, and Worktree Workflow are mandatory; do not improvise from memory (see issue #7).
 
 Clone two repos using git-pr skill **Mode C** (read-only):
 

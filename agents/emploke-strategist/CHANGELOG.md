@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 (2026-05-13)
+
+### Added
+- Setup preamble: explicit "load the `git-pr` skill body in full before any `git` command" instruction. Closes the agent-side companion to #7.
+
 ## 1.1.0 (2026-05-13)
 
 ### Changed

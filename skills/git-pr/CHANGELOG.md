@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.5.0 (2026-05-13)
+
+### Changed
+- **Switch all bare-repo commands from `cd "$REPO_DIR" && git …` to `git --git-dir="$REPO_DIR" …`** — defends against `safe.bareRepository=explicit` (a default in newer git installs that rejects every `git` invocation whose cwd is inside a bare repo, including the very `git worktree add` you were trying to run). The old form silently failed; the new form works on every host. Updated in Repository Setup, Mode A/B/C bash blocks, and the Worktree Cleanup section.
+
+### Added
+- New top-level **"Anti-pattern: do NOT put the worktree inside the bare clone"** section between Repository Setup and Worktree Workflow. Spells out the two failure modes (relative `repo` argument while cwd is inside the bare; using `cd` at all under `safe.bareRepository=explicit`) with explicit ✅ / ❌ command pairs, and lists the three consequences (cache pollution, sibling-cwd `git` failures, files surviving `git worktree remove`).
+- Two new bullets in the Rules section: "Never `cd` into the bare clone" and "Worktree path is always `\"$WORK_DIR/repo\"` — absolute, written from the workDir; never a bare relative `repo`."
+- Inline comment in the Repository Setup bash block explaining why the snippets use `git --git-dir` instead of `cd`.
+
+Closes the skill side of #7.
+
 ## 1.4.0 (2026-05-13)
 
 ### Changed

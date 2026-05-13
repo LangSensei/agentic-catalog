@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 (2026-05-13)
+
+### Added
+- Setup step 1: explicit "load the `git-pr` skill body in full before any `git` command" instruction. Closes the agent-side companion to #7.
+
+### Changed
+- Cleanup command: `cd "$(repos_dir)/emploke" && git worktree remove "$(pwd)/repo" --force` → `git --git-dir="$(repos_dir)/emploke" worktree remove "$WORK_DIR/repo" --force` (use the matching repo path for marketplace work). The old form silently failed under `safe.bareRepository=explicit`.
+
 ## 1.1.0 (2026-05-13)
 
 ### Changed

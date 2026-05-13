@@ -2,7 +2,7 @@
 name: agent-distill
 scope: langsensei
 description: "Analyzes agent run history to optimize playbooks, distill reusable skills, and prune stale references — opens PRs to emploke-marketplace"
-version: 2.1.0
+version: 2.2.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -39,8 +39,9 @@ Cross-run analysis and optimization of existing agents and skills in [emploke-ma
 
 ### Setup
 
-1. Set up worktree using git-pr skill: bare clone to `$(repos_dir)/emploke-marketplace/`, worktree into `repo/`
-2. Repository: `https://github.com/LangSensei/emploke-marketplace`
+1. **Load the `git-pr` skill body in full** before any `git` command. Its Repository Setup, Anti-pattern callout, and Worktree Workflow are mandatory; do not improvise from memory (see issue #7).
+2. Set up worktree using git-pr skill: bare clone to `$(repos_dir)/emploke-marketplace/`, worktree into `repo/`
+3. Repository: `https://github.com/LangSensei/emploke-marketplace`
 
 ### Input Resolution
 
@@ -104,7 +105,7 @@ Based on analysis, make changes to marketplace files:
    - Evidence summary: which runs were analyzed
    - Changes made with justification
    - Reference entries pruned (if any)
-4. Clean up worktree (mandatory): `cd "$(repos_dir)/emploke-marketplace" && git worktree remove "$(pwd)/repo" --force`
+4. Clean up worktree (mandatory): `git --git-dir="$(repos_dir)/emploke-marketplace" worktree remove "$WORK_DIR/repo" --force`
 
 ### Constraints
 

@@ -2,7 +2,7 @@
 name: git-pr
 scope: langsensei
 description: "Git branch management and GitHub PR workflow using worktrees"
-version: 1.4.0
+version: 1.5.0
 ---
 
 # Git PR Skill
@@ -40,15 +40,32 @@ REPOS_ROOT="$(repos_dir)"
 REPO_DIR="$REPOS_ROOT/$REPO_NAME"
 
 # First time: clone. Subsequent: fetch.
+# All bare-repo commands use `git --git-dir="$REPO_DIR"` instead of `cd "$REPO_DIR"`
+# so they keep working under `safe.bareRepository=explicit` (a default in newer
+# git installs that rejects `git` invocations whose cwd is inside a bare clone).
 if [ -d "$REPO_DIR" ]; then
-  cd "$REPO_DIR" && git fetch --all --prune
+  git --git-dir="$REPO_DIR" fetch --all --prune
 else
   mkdir -p "$REPOS_ROOT"
   git clone --bare "$REPO_URL" "$REPO_DIR"
-  cd "$REPO_DIR"
-  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+  git --git-dir="$REPO_DIR" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+  git --git-dir="$REPO_DIR" fetch --all --prune
 fi
 ```
+
+## Anti-pattern: do NOT put the worktree inside the bare clone
+
+The worktree path argument MUST be `"$WORK_DIR/repo"` — an **absolute** path written from the workDir. Two failure modes to avoid:
+
+1. **Relative path while cwd is inside the bare clone.** Writing `git worktree add -b "$BRANCH" repo origin/main` after `cd "$REPO_DIR"` creates the worktree at `<bare>/repo/`, **inside** the bare clone:
+   - ✅ `git --git-dir="$REPO_DIR" worktree add -b "$BRANCH" "$WORK_DIR/repo" origin/main`
+   - ❌ `cd "$REPO_DIR" && git worktree add -b "$BRANCH" repo origin/main`
+
+2. **`cd` into the bare clone at all.** Newer git installs ship with `safe.bareRepository=explicit`, which rejects every subsequent `git` command whose cwd is inside a bare repo (including the very `git worktree add` you were trying to run). Using `git --git-dir="$REPO_DIR" …` from the workDir avoids this entirely:
+   - ✅ `git --git-dir="$REPO_DIR" worktree add … "$WORK_DIR/repo" …`
+   - ❌ `cd "$REPO_DIR"; git worktree add … "$WORK_DIR/repo" …`
+
+The wrong forms have three consequences: they pollute the shared `.repos/` cache, they trip `safe.bareRepository=explicit` from any sibling directory, and the leaked files survive `git worktree remove` because they live inside the bare clone.
 
 ## Worktree Workflow
 
@@ -63,9 +80,7 @@ Use when starting a fresh PR from the default branch. Branch naming follows conv
 BRANCH="<type>/<slug>"
 WORK_DIR="$(pwd)"  # workDir
 
-cd "$REPO_DIR"
-git worktree add -b "$BRANCH" "$WORK_DIR/repo" origin/main
-
+git --git-dir="$REPO_DIR" worktree add -b "$BRANCH" "$WORK_DIR/repo" origin/main
 cd "$WORK_DIR/repo"
 # ... make changes ...
 ```
@@ -78,9 +93,8 @@ Use when the brief specifies an existing branch (e.g. fixing review comments on 
 EXISTING_BRANCH="<branch-from-brief>"  # e.g. feat/mcp-only-flag
 WORK_DIR="$(pwd)"
 
-cd "$REPO_DIR"
-git fetch origin
-git worktree add "$WORK_DIR/repo" "origin/$EXISTING_BRANCH"
+git --git-dir="$REPO_DIR" fetch origin
+git --git-dir="$REPO_DIR" worktree add "$WORK_DIR/repo" "origin/$EXISTING_BRANCH"
 cd "$WORK_DIR/repo"
 git checkout -B "$EXISTING_BRANCH" "origin/$EXISTING_BRANCH"
 
@@ -96,16 +110,13 @@ Use when only reading repo code — no changes, no commits, no PR.
 ```bash
 WORK_DIR="$(pwd)"
 
-cd "$REPO_DIR"
-git worktree add "$WORK_DIR/repo" origin/main --detach
-
+git --git-dir="$REPO_DIR" worktree add "$WORK_DIR/repo" origin/main --detach
 cd "$WORK_DIR/repo"
 # ... read files, grep, explore ...
 # Do NOT commit or push.
 
 # Cleanup at seal:
-cd "$REPO_DIR"
-git worktree remove "$WORK_DIR/repo" --force
+git --git-dir="$REPO_DIR" worktree remove "$WORK_DIR/repo" --force
 ```
 
 **How to decide:** If the run only needs to read source code for analysis (no writes, no PR), use Mode C.
@@ -115,8 +126,7 @@ git worktree remove "$WORK_DIR/repo" --force
 **Mandatory at seal time.** After push (Mode A/B) or after reading (Mode C), clean up. Agents using this skill must clean up in their playbook's seal/delivery phase.
 
 ```bash
-cd "$REPO_DIR"
-git worktree remove "$WORK_DIR/repo" --force
+git --git-dir="$REPO_DIR" worktree remove "$WORK_DIR/repo" --force
 ```
 
 ## Commit & Push
@@ -169,4 +179,6 @@ Steps to verify.
 - **PR title follows conventional commits**
 - **Branch name is a descriptive `<type>/<slug>`** — no fixed prefix; the slug describes the change (`chore/remove-deprecated-paths`, not `op/<opaque-id>`)
 - **Bare clone goes to the resolved repos dir** (`$(repos_dir)`), never into the workDir directly
+- **Never `cd` into the bare clone.** All bare-repo commands use `git --git-dir="$REPO_DIR" …`. See "Anti-pattern: do NOT put the worktree inside the bare clone" above.
+- **Worktree path is always `"$WORK_DIR/repo"`** — absolute, written from the workDir; never a bare relative `repo`.
 - **Always clean up worktree at seal** — do not leave orphaned worktrees
