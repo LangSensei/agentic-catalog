@@ -1,5 +1,25 @@
 # Changelog
 
+## 3.0.0 (2026-05-13)
+
+### Changed (BREAKING)
+- **Default mode is now Local, not Remote.** Previous versions hardcoded `LangSensei/emploke-marketplace` as the catalog to push optimization PRs to. The new default writes the optimization output (revised `AGENTS.md`, new skill drafts, prune recommendations) directly into the current run's workDir so any installation can analyze any agent and integrate the changes into their own catalog by hand. Remote mode (clone + PR) only triggers when the brief explicitly names a target catalog repo.
+- Drop hardcoded `LangSensei/emploke-marketplace` from Domain, Boundary, Write Access, Setup, and Delivery. The agent is now catalog-target-agnostic.
+- New top-level **"Mode Selection"** subsection in the playbook with a Local-vs-Remote decision table.
+- Setup split into Local (no setup) vs. Remote (load `git-pr` skill + clone + worktree) flows.
+- Optimization Phase rewritten to write under `<output-root>` (resolves to `<workDir>` in Local and `<workDir>/repo` in Remote) instead of directly editing marketplace files; explicit constraint that the target agent's installed `AGENTS.md` is read-only.
+- Prune recommendations now ship as `<output-root>/prune-report.md` rather than being pushed back to a marketplace.
+- Delivery split into Local (file list, no git) vs. Remote (push + PR + worktree cleanup).
+
+### Added
+- **Hard dependency on the `meta-agent-schema` skill** (1.0.0+). When the Extract-Skill workflow writes a new `SKILL.md`, the format comes from `meta-agent-schema` instead of from prose embedded in this agent.
+- New constraint: "Follow `meta-agent-schema` — frontmatter, naming, and CHANGELOG conventions for any file you write must match the schema skill; do not improvise from memory."
+
+### Removed
+- Implicit reliance on `agent-forge`'s in-prose schema reference for the Extract-Skill workflow. The two agents now share the `meta-agent-schema` dependency directly.
+
+Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target; no fragile code-path links).
+
 ## 2.2.0 (2026-05-13)
 
 ### Added
