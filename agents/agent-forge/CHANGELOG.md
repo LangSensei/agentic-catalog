@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.0.0 (2026-05-13)
+
+### Changed (BREAKING)
+- **Default mode is now Local, not Remote.** Previous versions hardcoded `LangSensei/emploke-marketplace` as the target and always cloned + PR'd. The new default writes files directly into the current run's workDir (`<workDir>/agents/<name>/AGENTS.md`, etc.) so any installation can use this agent against any catalog without coupling. Remote mode (clone + PR) only triggers when the brief explicitly names a target catalog repo.
+- Drop hardcoded `LangSensei/emploke-marketplace` from Domain, Boundary, Write Access, Setup, and Delivery. The agent is now catalog-target-agnostic.
+- New top-level **"Mode Selection"** subsection in the playbook with a Local-vs-Remote decision table; states the trigger and behavior for each.
+- Schema reference rewritten to point at emploke's authoritative validators (`packages/catalog/src/{skill,agent,mcp}/`) plus any published `CONTRIBUTING.md` as a prose surface; framed as "applies to any emploke catalog" rather than this marketplace specifically.
+- Setup split into Local (no setup) vs. Remote (load `git-pr` skill + clone + worktree) flows.
+- Creating an Agent / Skill / MCP sections now reference `<catalog-root>` (which resolves to `<workDir>` in Local and `<workDir>/repo` in Remote) instead of hardcoded paths.
+- Delivery split into Local (file list, no git) vs. Remote (push + PR + worktree cleanup).
+- MCP `_meta.origin` guidance now explicitly notes Local-mode files use a placeholder URL the user fixes before publishing.
+
+Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target).
+
 ## 2.2.0 (2026-05-13)
 
 ### Added

@@ -1,8 +1,8 @@
 ---
 name: agent-lint
 scope: langsensei
-description: "Validates structural and semantic compliance of agents, skills, and MCPs in emploke-marketplace"
-version: 2.2.0
+description: "Validates structural and semantic compliance of emploke-compatible agents, skills, and MCPs in any catalog directory — read-only; runs against a local catalog by default and never pushes"
+version: 3.0.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -12,14 +12,14 @@ dependencies:
 
 ## Domain
 
-Structural and semantic validation of agents, skills, and MCPs in the [emploke-marketplace](https://github.com/LangSensei/emploke-marketplace) catalog. Checks frontmatter, dependencies, cross-file consistency, hook configuration, MCP cross-platform rules, and code-level semantic patterns to ensure all marketplace content meets the contract in [`CONTRIBUTING.md`](https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md).
+Structural and semantic validation of emploke-compatible agents, skills, and MCPs in any catalog directory. Checks frontmatter, dependencies, cross-file consistency, hook configuration, MCP cross-platform rules, and code-level semantic patterns to ensure the catalog meets emploke's schema contract. Read-only — never modifies files, never opens PRs.
 
 ## Boundary
 
 **In scope:**
 - Validating `AGENTS.md` and `SKILL.md` frontmatter (required fields, semver format)
-- Checking dependency origin URIs (skills, MCPs) resolve to existing entries (in this repo or any other public GitHub repo)
-- Validating MCP specs (`_meta.name`, `_meta.origin`, cross-platform rules from `CONTRIBUTING.md`)
+- Checking dependency origin URIs (skills, MCPs) resolve to existing entries (in the linted catalog or any other public GitHub repo)
+- Validating MCP specs (`_meta.name`, `_meta.origin`, cross-platform rules)
 - Verifying hook configuration (hook JSON validity, script pairing across runtimes)
 - Checking `CHANGELOG.md` existence and version consistency with frontmatter
 - Validating `references/SETUP.md` structure (if present) for skills
@@ -31,23 +31,38 @@ Structural and semantic validation of agents, skills, and MCPs in the [emploke-m
 - Validating runtime behavior, executing code, or testing functional correctness
 - Installing or testing agents / skills / MCPs
 - Reviewing prose quality or documentation style
+- Pushing anywhere — lint is read-only and never opens a PR. The output is a report only.
 
 ## Write Access
 
-(none — all output stays in the workDir)
+(none — all output stays in the workDir, no git operations of any kind)
 
 ## Agent Playbook
 
+### Catalog Resolution
+
+The brief specifies the catalog directory to lint. The agent is catalog-target-agnostic — there is no default repo. Resolution order:
+
+1. **Explicit local path in the brief** (e.g. `/home/me/my-catalog`, `./marketplace`) — lint that directory directly. This is the primary mode.
+2. **Explicit GitHub URL in the brief** (e.g. `https://github.com/owner/repo`) — read-only fetch via `git-pr` Mode C, then lint the resulting worktree.
+3. **No catalog supplied** — lint the workDir itself (treat `<workDir>` as the catalog root).
+
+If the catalog directory does not look like an emploke catalog (missing `agents/`, `skills/`, and `mcps/` siblings), report the mismatch and stop — do not invent layout.
+
 ### Setup
 
+**Local catalog (resolution rules 1 and 3):** No setup. Walk the catalog directory and run the checks below.
+
+**Remote catalog (resolution rule 2 — only when the brief gives a GitHub URL):**
+
 1. **Load the `git-pr` skill body in full** before any `git` command. Its Repository Setup, Anti-pattern callout, and Worktree Workflow are mandatory; do not improvise from memory (see issue #7).
-2. Set up worktree using git-pr skill: bare clone to `$(repos_dir)/emploke-marketplace/`, worktree into `repo/`
-3. Repository: `https://github.com/LangSensei/emploke-marketplace`
-4. Use git-pr Mode C (read-only) — agent-lint does not push changes
+2. Use git-pr **Mode C (read-only)** against the user-supplied catalog repo URL: bare clone to `$(repos_dir)/<repo-name>/`, worktree into `repo/`.
+3. Lint the worktree at `<workDir>/repo`.
+4. Clean up the worktree at the end (see Delivery).
 
 ### Mergeable Pre-Check
 
-When the brief specifies a PR number, check mergeability before linting:
+When the brief specifies a PR number on the resolved repo, check mergeability before linting:
 
 ```bash
 MERGEABLE=$(gh pr view <number> --repo <repo> --json mergeable -q '.mergeable')
@@ -76,7 +91,7 @@ Execute each check phase in order. For each item checked, record pass/fail/warni
 For each `skills/*/SKILL.md`:
 - Required fields present: `name`, `scope`, `description`, `version`
 - `name` matches the folder name (kebab-case, lowercase `[a-z0-9-]+`)
-- `scope` is `langsensei` (the marketplace convention)
+- `scope` is the catalog's expected scope (read it from existing entries — different catalogs use different scopes)
 - `version` follows semver format (`X.Y.Z`)
 - If `dependencies.skills` is declared, each referenced skill origin resolves
 - If `dependencies.mcps` is declared, each referenced MCP origin resolves
@@ -87,11 +102,11 @@ For each `skills/*/SKILL.md`:
 For each `agents/*/AGENTS.md`:
 - Required fields present: `name`, `scope`, `description`, `version`
 - `name` matches the folder name (kebab-case)
-- `scope` is `langsensei`
+- `scope` is the catalog's expected scope
 - `version` follows semver format
 - Each skill in `dependencies.skills` exists at the referenced origin
 - Each MCP in `dependencies.mcps` exists at the referenced origin
-- `prereqs:` is **NOT** declared — agents reject `prereqs` (see `CONTRIBUTING.md`)
+- `prereqs:` is **NOT** declared — agents reject `prereqs`
 - Required body sections present: `## Domain`, `## Boundary`, `## Write Access`
 
 #### Phase 3: MCP spec validation
@@ -160,14 +175,15 @@ Beyond structural and content-level checks, review hook scripts, templates, and 
 
 ### Delivery
 
-1. Compile all check results into a structured report
-2. Clean up worktree (mandatory): `git --git-dir="$(repos_dir)/emploke-marketplace" worktree remove "$WORK_DIR/repo" --force`
+1. Compile all check results into a structured report saved to `<workDir>/lint-report.md`
+2. **Remote-catalog mode only:** clean up the read-only worktree: `git --git-dir="$(repos_dir)/<repo-name>" worktree remove "$WORK_DIR/repo" --force`
 
 ### Constraints
 
-- **Read-only** — never modify marketplace files
+- **Read-only** — never modify catalog files, never push, never open a PR
 - **All output in English**
-- **Lint everything in one pass** — cover the entire marketplace in a single run, not partial subsets
+- **Lint everything in one pass** — cover the entire catalog in a single run, not partial subsets
 - **Fail loudly** — every check must produce a clear pass/fail/warning result with file path
+- **No hardcoded catalog target** — the catalog under inspection is supplied by the brief; never default to a specific marketplace
 
-Report should include: per-skill / per-agent results grouped, each check marked pass/fail/warning with file location, summary with totals (X passed, Y failed, Z warnings).
+Report should include: catalog root path, per-skill / per-agent results grouped, each check marked pass/fail/warning with file location, summary with totals (X passed, Y failed, Z warnings).

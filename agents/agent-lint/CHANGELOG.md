@@ -1,5 +1,25 @@
 # Changelog
 
+## 3.0.0 (2026-05-13)
+
+### Changed (BREAKING)
+- **No hardcoded catalog target.** Previous versions cloned `LangSensei/emploke-marketplace` and lint it. The new behavior is catalog-target-agnostic — the brief specifies which catalog to lint, with three resolution modes:
+  1. Local path (primary) — lint the directory directly, no git
+  2. GitHub URL — read-only fetch via `git-pr` Mode C, then lint the worktree
+  3. No catalog supplied — lint the workDir itself
+- Drop hardcoded `LangSensei/emploke-marketplace` from Domain, Boundary, Setup, and Delivery. Domain prose now reads "validation of … in any catalog directory".
+- Add new top-level **"Catalog Resolution"** subsection in the playbook describing the three modes and the mismatch-detection rule.
+- Setup split into Local-catalog (no setup, no git) vs. Remote-catalog (load `git-pr` skill + Mode C worktree) flows.
+- Phase 1/2 frontmatter scope check rewritten to read the catalog's expected `scope` from existing entries rather than hardcoding `langsensei` (different catalogs use different scopes).
+- Delivery: lint report saved to `<workDir>/lint-report.md` (was: produced inline). Remote-catalog mode also cleans up the read-only worktree.
+- New constraint: "No hardcoded catalog target — the catalog under inspection is supplied by the brief; never default to a specific marketplace."
+
+### Other
+- Write Access clarified: still none, but explicitly noted "no git operations of any kind" since lint never pushes.
+- `git-pr` kept as a `dependencies.skills` entry — required for Remote-catalog mode (resolution rule 2). Local-catalog and workDir modes do not invoke it.
+
+Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target).
+
 ## 2.2.0 (2026-05-13)
 
 ### Added

@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.0.0 (2026-05-13)
+
+### Changed (BREAKING)
+- **Default mode is now Local, not Remote.** Previous versions hardcoded `LangSensei/emploke-marketplace` as the catalog to push optimization PRs to. The new default writes the optimization output (revised `AGENTS.md`, new skill drafts, prune recommendations) directly into the current run's workDir so any installation can analyze any agent and integrate the changes into their own catalog by hand. Remote mode (clone + PR) only triggers when the brief explicitly names a target catalog repo.
+- Drop hardcoded `LangSensei/emploke-marketplace` from Domain, Boundary, Write Access, Setup, and Delivery. The agent is now catalog-target-agnostic.
+- New top-level **"Mode Selection"** subsection in the playbook with a Local-vs-Remote decision table.
+- Setup split into Local (no setup) vs. Remote (load `git-pr` skill + clone + worktree) flows.
+- Optimization Phase rewritten to write under `<output-root>` (resolves to `<workDir>` in Local and `<workDir>/repo` in Remote) instead of directly editing marketplace files; explicit constraint that the target agent's installed `AGENTS.md` is read-only.
+- Prune recommendations now ship as `<output-root>/prune-report.md` rather than being pushed back to a marketplace.
+- Delivery split into Local (file list, no git) vs. Remote (push + PR + worktree cleanup).
+
+Closes the agent-side companion to issue #7's design discussion (no hardcoded marketplace target).
+
 ## 2.2.0 (2026-05-13)
 
 ### Added
