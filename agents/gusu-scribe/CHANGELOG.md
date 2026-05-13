@@ -1,6 +1,12 @@
 # Changelog
 
-All notable changes to the `gusu-scribe` squad.
+All notable changes to the `gusu-scribe` agent.
+
+## 1.4.0 (2026-05-13)
+
+### Changed
+- Drop "Squad" terminology from prose: `# Gusu Scribe Squad` → `# Gusu Scribe Agent`, `## Squad Playbook` → `## Agent Playbook`.
+- Rephrase "in the brief or INTEL" → "in the brief or as referenced files" (drops SWAT-era INTEL vocabulary). Closes #5.
 
 ## 1.3.0 (2026-05-11)
 

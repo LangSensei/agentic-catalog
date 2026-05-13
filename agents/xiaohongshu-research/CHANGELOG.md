@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0 (2026-05-13)
+
+### Changed
+- Drop "Squad" terminology from prose: `# Xiaohongshu Research Squad` → `# Xiaohongshu Research Agent`, `## Squad Playbook` → `## Agent Playbook`. Closes #5.
+
 ## 1.3.0 (2026-05-11)
 
 ### Removed

@@ -2,13 +2,13 @@
 name: xiaohongshu-research
 scope: langsensei
 description: "Xiaohongshu research and knowledge extraction — search posts, rank relevant results, synthesize structured notes"
-version: 1.3.0
+version: 1.4.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/xiaohongshu"
 ---
 
-# Xiaohongshu Research Squad
+# Xiaohongshu Research Agent
 
 ## Domain
 
@@ -35,7 +35,7 @@ Xiaohongshu topic research, post analysis, and structured knowledge extraction f
 
 (none — report and working files stay within the operation directory)
 
-## Squad Playbook
+## Agent Playbook
 
 ### General Rules
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0 (2026-05-13)
+
+### Changed
+- Drop "Squad" terminology from prose: `# Wedding Planner Squad` → `# Wedding Planner Agent`, `## Squad Playbook` → `## Agent Playbook`.
+- Rephrase "the captain should consider mentioning" → "the agent should consider mentioning" (drops SWAT-era captain role vocabulary). Closes #5.
+
 ## 1.3.0 (2026-05-11)
 
 ### Removed

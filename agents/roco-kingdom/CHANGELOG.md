@@ -1,5 +1,11 @@
 # Changelog — roco-kingdom
 
+## 1.3.0 (2026-05-13)
+
+### Changed
+- Drop "Squad" terminology from prose: `# Roco Kingdom Squad` → `# Roco Kingdom Agent`, `## Squad Playbook` → `## Agent Playbook`, "Do NOT attempt login from within this squad" → "Do NOT attempt login from within this agent".
+- Rephrase the auth-check failure path from "debrief the user to re-authenticate" to plain "ask the user to re-authenticate". Closes #5.
+
 ## 1.2.0 (2026-05-11)
 
 ### Removed

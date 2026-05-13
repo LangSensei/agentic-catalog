@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 (2026-05-13)
+
+### Changed
+- Drop "Squad" terminology from prose: `# Dye Finish Advisor Squad` → `# Dye Finish Advisor Agent`, `## Squad Playbook` → `## Agent Playbook`, "The squad translates" → "The agent translates".
+- Rename "Intel file routing" section heading to "Reference file routing"; rephrase "All squad, skill, and INTEL source files" → "All agent, skill, and reference source files". Closes #5.
+
 ## 1.2.0 (2026-05-11)
 
 - **chore:** drop `sop` skill dependency — methodology skills are being redesigned and are no longer a hard dependency for this squad

@@ -2,7 +2,7 @@
 name: sop
 scope: langsensei
 description: "Standard Operating Procedure — phase-based execution with sequential step checklists and structured working files. (Mandatory execution methodology, follow SKILL.md to setup before any other tool calls)"
-version: 1.1.0
+version: 2.0.0
 ---
 
 # SOP Skill
@@ -88,23 +88,8 @@ If you can answer these from your files, your context is solid:
 
 ## Critical Rules
 
-### When a Hook Denies Your Action
-Hooks are lightweight sentries that enforce working-file discipline. When a hook denies your action:
-
-1. **Read the deny message carefully** — it tells you exactly what is wrong
-2. **Fix the issue in your working files** — update the files the message identifies
-3. **Refer to `<SKILL_DIR>/templates/`** for correct file structure if unsure what goes where
-4. **Retry your original action** — it will succeed once the issue is resolved
-
-Do NOT attempt to bypass hooks, reset file timestamps, or modify hook-managed files to work around a denial.
-
-### Hook-Managed Files
-The following files are managed by hooks and must never be manually created, modified, or deleted:
-
-- `.context_refresh_ts` — timestamp file used by the context-refresh hook to track refresh intervals
-
 ### Preserve Template Structure
-The `plan.md` template structure is enforced by hooks. Do not rename, remove, or merge these required elements:
+The `plan.md` template ships a structure that the framework relies on. Do not rename, remove, or merge these required elements:
 
 - **Phase sections:** `### Phase N:` with `**Status:**`, `**Prerequisites:**`, and at least one checklist item (`- [ ]` or `- [x]`)
 - **Status fields:** Every phase that has a `**Status:**` field must keep it. Valid values: `not_started`, `in_progress`, `complete`
@@ -112,10 +97,9 @@ The `plan.md` template structure is enforced by hooks. Do not rename, remove, or
 - **Current State format:** `**Phase:**` and `**Step:**` must be non-empty
 
 ### Keep Files Fresh
-Working files must be updated at least every 2 minutes, regardless of the 2-Action Rule. Stale files trigger a staleness denial.
+Working files are your external memory; let them go stale and you lose the thread. Update them continuously, not just at phase boundaries.
 
 - **Before long operations** (builds, tests, large searches): update `progress.md` with what you are about to do
 - **After completing work**: update `findings.md` with what you discovered
-
-The staleness hook checks modification timestamps on `plan.md`, `progress.md`, and `findings.md`. Writing real content resets the clock. Do NOT touch or reset file timestamps — write actual progress.
+- **Every 2 search/browse/view operations** (the 2-Action Rule): flush observations into `findings.md` before they fall out of context
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 (2026-05-13)
+
+### Changed
+- Drop "Squad" terminology from prose: "the `taoteching-deck` squad" → "the `taoteching-deck` agent", "fork the squad rather than extend this skill" → "fork the agent rather than extend this skill". Closes #5.
+
 ## 1.0.0 (2026-05-02)
 
 - Initial release

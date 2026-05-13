@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 (2026-05-13)
+
+- Drop "Captain agents" SWAT-era phrasing in SKILL.md intro — scripts now output structured JSON for parsing by agents (no role qualifier). Closes #5.
+
 ## 1.1.0 (2026-05-11)
 
 - Drop SWAT-era cred path. Credentials now load from `~/.amap/.env` (per-app dot-dir under `$HOME`, matching the convention used by `aws`, `kubectl`, `docker`, `npm`). Existing users with `~/.swat/.env` need to copy the relevant key (`mkdir -p ~/.amap && grep AMAP_WEBSERVICE_KEY ~/.swat/.env >> ~/.amap/.env`).

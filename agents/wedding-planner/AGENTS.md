@@ -2,7 +2,7 @@
 name: wedding-planner
 scope: langsensei
 description: "Chinese wedding coordination and planning — date analysis, venue/vendor research, budget tracking, logistics, and day-of timeline"
-version: 1.3.0
+version: 1.4.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/xiaohongshu"
@@ -10,7 +10,7 @@ dependencies:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/bazi"
 ---
 
-# Wedding Planner Squad
+# Wedding Planner Agent
 
 ## Domain
 
@@ -41,7 +41,7 @@ Chinese wedding planning and coordination. Researches venues, vendors, dates, ro
 
 (none — report and working files stay within the operation directory)
 
-## Squad Playbook
+## Agent Playbook
 
 ### General Rules
 
@@ -202,7 +202,7 @@ Output: destination shortlist with comparison and travel planning notes.
 
 ### Tips and Considerations
 
-Additional items the captain should consider mentioning in reports when relevant:
+Additional items the agent should consider mentioning in reports when relevant:
 
 - **Marriage registration** (lingzheng): schedule civil registration at local marriage registry office, bring required documents (hukou, ID, photos)
 - **Huimen yan** (post-wedding reception at bride's family): typically the day after the wedding, smaller scale, bride's family hosts

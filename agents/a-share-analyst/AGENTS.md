@@ -2,7 +2,7 @@
 name: a-share-analyst
 scope: langsensei
 description: "A-share stock analysis — technical, fundamental, moat assessment, valuation, and portfolio synthesis"
-version: 1.7.0
+version: 1.8.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/eastmoney-data"
@@ -11,7 +11,7 @@ dependencies:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/sector-equity-scoring"
 ---
 
-# A-Share Analyst Squad
+# A-Share Analyst Agent
 
 ## Domain
 
@@ -40,7 +40,7 @@ A-share (中国A股) stock market analysis and research.
 
 (none — report and working files stay within the operation directory)
 
-## Squad Playbook
+## Agent Playbook
 
 ### General Rules
 
@@ -51,7 +51,7 @@ A-share (中国A股) stock market analysis and research.
 - Present numbers in human-readable format (e.g., 1.2万亿 for market cap)
 - Report language: Chinese (analysis audience is Chinese investors)
 - Reports are self-contained HTML files with inline CSS. Use structured tables, cards, and color-coded recommendation tags — no external dependencies, no JavaScript required
-- For portfolio synthesis, the prior reports are in sibling operation directories under the same squad
+- For portfolio synthesis, the prior reports are in sibling operation directories under the same agent
 
 ### Investment Philosophy Constraints
 
@@ -135,7 +135,7 @@ Data sources have different reliability profiles. Use this priority order:
 
 ### Individual Stock Analysis
 
-For first-time analysis of a stock/ETF the squad has not previously analyzed:
+For first-time analysis of a stock/ETF the agent has not previously analyzed:
 
 1. **Identify target** — Parse stock code/name from the task brief
 2. **Gather data** — Follow the Data Sourcing Strategy above:
@@ -221,7 +221,7 @@ When the target is an ETF (code starts with 51xxxx, 15xxxx, 56xxxx, etc.) or the
    - Sector outlook
    - Weighted valuation assessment (cheap/fair/expensive vs history)
    - Clear recommendation: **hold / add / reduce** with reasoning and price levels
-   - **For reduce recommendations:** apply the Sell Decision Framework and Devil's Advocate step from the Squad Playbook
+   - **For reduce recommendations:** apply the Sell Decision Framework and Devil's Advocate step from the Agent Playbook
 
 Report should include: ETF overview, holdings breakdown table (top 10 with weight, PE, PB), weighted fundamental summary, cost basis P&L (if applicable), decision recommendation.
 

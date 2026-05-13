@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.0 (2026-05-13)
+
+### Changed
+- Drop "Squad" terminology from prose: `# A-Share Analyst Squad` → `# A-Share Analyst Agent`, `## Squad Playbook` → `## Agent Playbook`, body references to "the squad" / "Squad Playbook" → "the agent" / "Agent Playbook". Closes #5.
+
 ## 1.7.0 (2026-05-11)
 
 ### Removed

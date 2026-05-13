@@ -2,7 +2,7 @@
 name: roco-kingdom
 scope: langsensei
 description: "Roco Kingdom (洛克王国) game research and strategy — game mechanics learning, Xiaohongshu guide search, meta analysis"
-version: 1.2.0
+version: 1.3.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/xiaohongshu"
@@ -10,7 +10,7 @@ dependencies:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
 ---
 
-# Roco Kingdom Squad
+# Roco Kingdom Agent
 
 ## Domain
 
@@ -34,7 +34,7 @@ Game research and strategy analysis for Roco Kingdom (洛克王国), a Chinese b
 
 (none — all output stays within the operation directory)
 
-## Squad Playbook
+## Agent Playbook
 
 ### General Rules
 
@@ -103,4 +103,4 @@ Before running any xiaohongshu searches, verify auth:
 ```bash
 NODE_PATH=$(npm root -g) node skills/xiaohongshu/scripts/auth.js --check
 ```
-Exit 0 = logged in. Exit 1 = expired — fail the operation immediately and debrief the user to re-authenticate. Do NOT attempt login from within this squad.
+Exit 0 = logged in. Exit 1 = expired — fail the operation immediately and ask the user to re-authenticate. Do NOT attempt login from within this agent.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0 (2026-05-13)
+
+### Changed
+- Drop "Squad" terminology from prose: `# Hotel Scout Squad` → `# Hotel Scout Agent`, `## Squad Playbook` → `## Agent Playbook`, "All squad/skill configuration files" → "All agent/skill configuration files". Closes #5.
+
 ## 1.5.0 (2026-05-11)
 
 ### Removed
