@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.0 (2026-05-13)
+
+### Added
+- Setup step 1: explicit "load the `git-pr` skill body in full before any `git` command" instruction. Closes the agent-side companion to #7.
+
+### Changed
+- Cleanup command: `cd "$(repos_dir)/X" && git worktree remove "$(pwd)/repo" --force` → `git --git-dir="$(repos_dir)/X" worktree remove "$WORK_DIR/repo" --force`. The old form was silently broken — `$(pwd)` evaluated *after* the `cd`, so `git worktree remove` was being asked to delete `<bare>/repo` (the wrong location) and only "worked" when the worktree was wrongly placed inside the bare clone (i.e. the bug from #7 itself).
+
 ## 2.1.0 (2026-05-13)
 
 ### Changed

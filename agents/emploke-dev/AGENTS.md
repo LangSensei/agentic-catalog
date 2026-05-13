@@ -2,7 +2,7 @@
 name: emploke-dev
 scope: langsensei
 description: "Self-development agent for emploke — implements features, fixes bugs, and opens PRs on emploke and emploke-marketplace"
-version: 1.1.0
+version: 1.2.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -41,11 +41,12 @@ Development and maintenance of the [emploke](https://github.com/LangSensei/emplo
 
 ### Setup
 
-1. Set up worktree using git-pr skill: bare clone to `$(repos_dir)/emploke/`, worktree into `repo/`
-2. Repository: `https://github.com/LangSensei/emploke`
-3. For emploke-marketplace tasks: bare clone to `$(repos_dir)/emploke-marketplace/`, worktree into `repo/`
-4. Repository: `https://github.com/LangSensei/emploke-marketplace`
-5. If the brief specifies an existing branch (e.g. fixing review comments), use git-pr Mode B (resume existing branch) instead of creating a new one
+1. **Load the `git-pr` skill body in full** before any `git` command. Its Repository Setup, Anti-pattern callout, and Worktree Workflow are mandatory; do not improvise from memory (see issue #7).
+2. Set up worktree using git-pr skill: bare clone to `$(repos_dir)/emploke/`, worktree into `repo/`
+3. Repository: `https://github.com/LangSensei/emploke`
+4. For emploke-marketplace tasks: bare clone to `$(repos_dir)/emploke-marketplace/`, worktree into `repo/`
+5. Repository: `https://github.com/LangSensei/emploke-marketplace`
+6. If the brief specifies an existing branch (e.g. fixing review comments), use git-pr Mode B (resume existing branch) instead of creating a new one
 
 ### Development
 
@@ -70,7 +71,7 @@ Development and maintenance of the [emploke](https://github.com/LangSensei/emplo
 1. Push and open PR: `git push origin HEAD && gh pr create --title "..." --body "..." --base main`
    - If resuming an existing branch with an open PR, push and comment on the existing PR instead of creating a new one
 2. PR description must include: What, Why, Changes, How to Test
-3. Clean up worktree (mandatory): `cd "$(repos_dir)/emploke" && git worktree remove "$(pwd)/repo" --force` (use the matching repo path for marketplace work)
+3. Clean up worktree (mandatory): `git --git-dir="$(repos_dir)/emploke" worktree remove "$WORK_DIR/repo" --force` (use the matching repo path for marketplace work)
 
 ### Constraints
 
