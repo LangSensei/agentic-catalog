@@ -2,7 +2,7 @@
 name: scientific-method
 scope: langsensei
 description: "Hypothesis-driven research — Observation → Decomposition → Cycle (Hypothesis → Prediction → Test → Conclusion) → Synthesis, with structured working files. (Mandatory execution methodology, follow SKILL.md to setup before any other tool calls)"
-version: 1.0.10
+version: 2.0.0
 ---
 
 # Scientific Method
@@ -13,7 +13,7 @@ A cognitive framework for tasks that require reasoning, research, or exploration
 
 | Location | What Goes There |
 |----------|----------------|
-| Skill directory | SKILL.md, templates, and hooks |
+| Skill directory | SKILL.md and templates |
 | Your working directory | `plan.md`, `findings.md`, `progress.md` (created per task) |
 
 ## File Responsibilities
@@ -163,25 +163,10 @@ AFTER 3 FAILURES: Escalate
 Each step (Observation, Decomposition, Hypothesis, Prediction, Test, Conclusion, Synthesis) is a distinct cognitive action. Jumping from Observation straight to Test means you're guessing, not reasoning. The discipline of forming explicit hypotheses and predictions is what makes this framework work.
 
 ### Don't Skip Cycles
-Each Cycle in your Decomposition table represents a distinct sub-problem. Execute them in order, one by one. Even if you gathered data for Cycle N+1 during Cycle N, you must still formally go through Hypothesis → Prediction → Test → Conclusion for every Cycle. Merging or skipping Cycles means your reasoning chain has gaps. A quality gate will deny tool use during Synthesis if prior steps/cycles are not marked complete.
-
-### When a Hook Denies Your Action
-Hooks are lightweight sentries that enforce working-file discipline. When a hook denies your action:
-
-1. **Read the deny message carefully** — it tells you exactly what is wrong
-2. **Fix the issue in your working files** — update the files the message identifies
-3. **Refer to `<SKILL_DIR>/templates/`** for correct file structure if unsure what goes where
-4. **Retry your original action** — it will succeed once the issue is resolved
-
-Do NOT attempt to bypass hooks, reset file timestamps, or modify hook-managed files to work around a denial.
-
-### Hook-Managed Files
-The following files are managed by hooks and must never be manually created, modified, or deleted:
-
-- `.context_refresh_ts` — timestamp file used by the context-refresh hook to track refresh intervals
+Each Cycle in your Decomposition table represents a distinct sub-problem. Execute them in order, one by one. Even if you gathered data for Cycle N+1 during Cycle N, you must still formally go through Hypothesis → Prediction → Test → Conclusion for every Cycle. Merging or skipping Cycles means your reasoning chain has gaps. Before entering Synthesis, re-read `plan.md` and confirm every prior step and Cycle is marked complete.
 
 ### Preserve Template Structure
-The `plan.md` template structure is enforced by hooks. Do not rename, remove, or merge these required elements:
+The `plan.md` template ships a structure that the framework relies on. Do not rename, remove, or merge these required elements:
 
 - **4 subsections per Cycle:** `### Hypothesis`, `### Prediction`, `### Test`, `### Conclusion`
 - **Status fields:** Every section and subsection that has a `**Status:**` field must keep it. Valid values: `not_started`, `in_progress`, `complete`
@@ -189,12 +174,11 @@ The `plan.md` template structure is enforced by hooks. Do not rename, remove, or
 - **Current State format:** `**Step:**` must be one of: `Observation`, `Decomposition`, `Synthesis`, `Complete`, or `Cycle N - Hypothesis/Prediction/Test/Conclusion`
 
 ### Keep Files Fresh
-Working files must be updated at least every 2 minutes, regardless of the 2-Action Rule. Stale files trigger a staleness denial.
+Working files are your external memory; let them go stale and you lose the thread. Update them continuously, not just at phase boundaries.
 
 - **Before long operations** (builds, tests, large searches): update `progress.md` with what you are about to do
 - **After completing work**: update `findings.md` with what you discovered
-
-The staleness hook checks modification timestamps on `plan.md`, `progress.md`, and `findings.md`. Writing real content resets the clock. Do NOT touch or reset file timestamps — write actual progress.
+- **Every 2 search/browse/view operations** (the 2-Action Rule): flush observations into `findings.md` before they fall out of context
 
 ### When to Loop Back
 - Hypothesis rejected → new hypothesis (stay in same Cycle)

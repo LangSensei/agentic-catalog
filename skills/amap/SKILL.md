@@ -2,14 +2,14 @@
 name: amap
 scope: langsensei
 description: "Amap (Gaode Maps) Web Service API skill. Provides CLI scripts for POI search, route planning, geocoding, and weather queries. Zero dependencies — uses Node.js native fetch (Node 18+)."
-version: 1.1.0
+version: 1.1.1
 prereqs: |
   Requires: Node.js 18+, Amap Web Service Key. See `references/SETUP.md` for step-by-step setup instructions.
 ---
 
 # Amap Skill
 
-Wraps the Amap (Gaode Maps) Web Service REST API. All scripts output structured JSON to stdout for easy parsing by Captain agents.
+Wraps the Amap (Gaode Maps) Web Service REST API. All scripts output structured JSON to stdout for easy parsing by agents.
 
 **Requirements:** Node.js 18+ (uses native `fetch`). No npm install needed.
 

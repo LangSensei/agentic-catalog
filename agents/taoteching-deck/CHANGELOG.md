@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 (2026-05-13)
+
+### Changed
+- Drop "Squad" terminology from prose: `# Tao Te Ching Deck Squad` → `# Tao Te Ching Deck Agent`, `## Squad Playbook` → `## Agent Playbook`, "The squad takes" / "this squad's signature" / "this squad targets" / "fork the squad" → equivalent "agent" phrasing.
+- Replace stale `MANIFEST` filename references in body prose with `AGENTS.md` (the actual on-disk filename in this marketplace). Closes #5.
+
 ## 1.1.0 (2026-05-11)
 
 ### Removed

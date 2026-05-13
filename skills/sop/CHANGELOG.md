@@ -1,5 +1,16 @@
 # SOP Skill — Changelog
 
+## 2.0.0 (2026-05-13)
+
+### Removed
+- **BREAKING:** delete the entire `hooks/` directory. The Copilot and Gemini preToolUse scripts (`context-refresh`, `format-check`, `staleness-check`) and their JSON config (`sop.json` for both runtimes) are gone. Any installation that depended on these hooks being auto-registered will lose that enforcement. The hook system is being redesigned and may be reintroduced in a future release.
+- SKILL.md: remove "When a Hook Denies Your Action" Critical Rule (no hooks left to enforce).
+- SKILL.md: remove "Hook-Managed Files" Critical Rule (`.context_refresh_ts` is no longer created by anything).
+
+### Changed
+- SKILL.md: rephrase "Preserve Template Structure" — the template structure is now framework-relied-on author discipline rather than hook-enforced.
+- SKILL.md: rephrase "Keep Files Fresh" — file freshness is now a continuous-update discipline rather than a 2-minute hook-triggered staleness denial. Folded the 2-Action Rule reminder into the same bullet list.
+
 ## 1.1.0 (2026-04-28)
 
 ### Added

@@ -2,14 +2,14 @@
 name: taoteching-deck-template
 scope: langsensei
 description: "Single-file HTML slide-deck template for Tao Te Ching chapter decks — ink-style, 10-page narrative, hand-rolled engine, reusable CSS variables and animation classes"
-version: 1.0.0
+version: 1.0.1
 ---
 
 # Tao Te Ching Deck Template Skill
 
-This skill is the **HTML / CSS / JS source of truth** for the `taoteching-deck` squad. It documents the canonical 10-page deck skeleton, every reusable class, and every animation keyframe. Copy from here verbatim — do not re-derive.
+This skill is the **HTML / CSS / JS source of truth** for the `taoteching-deck` agent. It documents the canonical 10-page deck skeleton, every reusable class, and every animation keyframe. Copy from here verbatim — do not re-derive.
 
-This skill is dedicated to the *Tao Te Ching* deck format. Other classical-text projects should fork the squad rather than extend this skill.
+This skill is dedicated to the *Tao Te Ching* deck format. Other classical-text projects should fork the agent rather than extend this skill.
 
 ## Architecture at a Glance
 

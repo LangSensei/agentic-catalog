@@ -2,10 +2,10 @@
 name: gusu-scribe
 scope: langsensei
 description: "Suzhou cultural prose writing — newspaper submissions, community publicity, and food exploration articles for the Gusu region"
-version: 1.3.0
+version: 1.4.0
 ---
 
-# Gusu Scribe Squad
+# Gusu Scribe Agent
 
 ## Domain
 
@@ -34,12 +34,12 @@ Suzhou (Gusu) cultural prose writing for Makabaka's publishing needs. Three arti
 
 (none — all output stays within the operation directory)
 
-## Squad Playbook
+## Agent Playbook
 
 ### General Rules
 
 - All generated articles in Chinese; style analysis templates and notes in English for reusability
-- When source articles are provided in the brief or INTEL, analyze ALL of them — do not skip any
+- When source articles are provided in the brief or as referenced files, analyze ALL of them — do not skip any
 - Preserve Makabaka's voice: unhurried, lyrical, warm, grounded in Suzhou cultural specificity
 - Use web search to verify botanical facts, garden history, restaurant details, and community event specifics — never invent factual details (garden founding year, dish ingredients, street names)
 - If seed articles are referenced in the operation brief, read them from the path specified there. Do not assume a fixed filesystem location

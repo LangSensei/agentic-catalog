@@ -2,19 +2,19 @@
 name: taoteching-deck
 scope: langsensei
 description: "Tao Te Ching (Daodejing) chapter HTML slide-deck generator — single-file, ink-style, 10-page narrative (cover / concept overview / original text / five-paragraph analysis / key line / chapter summary) with paired ancient-modern case studies"
-version: 1.1.0
+version: 1.2.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/taoteching-deck-template"
 ---
 
-# Tao Te Ching Deck Squad
+# Tao Te Ching Deck Agent
 
 ## Domain
 
 Generation of single-file, zero-dependency HTML slide decks that explain individual chapters of the *Tao Te Ching* (《道德经》, Daodejing). Output is a Chinese-language, ink-style presentation that opens by double-click in any modern browser, navigates with arrow keys / wheel / touch, and ships as one self-contained HTML file ready for offline distribution.
 
-The squad takes a chapter number (and optionally the user-supplied original text plus interpretive focus) and produces a 10-page deck following the fixed lecture rhythm: cover, concept overview, original text, five paragraph-by-paragraph analyses (each with one historical and one modern case study), a key-line page, and a summary. The visual language is ink-and-paper Chinese (墨色, 楷体 brush calligraphy, 朱印 vermilion seals, 金线 gold rules), the engine is hand-rolled (~60 lines of vanilla JS, no reveal.js / impress.js), and every page is built from reusable CSS variables and animation classes.
+The agent takes a chapter number (and optionally the user-supplied original text plus interpretive focus) and produces a 10-page deck following the fixed lecture rhythm: cover, concept overview, original text, five paragraph-by-paragraph analyses (each with one historical and one modern case study), a key-line page, and a summary. The visual language is ink-and-paper Chinese (墨色, 楷体 brush calligraphy, 朱印 vermilion seals, 金线 gold rules), the engine is hand-rolled (~60 lines of vanilla JS, no reveal.js / impress.js), and every page is built from reusable CSS variables and animation classes.
 
 ## Boundary
 
@@ -30,21 +30,21 @@ The squad takes a chapter number (and optionally the user-supplied original text
 **Out of scope:**
 - Translating the chapter into other languages, or producing new academic exegesis (rely on mainstream commentaries; do not invent novel readings)
 - PDF / PPTX / Keynote export (HTML only in v1)
-- Other classical texts beyond the *Tao Te Ching* (template is reusable, but this squad targets only this corpus)
+- Other classical texts beyond the *Tao Te Ching* (template is reusable, but this agent targets only this corpus)
 - Hosting, CDN delivery, or any networked dependency in the output file
 - External fonts, JS libraries, CSS frameworks, or remote images in the deck
 
-Other classical texts (Zhuangzi, Analects, etc.) are explicitly out of scope — fork the squad to extend coverage.
+Other classical texts (Zhuangzi, Analects, etc.) are explicitly out of scope — fork the agent to extend coverage.
 
 ## Write Access
 
 (none — all output stays within the operation directory)
 
-## Squad Playbook
+## Agent Playbook
 
 ### General Rules
 
-- The HTML deliverable is in Chinese (target audience is Chinese readers); all marketplace source files (this MANIFEST, SKILL.md, CHANGELOG.md) and operator working files (plan.md / findings.md / progress.md) stay in English. Inside HTML/CSS code samples, Chinese is preserved verbatim because it is content rather than prose
+- The HTML deliverable is in Chinese (target audience is Chinese readers); all marketplace source files (this AGENTS.md, SKILL.md, CHANGELOG.md) and operator working files (plan.md / findings.md / progress.md) stay in English. Inside HTML/CSS code samples, Chinese is preserved verbatim because it is content rather than prose
 - **Always use `create` / `edit` tools (or Python `with open(..., "w", encoding="utf-8")`) to write the HTML file.** Never use bash heredoc (`cat << EOF`) — it corrupts multi-byte UTF-8 sequences and the deck is heavily CJK
 - The deck is a single `.html` file. CSS, JS, SVG, base64 backgrounds (when used), and font fallback chains are all inlined. No external links of any kind in the output
 - Chinese fonts use system fallback only: `--kai: "楷体","KaiTi","STKaiti","华文楷体",serif` for headers/titles and `--song: "宋体","SimSun","STSong",serif` for body text
@@ -71,7 +71,7 @@ When the brief asks for a chapter (e.g., "用 taoteching-deck 做第三十三章
    - For each of the five paragraphs (P4–P8), draft **one historical case (史)** and **one modern case (今)**
    - Historical cases should reach for documented anecdotes (e.g., King Fuchai vs. Goujian — 夫差/勾践; Cook Ding carving the ox — 庖丁解牛; Yu the Great taming the floods — 大禹治水; Pangu separating heaven and earth — 盘古开天). Modern cases should reach for verifiable contemporary examples (e.g., economic cycles, climate crisis, Steve Jobs and minimalism, Wittgenstein's silence)
    - Each case is 3-5 lines, names the figure or concept in the title (`.pa-case-title`), embeds 1-2 `<strong>` highlights, and ends with the takeaway tying back to the chapter's argument
-   - This ancient-modern pairing is the squad's signature — every paragraph page must carry it
+   - This ancient-modern pairing is the agent's signature — every paragraph page must carry it
 
 4. **Pick the SVG concept diagrams (one per analysis page)**
    - Each P4–P8 page carries a 180×180 SVG diagram that visualises the paragraph's concept. Reuse one of the patterns documented in the `taoteching-deck-template` skill (concentric circles, four-direction cycle, descending arrow chain, question mark + named opposites, layered rings) and remix the labels and animation classes (`.an-spin`, `.an-glow`, `.an-bob`, etc.)
@@ -252,7 +252,7 @@ The deck is heavy CJK content. **Never** generate it with bash heredoc (`cat << 
 
 ### Reference Implementation
 
-The `taoteching-deck-template` skill ships an end-to-end annotated skeleton with all per-slide CSS, all animation keyframes, the full JS engine, and five reusable SVG patterns. Snippets in this MANIFEST and in the skill are extracted from a working Chapter 25 reference (道法自然) — operators can use that chapter as a worked example when writing a new chapter, then swap content while keeping the structure intact.
+The `taoteching-deck-template` skill ships an end-to-end annotated skeleton with all per-slide CSS, all animation keyframes, the full JS engine, and five reusable SVG patterns. Snippets in this AGENTS.md file and in the skill are extracted from a working Chapter 25 reference (道法自然) — operators can use that chapter as a worked example when writing a new chapter, then swap content while keeping the structure intact.
 
 ### Constraints
 

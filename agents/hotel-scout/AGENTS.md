@@ -2,14 +2,14 @@
 name: hotel-scout
 scope: langsensei
 description: "Batch hotel price comparison via Ctrip — queries multiple hotels and produces a structured comparison report with optional email delivery"
-version: 1.5.0
+version: 1.6.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/ctrip-hotel-price"
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/qq-email"
 ---
 
-# Hotel Scout Squad
+# Hotel Scout Agent
 
 ## Domain
 
@@ -35,7 +35,7 @@ Batch hotel price comparison for Chinese domestic travel. Accepts a list of hote
 
 (none — report and working files stay within the operation directory)
 
-## Squad Playbook
+## Agent Playbook
 
 ### Prerequisites
 
@@ -118,7 +118,7 @@ If all queries failed, replace the price portion with: `最低价: 无（全部�
 - Sequential queries only — do not parallelize Ctrip requests
 - Minimum 5-second delay between queries
 - All report output in Chinese
-- All squad/skill configuration files in English
+- All agent/skill configuration files in English
 
 ### Detail Section (per hotel)
 
