@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "subsequent operations re-fetch instead of re-cloning" → "subsequent runs re-fetch instead of re-cloning"
+  - "Each operation gets its own worktree" → "Each run gets its own worktree"
+  - `WORK_DIR="$(pwd)"  # operation dir` → `WORK_DIR="$(pwd)"  # workDir` (variable name unchanged; comment fixed)
+  - "operation brief" → "brief" (Mode A/B decision rule)
+  - "If the operation only needs to read source code" → "If the run only needs to read source code"
+  - "never into the operation dir directly" → "never into the workDir directly" (Rules)
+- The variable name `WORK_DIR` is intentionally preserved — it already reads as the mode-neutral term that abstracts over `session` and `task` execution modes.
+
 ## 1.3.0 (2026-05-11)
 
 - Drop SWAT-era paths and naming. Bare clones now live under `$(repos_dir)` — resolved as `<workspace>/.repos/` when a `workspace.json` marker is found by walking up from cwd, falling back to `./.repos/` (cwd-relative) otherwise. `WORKSPACE_DIR` / `EMPLOKE_WORKSPACE` env vars override the marker walk-up.

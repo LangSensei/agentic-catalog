@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary in SKILL.md and `templates/findings.md`; align with emploke's terminology:
+  - SKILL.md: "search/browse/view operations" / "view/browser/search operations" (×3, in 2-Action Rule rephrasings) → "search/browse/view actions" / "view/browser/search actions" — consistency with the rule's own name
+  - `templates/findings.md`: "view/browser/search operations" (×4 in WHEN comments and footer) → "view/browser/search actions"
+- Generic "long operations (builds, tests, large searches)" wording is preserved — it's plain English ("long-running tasks"), not the SWAT execution-unit term.
+
 ## 2.0.0 (2026-05-13)
 
 ### Removed

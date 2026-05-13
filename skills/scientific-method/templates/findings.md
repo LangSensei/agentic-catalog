@@ -2,14 +2,14 @@
 <!--
   WHAT: Your evidence base. Everything you discover goes here.
   WHY: Context windows are limited. This file is your "external memory" — persistent and unlimited.
-  WHEN: Update after ANY discovery. Especially after 2 view/browser/search operations (2-Action Rule).
+  WHEN: Update after ANY discovery. Especially after 2 view/browser/search actions (2-Action Rule).
 -->
 
 ## Research Findings
 <!--
   WHAT: Discoveries from web searches, documentation, code reading, exploration.
   WHY: Raw discoveries that haven't been promoted to Key Findings yet.
-  WHEN: After EVERY 2 view/browser/search operations (2-Action Rule). Don't batch — write immediately.
+  WHEN: After EVERY 2 view/browser/search actions (2-Action Rule). Don't batch — write immediately.
   EXAMPLE:
     - MySQL docs: READ COMMITTED allows non-repeatable reads within a transaction
     - Stack Overflow: similar issue resolved by adding SELECT ... FOR UPDATE
@@ -66,7 +66,7 @@
 ---
 <!--
   REMINDER: The 2-Action Rule
-  After every 2 view/browser/search operations, you MUST update this file.
+  After every 2 view/browser/search actions, you MUST update this file.
   This prevents visual information from being lost when context resets.
 -->
-*Update this file after every 2 view/browser/search operations.*
+*Update this file after every 2 view/browser/search actions.*

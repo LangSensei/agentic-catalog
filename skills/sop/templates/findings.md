@@ -2,7 +2,7 @@
 <!--
   WHAT: Everything you discovered during execution — research results, decisions, issues.
   WHY: Discoveries are lost if not written down. This is your persistent knowledge store.
-  WHEN: After ANY discovery. Especially after search/browse/view operations (2-Action Rule).
+  WHEN: After ANY discovery. Especially after search/browse/view actions (2-Action Rule).
 -->
 
 ## Research Findings

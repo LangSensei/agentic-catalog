@@ -2,7 +2,7 @@
 name: dye-finish-advisor
 scope: langsensei
 description: "Full-stack technical advisor for dyeing and finishing of woven synthetic fiber fabrics"
-version: 1.3.0
+version: 1.4.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/fabric-fiber-analyst"
@@ -40,7 +40,7 @@ Technical decision support for dyeing and finishing of woven synthetic fiber fab
 
 ## Write Access
 
-(none — report and working files stay within the operation directory)
+(none — report and working files stay within the workDir)
 
 ## Agent Playbook
 

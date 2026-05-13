@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "operation directory" → "the workDir"
+  - "operation brief" (×2 in Mergeable Pre-Check and Incremental PR Mode) → "brief"
+  - "**One operation per lint run**" → "**Lint everything in one pass** — cover the entire marketplace in a single run, not partial subsets" (the original phrasing had `operation` and `run` colliding)
+
 ## 2.0.1 (2026-05-11)
 
 - Drop SWAT-era worktree paths. Setup and cleanup steps now use `$(repos_dir)` from the git-pr skill instead of hard-coded `~/.swat/repos/emploke-marketplace/`.

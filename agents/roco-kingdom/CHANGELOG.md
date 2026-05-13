@@ -1,5 +1,12 @@
 # Changelog — roco-kingdom
 
+## 1.4.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "operation directory" → "workDir"
+  - "fail the operation immediately" → "fail the run immediately"
+
 ## 1.3.0 (2026-05-13)
 
 ### Changed

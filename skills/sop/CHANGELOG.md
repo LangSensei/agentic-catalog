@@ -1,5 +1,13 @@
 # SOP Skill — Changelog
 
+## 2.1.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary in SKILL.md and `templates/findings.md`; align with emploke's terminology:
+  - SKILL.md: "search/browse/view operations" (×3 in Quick Start, 2-Action Rule, Keep Files Fresh) → "search/browse/view actions" — consistency with the rule's own name
+  - `templates/findings.md`: "search/browse/view operations" (×1 in WHEN comment) → "search/browse/view actions"
+- Generic "long operations (builds, tests, large searches)" wording is preserved — it's plain English ("long-running tasks"), not the SWAT execution-unit term.
+
 ## 2.0.0 (2026-05-13)
 
 ### Removed

@@ -2,6 +2,14 @@
 
 All notable changes to the `gusu-scribe` agent.
 
+## 1.5.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "operation directory" → "workDir"
+  - "operation brief" → "brief"
+  - "One article type per operation" → "One article type per run"
+
 ## 1.4.0 (2026-05-13)
 
 ### Changed

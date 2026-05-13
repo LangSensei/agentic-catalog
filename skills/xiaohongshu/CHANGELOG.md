@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "fail the operation" (×2 in prereqs and Auth Check) → "fail the run"
+  - "For operations that need interactive browsing" → "For workflows that need interactive browsing"
+
 ## 1.3.0 (2026-05-11)
 
 - Drop SWAT-era playwright state path. Storage state moved from `~/.swat/playwright/storage-state.json` to `<workspace>/.playwright/storage-state.json` (per-workspace isolation; workspace resolved by walking up from cwd to a `workspace.json` marker, fallback `./.playwright/storage-state.json`). The state file is now shared with other playwright-using skills and the playwright MCP in the same workspace, so a single login serves every component (playwright dedups cookies by name+domain+path on save). All scripts still accept `--storage-state <path>` to override per-invocation. Auth flow now loads existing state before login so other sites' cookies are preserved; to switch xiaohongshu accounts, delete the state file first. Existing users need to copy the file into each workspace they want to use the skill in (`mkdir -p "$WS/.playwright" && cp ~/.swat/playwright/storage-state.json "$WS/.playwright/storage-state.json"`).

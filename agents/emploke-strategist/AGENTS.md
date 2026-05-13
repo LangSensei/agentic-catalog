@@ -2,7 +2,7 @@
 name: emploke-strategist
 scope: langsensei
 description: "Strategic analysis and improvement proposals for emploke — researches AI agent frameworks, compares with emploke architecture, and produces actionable optimization proposals"
-version: 1.0.0
+version: 1.1.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -27,12 +27,12 @@ Strategic analysis and improvement proposals for the [emploke](https://github.co
 **Out of scope:**
 - Writing code or opening PRs to emploke (that's `emploke-dev`)
 - Creating or modifying agents/skills (that's `agent-forge`)
-- Operation history analysis (that's `agent-distill`)
+- Run history analysis (that's `agent-distill`)
 - Anything outside the emploke ecosystem
 
 ## Write Access
 
-(none — report and working files stay within the operation directory)
+(none — report and working files stay within the workDir)
 
 ## Agent Playbook
 
@@ -43,7 +43,7 @@ Clone two repos using git-pr skill **Mode C** (read-only):
 - `https://github.com/LangSensei/emploke` — emploke source
 - `https://github.com/LangSensei/emploke-marketplace` — agent / skill / MCP definitions
 
-Browse worktree directories directly. Clean up both worktrees at the end of the operation.
+Browse worktree directories directly. Clean up both worktrees at the end of the run.
 
 ### Workflow
 

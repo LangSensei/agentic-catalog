@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "operation brief" (×3 in Setup, Audit Mode scope) → "brief"
+
 ## 1.0.1 (2026-05-11)
 
 - Drop SWAT-era worktree paths. Setup, Write Access, and audit-mode cleanup steps now use `$(repos_dir)` from the git-pr skill instead of hard-coded `~/.swat/repos/`.

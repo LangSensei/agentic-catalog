@@ -2,7 +2,7 @@
 name: a-share-analyst
 scope: langsensei
 description: "A-share stock analysis — technical, fundamental, moat assessment, valuation, and portfolio synthesis"
-version: 1.8.0
+version: 1.9.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/eastmoney-data"
@@ -28,7 +28,7 @@ A-share (中国A股) stock market analysis and research.
 - ETF/fund analysis (holdings decomposition, weighted fundamentals, sector assessment)
 - Holding review / tracking (持仓复核) — incremental updates for existing positions
 - Stock screening (filter by financial metrics)
-- Portfolio synthesis — read multiple completed operation reports and produce a combined portfolio analysis
+- Portfolio synthesis — read multiple completed run reports and produce a combined portfolio analysis
 
 **Out of scope:**
 - Trading execution (buying/selling)
@@ -38,7 +38,7 @@ A-share (中国A股) stock market analysis and research.
 
 ## Write Access
 
-(none — report and working files stay within the operation directory)
+(none — report and working files stay within the workDir)
 
 ## Agent Playbook
 
@@ -51,7 +51,7 @@ A-share (中国A股) stock market analysis and research.
 - Present numbers in human-readable format (e.g., 1.2万亿 for market cap)
 - Report language: Chinese (analysis audience is Chinese investors)
 - Reports are self-contained HTML files with inline CSS. Use structured tables, cards, and color-coded recommendation tags — no external dependencies, no JavaScript required
-- For portfolio synthesis, the prior reports are in sibling operation directories under the same agent
+- For portfolio synthesis, the prior reports are in sibling workDirs from prior runs of the same agent
 
 ### Investment Philosophy Constraints
 
@@ -175,9 +175,9 @@ Report should include: stock overview (name, code, sector, market cap), technica
 
 ### Holding Review / Tracking (持仓复核)
 
-When reviewing an existing position that has been previously analyzed (the brief mentions "持仓复核", "跟踪", "走势复核", or references prior operations):
+When reviewing an existing position that has been previously analyzed (the brief mentions "持仓复核", "跟踪", "走势复核", or references prior runs):
 
-1. **Load prior context** — Read classifier enrichment section in OPERATION.md (contains prior operation summaries, price evolution, previous recommendations). If not present, read the most recent prior operation for this stock
+1. **Load prior context** — Read the most recent prior run for this stock: its `report.html`, working files, and any summary the brief references. If the runtime surfaces prior-run context automatically, use it.
 2. **Fetch current price** — Use sina-quote for the latest/real-time price
 3. **Calculate technical indicators** — Same indicator set as first-time analysis (MA/MACD/RSI/KDJ/Bollinger), computed from 240-day K-line via yfinance
 4. **Compare to prior analysis** — Build an explicit before/after comparison table:
@@ -191,7 +191,7 @@ When reviewing an existing position that has been previously analyzed (the brief
    - Unrealized P&L (absolute ¥ and %)
    - Break-even sell price including transaction costs (万一佣金 min ¥5, 千一印花税)
    - Delta vs prior review P&L
-7. **Check prior trigger conditions** — Explicitly verify whether previous operation's add/reduce conditions were triggered (e.g., "上次建议37.50减仓条件：未触发"). If support levels were broken, recalibrate the entire price framework downward
+7. **Check prior trigger conditions** — Explicitly verify whether the previous run's add/reduce conditions were triggered (e.g., "上次建议37.50减仓条件：未触发"). If support levels were broken, recalibrate the entire price framework downward
 8. **Update recommendation** — Adjust entry/exit price levels based on current technical/fundamental state. Prioritize continuity with prior recommendations unless conditions materially changed. Include:
    - Updated add zone, reduce zone, stop-loss
    - Portfolio-level risk context if applicable (sector concentration, single-stock weight vs conviction-weighted threshold)
@@ -229,7 +229,7 @@ Report should include: ETF overview, holdings breakdown table (top 10 with weigh
 
 When the brief mentions "portfolio synthesis", "组合分析", or "调仓" and provides paths to prior reports:
 
-1. **Read prior reports** — Load all referenced report.html files and OPERATION.md summaries. Reuse prior operation data (PE/PB/ROE/moat/recommendations) — no need to re-run individual analysis
+1. **Read prior reports** — Load all referenced `report.html` files plus any prior summaries the brief references. Reuse prior run data (PE/PB/ROE/moat/recommendations) — no need to re-run individual analysis
 2. **Refresh prices only** — Use sina-quote to fetch current prices for all holdings. Compute updated P&L for each position
 3. **Individual recap** — For each holding, extract: stock name, current price, PE, PB, ROE, technical trend, moat rating, individual recommendation
 4. **Portfolio overview** — Analyze:
@@ -244,7 +244,7 @@ When the brief mentions "portfolio synthesis", "组合分析", or "调仓" and p
    - Overall risk assessment
    - If rebalancing involves trades, include transaction cost estimates (佣金 + 印花税)
 
-**Cost basis verification:** If the brief provides position data, cross-check against the most recent holding review operations to ensure consistent cost basis. Inconsistent cost data leads to distorted P&L and rebalancing recommendations.
+**Cost basis verification:** If the brief provides position data, cross-check against the most recent holding review runs to ensure consistent cost basis. Inconsistent cost data leads to distorted P&L and rebalancing recommendations.
 
 Report should include: portfolio dashboard with all holdings, sector distribution, overall metrics, P&L summary, recommendations. For reduce recommendations: sell path classification, Devil's Advocate analysis, conviction-weighted threshold assessment.
 

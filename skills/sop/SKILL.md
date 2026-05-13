@@ -2,7 +2,7 @@
 name: sop
 scope: langsensei
 description: "Standard Operating Procedure — phase-based execution with sequential step checklists and structured working files. (Mandatory execution methodology, follow SKILL.md to setup before any other tool calls)"
-version: 2.0.0
+version: 2.1.0
 ---
 
 # SOP Skill
@@ -35,7 +35,7 @@ Execute structured tasks by following predefined phases with step-by-step checkl
 2. Understand your task — read the assignment/brief to identify the phases
 3. Fill in Goal + Phases in `plan.md`. Update Current State `**Phase:**` and `**Step:**` to your starting position.
 4. Execute phases in order — check off steps as you go
-5. Update findings.md after every 2 search/browse/view operations (2-Action Rule)
+5. Update findings.md after every 2 search/browse/view actions (2-Action Rule)
 6. Update progress.md with actions taken at each phase gate
 
 ## Core Rules
@@ -47,7 +47,7 @@ Copy the templates. Fill in the phases from your task brief. Do not start execut
 Phases are sequential. Do not skip ahead. Each phase must be completed before moving to the next, unless explicitly marked `[skipped] reason`.
 
 ### 3. The 2-Action Rule
-> After every 2 search/browse/view operations, IMMEDIATELY save key findings to `findings.md`.
+> After every 2 search/browse/view actions, IMMEDIATELY save key findings to `findings.md`.
 
 Visual and browser content is lost if not written to disk promptly.
 
@@ -101,5 +101,5 @@ Working files are your external memory; let them go stale and you lose the threa
 
 - **Before long operations** (builds, tests, large searches): update `progress.md` with what you are about to do
 - **After completing work**: update `findings.md` with what you discovered
-- **Every 2 search/browse/view operations** (the 2-Action Rule): flush observations into `findings.md` before they fall out of context
+- **Every 2 search/browse/view actions** (the 2-Action Rule): flush observations into `findings.md` before they fall out of context
 

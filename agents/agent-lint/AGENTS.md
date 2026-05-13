@@ -2,7 +2,7 @@
 name: agent-lint
 scope: langsensei
 description: "Validates structural and semantic compliance of agents, skills, and MCPs in emploke-marketplace"
-version: 2.0.1
+version: 2.1.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -34,7 +34,7 @@ Structural and semantic validation of agents, skills, and MCPs in the [emploke-m
 
 ## Write Access
 
-(none — all output stays in operation directory)
+(none — all output stays in the workDir)
 
 ## Agent Playbook
 
@@ -46,7 +46,7 @@ Structural and semantic validation of agents, skills, and MCPs in the [emploke-m
 
 ### Mergeable Pre-Check
 
-When the operation brief specifies a PR number, check mergeability before linting:
+When the brief specifies a PR number, check mergeability before linting:
 
 ```bash
 MERGEABLE=$(gh pr view <number> --repo <repo> --json mergeable -q '.mergeable')
@@ -58,7 +58,7 @@ If `MERGEABLE` or `UNKNOWN`, proceed with lint checks.
 
 ### Incremental PR Mode
 
-When the operation brief specifies a PR number, only lint files changed in that PR:
+When the brief specifies a PR number, only lint files changed in that PR:
 
 ```bash
 gh pr diff <number> --name-only
@@ -166,7 +166,7 @@ Beyond structural and content-level checks, review hook scripts, templates, and 
 
 - **Read-only** — never modify marketplace files
 - **All output in English**
-- **One operation per lint run** — lint the entire marketplace in a single pass
+- **Lint everything in one pass** — cover the entire marketplace in a single run, not partial subsets
 - **Fail loudly** — every check must produce a clear pass/fail/warning result with file path
 
 Report should include: per-skill / per-agent results grouped, each check marked pass/fail/warning with file location, summary with totals (X passed, Y failed, Z warnings).
