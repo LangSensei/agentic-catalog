@@ -2,14 +2,14 @@
 name: git-pr
 scope: langsensei
 description: "Git branch management and GitHub PR workflow using worktrees"
-version: 1.3.0
+version: 1.4.0
 ---
 
 # Git PR Skill
 
 ## Repository Setup
 
-Bare clones are cached so subsequent operations re-fetch instead of re-cloning. The cache location is resolved by walking up from the current directory to find a `workspace.json` marker (which emploke writes at the workspace root); when found, the cache lives under `<workspace>/.repos/`. With no workspace context, it falls back to `./.repos/` (cwd-relative). The `WORKSPACE_DIR` env var (or `EMPLOKE_WORKSPACE`) overrides both, so a host can pin the workspace root explicitly.
+Bare clones are cached so subsequent runs re-fetch instead of re-cloning. The cache location is resolved by walking up from the current directory to find a `workspace.json` marker (which emploke writes at the workspace root); when found, the cache lives under `<workspace>/.repos/`. With no workspace context, it falls back to `./.repos/` (cwd-relative). The `WORKSPACE_DIR` env var (or `EMPLOKE_WORKSPACE`) overrides both, so a host can pin the workspace root explicitly.
 
 ```bash
 # --- workspace + repos-dir resolver (paste once at the top of the playbook) ---
@@ -52,7 +52,7 @@ fi
 
 ## Worktree Workflow
 
-Each operation gets its own worktree — isolated branch, shared .git objects, millisecond creation.
+Each run gets its own worktree — isolated branch, shared .git objects, millisecond creation.
 
 ### Mode A: New Branch (default)
 
@@ -61,7 +61,7 @@ Use when starting a fresh PR from the default branch. Branch naming follows conv
 ```bash
 # Examples: chore/remove-deprecated-paths, feat/mcp-only-flag, fix/playwright-storage-path
 BRANCH="<type>/<slug>"
-WORK_DIR="$(pwd)"  # operation dir
+WORK_DIR="$(pwd)"  # workDir
 
 cd "$REPO_DIR"
 git worktree add -b "$BRANCH" "$WORK_DIR/repo" origin/main
@@ -87,7 +87,7 @@ git checkout -B "$EXISTING_BRANCH" "origin/$EXISTING_BRANCH"
 # ... make changes, commit, push ...
 ```
 
-**How to decide:** If the operation brief contains a branch name or PR reference with an existing branch, use Mode B. Otherwise use Mode A.
+**How to decide:** If the brief contains a branch name or PR reference with an existing branch, use Mode B. Otherwise use Mode A.
 
 ### Mode C: Read-Only
 
@@ -108,7 +108,7 @@ cd "$REPO_DIR"
 git worktree remove "$WORK_DIR/repo" --force
 ```
 
-**How to decide:** If the operation only needs to read source code for analysis (no writes, no PR), use Mode C.
+**How to decide:** If the run only needs to read source code for analysis (no writes, no PR), use Mode C.
 
 ## Worktree Cleanup
 
@@ -168,5 +168,5 @@ Steps to verify.
 - **One logical change per commit**
 - **PR title follows conventional commits**
 - **Branch name is a descriptive `<type>/<slug>`** — no fixed prefix; the slug describes the change (`chore/remove-deprecated-paths`, not `op/<opaque-id>`)
-- **Bare clone goes to the resolved repos dir** (`$(repos_dir)`), never into the operation dir directly
+- **Bare clone goes to the resolved repos dir** (`$(repos_dir)`), never into the workDir directly
 - **Always clean up worktree at seal** — do not leave orphaned worktrees

@@ -2,7 +2,7 @@
 name: scientific-method
 scope: langsensei
 description: "Hypothesis-driven research — Observation → Decomposition → Cycle (Hypothesis → Prediction → Test → Conclusion) → Synthesis, with structured working files. (Mandatory execution methodology, follow SKILL.md to setup before any other tool calls)"
-version: 2.0.0
+version: 2.1.0
 ---
 
 # Scientific Method
@@ -98,7 +98,7 @@ Execute the verification. This is where you actually do work.
 
 - Search, read code, run commands, call APIs, browse
 - Record ALL discoveries in `findings.md` immediately
-- **2-Action Rule:** After every 2 search/browse/view operations, update `findings.md`
+- **2-Action Rule:** After every 2 search/browse/view actions, update `findings.md`
 - Visual/multimodal content must be transcribed to text immediately — it won't persist
 
 **Output:** `findings.md` updated with discoveries. `progress.md` Test Results table updated.
@@ -129,7 +129,7 @@ After all Cycles are complete:
 Never start a complex task without `plan.md`. Non-negotiable.
 
 ### The 2-Action Rule
-> After every 2 view/browser/search operations, IMMEDIATELY save key findings to `findings.md`.
+> After every 2 view/browser/search actions, IMMEDIATELY save key findings to `findings.md`.
 
 Multimodal content (images, browser results, screenshots) does not persist in context. Write it down or lose it.
 
@@ -178,7 +178,7 @@ Working files are your external memory; let them go stale and you lose the threa
 
 - **Before long operations** (builds, tests, large searches): update `progress.md` with what you are about to do
 - **After completing work**: update `findings.md` with what you discovered
-- **Every 2 search/browse/view operations** (the 2-Action Rule): flush observations into `findings.md` before they fall out of context
+- **Every 2 search/browse/view actions** (the 2-Action Rule): flush observations into `findings.md` before they fall out of context
 
 ### When to Loop Back
 - Hypothesis rejected → new hypothesis (stay in same Cycle)

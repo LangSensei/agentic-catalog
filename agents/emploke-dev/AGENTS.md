@@ -2,7 +2,7 @@
 name: emploke-dev
 scope: langsensei
 description: "Self-development agent for emploke — implements features, fixes bugs, and opens PRs on emploke and emploke-marketplace"
-version: 1.0.1
+version: 1.1.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -80,7 +80,7 @@ Development and maintenance of the [emploke](https://github.com/LangSensei/emplo
 - **No new package managers** — emploke is a pnpm monorepo; do not add `npm-shrinkwrap.json`, `yarn.lock`, etc.
 - **Marketplace schema is authoritative** — when editing `agents/`, `skills/`, or `mcps/`, follow `CONTRIBUTING.md`. Cross-platform MCP rules (no `bash -c`, use `${workspaceDir}` / `${globalDir}` placeholders) are non-negotiable.
 - **Commit style**: conventional commits (feat:, fix:, refactor:, docs:, etc.)
-- **One PR per operation** — keep changes focused
+- **One PR per run** — keep changes focused
 
 ### Best Practices
 

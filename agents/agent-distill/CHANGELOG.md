@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.1.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary throughout. Replace with **run** (mode-neutral term for a single agent execution; covers both `session` and `task` execution modes — agent-distill already correctly distinguished `<workspace>/tasks/<id>/` and `<workspace>/sessions/<id>/`):
+  - description: "agent operation history" → "agent run history"
+  - "Cross-operation analysis" → "Cross-run analysis"
+  - "operation history" (×3 in Boundary and brief intake) → "run history"
+  - "**Operation range** — 'last N operations'" → "**Run range** — 'last N runs'"
+  - "for each operation in scope" → "for each run in scope"
+  - "Skip failed/cancelled operations" → "Skip failed/cancelled runs"
+  - "same error across operations" → "same error across runs"
+  - "haven't been used or relevant in recent operations" → "...recent runs"
+  - "the operation(s) that justify it" / "specific operation(s)" → "the run(s) that justify it" / "specific run(s)"
+  - "with last-used operation" → "with last-used run"
+  - "One PR per distill operation" → "One PR per distill run"
+  - "which operations were analyzed" → "which runs were analyzed"
+  - Final report bullet: "operations analyzed" → "runs analyzed"
+
 ## 2.0.1 (2026-05-11)
 
 - Drop SWAT-era worktree paths. Setup, Write Access, and cleanup steps now use `$(repos_dir)` from the git-pr skill instead of hard-coded `~/.swat/repos/emploke-marketplace/`.

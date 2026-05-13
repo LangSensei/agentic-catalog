@@ -2,7 +2,7 @@
 name: agent-forge
 scope: langsensei
 description: "Creates new agents and skills for emploke-marketplace — generates AGENTS.md / SKILL.md / CHANGELOG.md and opens a PR"
-version: 2.0.1
+version: 2.1.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -27,7 +27,7 @@ Authoring new agents and skills for the [emploke-marketplace](https://github.com
 **Out of scope:**
 - Modifying the emploke control plane source (that's `emploke-dev`)
 - Linting or validating marketplace content (that's `agent-lint`)
-- Distilling lessons from past operations (that's `agent-distill`)
+- Distilling lessons from past runs (that's `agent-distill`)
 
 ## Write Access
 
@@ -104,7 +104,7 @@ The validators that gate every install live alongside the schema:
 
 - **All content in English** — no Chinese in source files
 - **Reuse existing skills** — don't recreate what already exists
-- **One PR per operation**
+- **One PR per run**
 - **Boundary format: In scope / Out of scope** — use `**In scope:**` and `**Out of scope:**` bullet groups
 - **Title: human-readable** — `# {Agent Name} Agent`, can differ from the kebab-case frontmatter `name:`
 - **One version bump per PR** — do not bump version in multiple commits within the same PR

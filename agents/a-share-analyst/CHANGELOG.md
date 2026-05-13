@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "operation directory" → "workDir" (mode-neutral term for the directory the agent is currently running in — covers both `session` and `task` execution modes)
+  - "prior operations" / "previous operation" / "operation reports" / "operation data" / "holding review operations" → "prior runs" / "previous run" / "run reports" / "run data" / "holding review runs"
+- Drop stale `OPERATION.md` references in the Holding Review and Portfolio Synthesis workflows. `OPERATION.md` was a SWAT-runtime artifact that emploke never produces. The workflow now reads prior runs' `report.html` and any summary the brief explicitly references.
+
 ## 1.8.0 (2026-05-13)
 
 ### Changed

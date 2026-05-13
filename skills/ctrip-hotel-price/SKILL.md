@@ -2,7 +2,7 @@
 name: ctrip-hotel-price
 scope: langsensei
 description: "Ctrip (携程) hotel price query tool. Use when checking hotel prices, comparing rates, or monitoring price changes on Ctrip via Playwright browser automation. Requires pre-authenticated storage state."
-version: 1.3.0
+version: 1.4.0
 prereqs: |
   Requires: Playwright, Chromium, Chinese Fonts, Auth. See `references/SETUP.md` for step-by-step setup instructions.
 ---
@@ -11,7 +11,7 @@ prereqs: |
 
 ## Storage State
 
-This skill requires a pre-authenticated browser state at `<workspace>/.playwright/storage-state.json` (auto-resolved by walking up from cwd to find `workspace.json`; falls back to `./.playwright/storage-state.json` when no workspace context is found). The state file is shared with other playwright-using skills and the playwright MCP in the same workspace, so logging in once serves every component. To switch ctrip accounts, delete the file and re-authenticate. If missing or expired, fail the operation — debrief will notify the user to re-authenticate.
+This skill requires a pre-authenticated browser state at `<workspace>/.playwright/storage-state.json` (auto-resolved by walking up from cwd to find `workspace.json`; falls back to `./.playwright/storage-state.json` when no workspace context is found). The state file is shared with other playwright-using skills and the playwright MCP in the same workspace, so logging in once serves every component. To switch ctrip accounts, delete the file and re-authenticate. If missing or expired, fail the run — debrief will notify the user to re-authenticate.
 
 ## CLI Scripts
 
@@ -28,7 +28,7 @@ Always exits 0. Outputs one of:
 - `EXPIRED` — storage state exists but login has expired
 - `MISSING` — no storage state file found
 
-Parse stdout to determine status. If expired or missing, fail the operation — debrief will notify the user to re-authenticate.
+Parse stdout to determine status. If expired or missing, fail the run — debrief will notify the user to re-authenticate.
 
 ### Login
 

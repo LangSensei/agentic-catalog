@@ -2,7 +2,7 @@
 name: hotel-scout
 scope: langsensei
 description: "Batch hotel price comparison via Ctrip — queries multiple hotels and produces a structured comparison report with optional email delivery"
-version: 1.6.0
+version: 1.7.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/ctrip-hotel-price"
@@ -27,13 +27,13 @@ Batch hotel price comparison for Chinese domestic travel. Accepts a list of hote
 **Out of scope:**
 - Booking hotels or making reservations
 - Price tracking over time or alerting on price changes
-- Multi-city comparisons in a single operation (one city per run)
+- Multi-city comparisons in a single run (one city per run)
 - Venue quality assessment, reviews, or recommendations beyond price data
 - Modifying or extending the ctrip-hotel-price skill itself
 
 ## Write Access
 
-(none — report and working files stay within the operation directory)
+(none — report and working files stay within the workDir)
 
 ## Agent Playbook
 
@@ -53,7 +53,7 @@ If the output is not `OK`, stop immediately and debrief with an auth failure mes
 
 ### Query Workflow
 
-1. **Parse the brief** — Extract the hotel list, city name, check-in date, and check-out date from the operation brief. If the brief does not specify checkin/checkout dates, default to today→tomorrow (the search script handles this automatically when dates are omitted).
+1. **Parse the brief** — Extract the hotel list, city name, check-in date, and check-out date from the brief. If the brief does not specify checkin/checkout dates, default to today→tomorrow (the search script handles this automatically when dates are omitted).
 
 2. **Run auth check** — Execute the auth check command above. If it fails, stop and debrief.
 
@@ -114,7 +114,7 @@ If all queries failed, replace the price portion with: `最低价: 无（全部�
 
 ### Constraints
 
-- One city per operation — do not mix cities in a single run
+- One city per run — do not mix cities in a single run
 - Sequential queries only — do not parallelize Ctrip requests
 - Minimum 5-second delay between queries
 - All report output in Chinese
@@ -156,5 +156,5 @@ NODE_PATH=$(npm root -g) node <QQ_EMAIL_SKILL_DIR>/scripts/send.js \
 
 - The `--body` should contain the summary line (plain text fallback)
 - The `--html` should point to the generated `report.html`
-- If email sending fails, log the error but do NOT fail the operation — the report is still valid
+- If email sending fails, log the error but do NOT fail the run — the report is still valid
 - Email delivery is best-effort; Ctrip query results are the primary deliverable

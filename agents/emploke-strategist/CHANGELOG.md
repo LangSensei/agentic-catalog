@@ -1,4 +1,12 @@
-# Changelog — emploke-strategist
+# Changelog
+
+## 1.1.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "Operation history analysis" → "Run history analysis"
+  - "operation directory" → "workDir"
+  - "at the end of the operation" → "at the end of the run" — emploke-strategist
 
 ## 1.0.0 (2026-05-11)
 

@@ -2,7 +2,7 @@
 name: xiaohongshu
 scope: langsensei
 description: "Xiaohongshu (小红书) browser automation skill. Use when browsing/searching content, extracting post data, or interacting with the platform via playwright. Requires pre-authenticated storage state."
-version: 1.3.0
+version: 1.4.0
 prereqs: |
   Requires: Playwright, Chromium, Chinese Fonts, Auth. See `references/SETUP.md` for step-by-step setup instructions.
 dependencies:
@@ -14,7 +14,7 @@ dependencies:
 
 ## Storage State
 
-This skill requires a pre-authenticated browser state at `<workspace>/.playwright/storage-state.json` (auto-resolved by walking up from cwd to find `workspace.json`; falls back to `./.playwright/storage-state.json` when no workspace context is found). All scripts accept `--storage-state <path>` to override per-invocation. The state file is shared with other playwright-using skills and the playwright MCP in the same workspace, so logging in once serves every component. To switch xiaohongshu accounts, delete the file and re-authenticate. If missing or expired, fail the operation — debrief will notify the user to re-authenticate via OpenClaw.
+This skill requires a pre-authenticated browser state at `<workspace>/.playwright/storage-state.json` (auto-resolved by walking up from cwd to find `workspace.json`; falls back to `./.playwright/storage-state.json` when no workspace context is found). All scripts accept `--storage-state <path>` to override per-invocation. The state file is shared with other playwright-using skills and the playwright MCP in the same workspace, so logging in once serves every component. To switch xiaohongshu accounts, delete the file and re-authenticate. If missing or expired, fail the run — debrief will notify the user to re-authenticate via OpenClaw.
 
 ## CLI Scripts
 
@@ -54,7 +54,7 @@ Add `--screenshot detail.png` to capture a full-page screenshot of the note page
 NODE_PATH=$(npm root -g) node scripts/auth.js --check
 ```
 
-Exits 0 if logged in, 1 if expired. If expired, fail the operation — debrief will notify the user to re-authenticate via OpenClaw. Do NOT attempt login from within an agent.
+Exits 0 if logged in, 1 if expired. If expired, fail the run — debrief will notify the user to re-authenticate via OpenClaw. Do NOT attempt login from within an agent.
 
 ## Anti-Detection
 
@@ -65,7 +65,7 @@ The search and detail scripts include:
 
 ## Playwright MCP
 
-For operations that need interactive browsing beyond search/detail, use playwright MCP with storage state:
+For workflows that need interactive browsing beyond search/detail, use playwright MCP with storage state:
 ```
 --storage-state <workspace>/.playwright/storage-state.json
 ```

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.7.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "operation directory" → "workDir"
+  - "operation brief" → "brief"
+  - "in a single operation" / "One city per operation" → "in a single run" / "One city per run"
+  - "do NOT fail the operation" → "do NOT fail the run"
+
 ## 1.6.0 (2026-05-13)
 
 ### Changed

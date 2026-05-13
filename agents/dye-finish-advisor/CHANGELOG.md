@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0 (2026-05-13)
+
+### Changed
+- Drop "operation" SWAT-era vocabulary; align with emploke's terminology:
+  - "operation directory" → "workDir"
+
 ## 1.3.0 (2026-05-13)
 
 ### Changed
