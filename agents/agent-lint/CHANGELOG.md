@@ -3,7 +3,7 @@
 ## 3.1.0 (2026-05-14)
 
 ### Added
-- **CONTRIBUTING.md as a conventions source** — when the catalog under lint ships a `CONTRIBUTING.md` at its root, load it in full alongside `meta-agent-schema`. Phase 9 (semantic code review) defers to `CONTRIBUTING.md` definitions over the listed patterns when the catalog ships its own. Catalogs without `CONTRIBUTING.md` skip Phase 9 conventions checks with a note in the report.
+- **CONTRIBUTING.md as a conventions source** — load the conventions doc alongside `meta-agent-schema` before running Phase 9. Resolution: catalog-local file when available (the catalog being linted may ship its own conventions), else fall back to the canonical URL <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md>. The URL anchor is necessary because Local-mode lint of an empty/new catalog has no local file to load. If both load steps fail (no network, no local), Phase 9 conventions checks are skipped with a note.
 - **Phase 9 — three new workspace-path anti-pattern checks** (scripts in `.js` / `.py` / `.sh` / `.ps1` and bash recipes inline in `SKILL.md` / `AGENTS.md`):
   - **UUID-as-path bug** — `EMPLOKE_WORKSPACE` env var dereferenced inside a path-join / path-concat. The var is a UUID, not a path; the correct var is `EMPLOKE_WORKSPACE_DIR` (emploke runtime contract, see emploke#100).
   - **`workspace.json` walk-up cargo-cult** — recursive `dirname(cwd)` loops looking for a `workspace.json` marker. emploke does not write this file.

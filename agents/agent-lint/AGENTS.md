@@ -87,7 +87,12 @@ Lint the changed files plus any files that cross-reference them (e.g., if an `AG
 
 The `meta-agent-schema` skill is the authoritative format spec — every check below validates against it. Load that skill in full at the start of the run; do not improvise schema rules from memory.
 
-**Additionally, if the catalog ships a `CONTRIBUTING.md` at its root, load it in full** before running Phase 9. `CONTRIBUTING.md` is the catalog-specific conventions source (anti-patterns, runtime env contract for scripts, workflow rules) — Phase 9 enforces those conventions and defers to their `CONTRIBUTING.md` definitions over the patterns listed below. Catalogs without `CONTRIBUTING.md` get schema-only checks; Phase 9 conventions checks are skipped with a note in the report.
+**Additionally, load the conventions doc** before running Phase 9. Resolution order:
+
+1. **Catalog-local** (preferred when available): `<catalog-root>/CONTRIBUTING.md` (resolution rules 1 and 3 above — local catalog) or `<workDir>/repo/CONTRIBUTING.md` (rule 2 — remote catalog).
+2. **Canonical URL fallback** (catalog doesn't ship its own): fetch <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md> (raw: <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md>). Private forks may have their own conventions — prefer the local file when it exists.
+
+The conventions doc is the source of Phase 9's anti-pattern definitions (runtime env contract, workspace-path anti-patterns, etc.). When the catalog under lint ships its own, defer to it over the listed patterns. If both load steps fail (no network, no local file), skip Phase 9 conventions checks with a note in the report.
 
 Execute each check phase in order. For each item checked, record pass/fail/warning with the file location.
 
@@ -178,7 +183,7 @@ Beyond structural and content-level checks, review hook scripts, templates, and 
 4. **PowerShell reserved variable names** — Flag `$input` (case-insensitive) when used as a custom variable in `.ps1` scripts. `$input` is a PowerShell automatic variable and silently shadows intended values. Suggest `$hookInput` or similar.
 5. **Duplicate comments** — Detect consecutive identical comment lines in hook scripts (`.sh`, `.ps1`, `.js`)
 6. **String literal hygiene** — Flag user-facing message literals with stray spaces before punctuation (e.g., `'## Synthesis' .`) or consecutive punctuation (`..`)
-7. **Workspace path anti-patterns in scripts** — Flag scripts (`.js`, `.py`, `.sh`, `.ps1`, and bash recipes inline in `SKILL.md` / `AGENTS.md`) that contain any of these. When the catalog ships a `CONTRIBUTING.md` documenting these patterns (most emploke-compatible catalogs do), it is the authoritative source — defer to its definitions over this checklist:
+7. **Workspace path anti-patterns in scripts** — Flag scripts (`.js`, `.py`, `.sh`, `.ps1`, and bash recipes inline in `SKILL.md` / `AGENTS.md`) that contain any of these. The conventions doc loaded at the start of the run (catalog-local or canonical) is the authoritative source — defer to its definitions over this checklist:
    - **UUID-as-path bug** — `EMPLOKE_WORKSPACE` env var dereferenced inside a path-join / path-concat context (`path.join(process.env.EMPLOKE_WORKSPACE, ...)`, `"$EMPLOKE_WORKSPACE/..."`, `os.path.join(os.environ["EMPLOKE_WORKSPACE"], ...)`). The var is the workspace UUID, not a filesystem path — use `EMPLOKE_WORKSPACE_DIR` instead.
    - **`workspace.json` walk-up cargo-cult** — any loop that recursively `dirname`s `cwd` looking for a file named `workspace.json`. emploke does not write this marker; `EMPLOKE_WORKSPACE_DIR` is the authoritative workspace-root mechanism.
    - **`EMPLOKE_HOME` poking from skill/agent code** — reads of `EMPLOKE_HOME` (`process.env.EMPLOKE_HOME`, `os.environ["EMPLOKE_HOME"]`, `$EMPLOKE_HOME`). emploke scrubs this from task subprocesses (it's service-internal). Use `EMPLOKE_SHARED_DIR` if the script needs a machine-shared writable directory.

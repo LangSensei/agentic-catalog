@@ -53,7 +53,12 @@ If Remote was requested but the target is unreachable (no network, no push right
 
 Catalogs are emploke-compatible, so the schema is fixed regardless of which catalog you target. **Load the `meta-agent-schema` skill in full before authoring anything** — it is the agent-facing single source of truth for layout, naming, frontmatter (skill / agent / mcp), MCP cross-platform rules, origin URI grammar, and CHANGELOG conventions.
 
-**Additionally, if the catalog ships a `CONTRIBUTING.md` at its root, load it in full.** `CONTRIBUTING.md` is the catalog-specific conventions source — it typically covers contributor workflow, the runtime env contract scripts can read (e.g. `EMPLOKE_WORKSPACE_DIR`), anti-patterns to avoid, and other rules the (schema-only) `meta-agent-schema` doesn't cover. Catalogs without a `CONTRIBUTING.md` fall back to schema-only; in that case do not invent conventions from memory — keep the new entry minimal.
+**Additionally, load the conventions doc.** Resolution order:
+
+1. **Catalog-local** (preferred when available): `<catalog-root>/CONTRIBUTING.md`. In Remote mode the catalog is cloned to `<workDir>/repo` so the file is on disk. In Local mode it is only present when the workDir already contains a catalog clone.
+2. **Canonical URL fallback** (Local mode with empty workDir, catalogs that don't ship their own): fetch <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md> (or the raw form at <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md>). The canonical version is emploke-marketplace's; private forks may have their own — prefer the local file when it exists.
+
+The conventions doc covers catalog-specific rules `meta-agent-schema` does not (runtime env contract for scripts, anti-patterns, workflow conventions). If both load steps fail (no network, no local file), keep new entries minimal rather than inventing conventions from memory.
 
 Concrete examples to study after loading the schema: read 2-3 existing entries in any reachable catalog (`agents/`, `skills/`, `mcps/` directories of any emploke marketplace).
 
@@ -80,7 +85,7 @@ In what follows, **"catalog root"** means `<workDir>` in Local mode and `<workDi
 1. Study 2-3 existing skills in the catalog root's `skills/` for structure reference (or any emploke marketplace if the catalog root is empty)
 2. Create `<catalog-root>/skills/<new-name>/SKILL.md` following the format defined in the `meta-agent-schema` skill (skills may declare `prereqs:`; agents may not)
 3. If the skill needs supporting files: scripts go in `scripts/`, templates in `templates/`, hook configs in `hooks/<runtime>/`, reference material in `references/`
-4. **If the skill ships scripts that need a workspace path** (`<workspace>/.playwright/`, `<workspace>/.repos/`, `<workspace>/.cache/`, etc.), follow the catalog's `CONTRIBUTING.md` → "Workspace path conventions for scripts" section. Do NOT improvise a resolver from memory — past skills have shipped broken UUID-as-path / `workspace.json` walk-up resolvers because no contract existed at the time. There is one now.
+4. **If the skill ships scripts that need a workspace path** (`<workspace>/.playwright/`, `<workspace>/.repos/`, `<workspace>/.cache/`, etc.), follow the conventions doc → "Workspace path conventions for scripts" section. Do NOT improvise a resolver from memory — past skills have shipped broken UUID-as-path / `workspace.json` walk-up resolvers because no contract existed at the time. There is one now.
 5. Create `<catalog-root>/skills/<new-name>/CHANGELOG.md`
 
 ### Creating an MCP
