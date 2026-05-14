@@ -9,8 +9,10 @@
   - **`workspace.json` walk-up cargo-cult** — recursive `dirname(cwd)` loops looking for a `workspace.json` marker. emploke does not write this file.
   - **`EMPLOKE_HOME` poking** — reads of `EMPLOKE_HOME` from skill/agent code. It's service-internal; emploke scrubs it from task subprocesses. Use `EMPLOKE_SHARED_DIR` for machine-shared writable state.
 - **Phase 3 — `${globalDir}` is a fatal error**, not just a missing-`${sharedDir}` warning. The emploke loader rejects `${globalDir}` outright, so any spec still using it would fail at install — lint catches it ahead of install.
+- **Phase 3 — `_meta.origin` triggers a warning if present.** emploke ignores it (origin is an install-time fact persisted on the SQLite catalog row, not in the file), but a stale `_meta.origin` in source is a sign of an out-of-date author template. Lint suggests removing it.
 
 ### Changed
+- **Boundary** updated to describe MCP validation as `_meta.name` + cross-platform rules (dropping the `_meta.origin` correctness check).
 - MCP cross-platform lint rule (Phase 3): rename `${globalDir}` → `${sharedDir}` reference to match emploke's renamed placeholder.
 
 ## 3.0.0 (2026-05-13)

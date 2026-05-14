@@ -20,7 +20,7 @@ Structural and semantic validation of emploke-compatible agents, skills, and MCP
 **In scope:**
 - Validating `AGENTS.md` and `SKILL.md` frontmatter (required fields, semver format)
 - Checking dependency origin URIs (skills, MCPs) resolve to existing entries (in the linted catalog or any other public GitHub repo)
-- Validating MCP specs (`_meta.name`, `_meta.origin`, cross-platform rules)
+- Validating MCP specs (`_meta.name`, cross-platform rules)
 - Verifying hook configuration (hook JSON validity, script pairing across runtimes)
 - Checking `CHANGELOG.md` existence and version consistency with frontmatter
 - Validating `references/SETUP.md` structure (if present) for skills
@@ -119,7 +119,7 @@ For each `agents/*/AGENTS.md`:
 For each `mcps/*.json`:
 - Well-formed JSON, pretty-printed with 2-space indent + trailing newline
 - `_meta.name` is set and uses the `<namespace>/<short>` form
-- `_meta.origin` points at the same file's GitHub URL on this branch
+- **Warn if `_meta.origin` is present** — emploke ignores it (origin lives on the install-time SQLite row, not the file), but a stale `_meta.origin` in source is a sign of an out-of-date author template. Suggest removing it.
 - The on-disk filename is `<namespace>_<short>.json` (matching the FQN with `/` replaced by `_`)
 - **Cross-platform:** `command` is a bare executable name (no `bash`, no `/usr/bin/...`); no shell wrappers in `args`; no `$HOME` / `${VAR}` in `args` or `env`
 - `${workspaceDir}` / `${sharedDir}` placeholders, if present, are spelled exactly (typos are rejected by the loader)

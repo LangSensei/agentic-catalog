@@ -71,8 +71,7 @@ Authoritative validator: [`packages/catalog/src/agent/agent-frontmatter.ts`](htt
 ```json
 {
   "_meta": {
-    "name": "<namespace>/<short>",
-    "origin": "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/<namespace>_<short>.json"
+    "name": "<namespace>/<short>"
   },
   "type": "stdio",
   "command": "...",
@@ -84,7 +83,7 @@ Rules:
 
 - `_meta.name` is the MCP spec FQN. Reverse-DNS namespaces are preferred (`io.playwright/mcp`); single-segment vendor names (`acme/cli`, `azure/mcp`) are also OK.
 - The on-disk filename is `<namespace>_<short>.json` (replace `/` in the FQN with `_`).
-- `_meta.origin` MUST point at this same file's GitHub URL.
+- **Do NOT write `_meta.origin`.** Install origin is an install-time fact (the URI emploke fetched from) and lives on the catalog row in the registry, not in the file. The validator ignores any `_meta.origin` it finds (legacy installs, third-party tooling) but authors should not add it. See [`packages/catalog/src/mcp/mcp-format.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/mcp/mcp-format.ts) for the rationale.
 - Other fields (`type`, `command`, `args`, `env`, …) follow the MCP client-config convention.
 - Pretty-print with 2-space indent and a trailing newline.
 - Other `_meta.*` keys (e.g. registry sub-objects) survive untouched on re-write.
@@ -136,8 +135,7 @@ Example — playwright with a per-workspace login state file (matches what `mcps
 ```json
 {
   "_meta": {
-    "name": "io.playwright/mcp",
-    "origin": "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
+    "name": "io.playwright/mcp"
   },
   "type": "stdio",
   "command": "npx",
@@ -209,7 +207,7 @@ Authoritative validator: [`packages/catalog/src/skill/validate.ts`](https://gith
 
 ## Origin URI grammar
 
-Dependencies and MCP `_meta.origin` are bare URI strings. Two schemes are accepted in Phase 2:
+Dependency origins (`dependencies.skills`, `dependencies.mcps`) are bare URI strings. Two schemes are accepted in Phase 2:
 
 - `https://github.com/<owner>/<repo>/tree/<ref>[/path]` — recommended for shared catalog entries
 - `file:<absolute-path>` — local-only; never commit a `file:` origin

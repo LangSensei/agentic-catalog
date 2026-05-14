@@ -7,6 +7,7 @@
 - **Creating a Skill** step explicitly directs the agent at the catalog's `CONTRIBUTING.md` → "Workspace path conventions for scripts" section when authoring scripts that need a workspace path (storage state, repo cache, …). The historical bug class (broken UUID-as-path / `workspace.json` walk-up resolvers shipped by 4 skills) is the case this guards against.
 
 ### Changed
+- **Creating an MCP**: drop the `_meta.origin` instruction. The emploke MCP validator confirms install origin is an install-time fact (persisted on the SQLite catalog row), not part of the file — authors should emit a clean spec without it. Also dropped the "Local mode: leave a placeholder URL for `_meta.origin`" workaround (no longer needed).
 - MCP cross-platform rule: rename `${globalDir}` → `${sharedDir}` to match emploke's renamed placeholder (the old `${globalDir}` name is now rejected by the loader).
 - Rename the "Schema reference" section → "Schema and conventions reference" to reflect the dual source (schema + conventions).
 

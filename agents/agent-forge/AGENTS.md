@@ -88,15 +88,13 @@ In what follows, **"catalog root"** means `<workDir>` in Local mode and `<workDi
 Follow the format and naming rules in the `meta-agent-schema` skill:
 
 - File path: `<catalog-root>/mcps/<namespace>_<short>.json` (replace `/` in the FQN with `_`)
-- `_meta.name` is the FQN; `_meta.origin` is the file's GitHub URL
+- `_meta.name` is the FQN. **Do NOT write `_meta.origin`** — install origin is an install-time fact (the URI emploke fetched from) and lives on the catalog row in the registry, not in the file. The validator ignores any `_meta.origin` it finds (legacy installs, third-party tooling) but emit a clean file without it.
 - All cross-platform rules apply (no `bash -c`, no `$HOME`, use `${workspaceDir}` / `${sharedDir}` for paths)
 - Pretty-print with 2-space indent and a trailing newline
 
-In Local mode where the file is not yet committed to a repo, use a placeholder URL for `_meta.origin` and document it in the report; the user will fix it before publishing.
-
 ### Delivery
 
-**Local mode:** The deliverable is the set of files written to the workDir. The report must list every file with its path relative to the workDir, plus any placeholders (e.g. MCP `_meta.origin`) the user needs to fix before publishing into a catalog.
+**Local mode:** The deliverable is the set of files written to the workDir. The report must list every file with its path relative to the workDir.
 
 **Remote mode:**
 
