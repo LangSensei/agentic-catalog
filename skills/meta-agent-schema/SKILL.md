@@ -145,7 +145,7 @@ Two placeholders are supported in any string field of an MCP spec (`command`, an
 | Placeholder | Resolves to | Use for |
 | --- | --- | --- |
 | `${workspaceDir}` | The absolute path of the active emploke workspace | State scoped to a single project (per-workspace cookies, repo-local credentials, browser login state that should reset between projects) |
-| `${sharedDir}` | A stable per-machine directory (`<EMPLOKE_HOME>/shared` by default; exposed to subprocesses as `$EMPLOKE_SHARED_DIR`) | State that genuinely belongs to the user account, not any single project (a global API token cache, a shared CA bundle, model weights downloaded once per machine) |
+| `${sharedDir}` | A stable per-machine directory (exposed to subprocesses as `$EMPLOKE_SHARED_DIR`) | State that genuinely belongs to the user account, not any single project (a global API token cache, a shared CA bundle, model weights downloaded once per machine) |
 
 emploke substitutes both before writing `.mcp.json` to the workDir. The substituted paths use forward slashes regardless of host OS, so the same JSON value bytes ship to Windows and POSIX. A typo in a placeholder (`${workspceDir}`) is rejected at install time with a clear error — placeholders aren't silently passed through.
 
