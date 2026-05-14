@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 (2026-05-14)
+
+### Changed
+- **Drop the `prereqs:` block entirely.** emploke's runtime contract (shipped in emploke#100) auto-injects `EMPLOKE_SERVER` and `EMPLOKE_WORKSPACE` into every spawned task / session, so the agent inherits a server URL and workspace scope without doing anything. The previous prereqs ("CLI on PATH", "running server", "set EMPLOKE_WORKSPACE") were redundant in the in-emploke case (the skill's primary audience) and the workspace-set instruction was actively misleading — agents reading it would overwrite the value emploke already set.
+- **Rewrite the "Setup" section** to assume the in-emploke default. Previous version walked through `emploke health` + `workspace list --json` + `export EMPLOKE_WORKSPACE` — all of which the agent doesn't need when emploke has already set up the env. New version: list the env vars emploke injects, plus a one-line health check.
+- **Simplify "Workspace discipline"** to acknowledge the inherited `EMPLOKE_WORKSPACE`. The discipline rule (every workspace-scoped command needs an explicit selector) is unchanged — env-inherited counts as "explicit". Dropped the "(a) per-command flag / (b) shell-session env" example block (b is the default now) and the "If you create a new workspace mid-task" niche guidance.
+- **Drop the bottom "Not for emploke-runtime-internal agents" exception note.** With the in-emploke default, the exception is the rule.
+
 ## 1.1.0 (2026-05-14)
 
 ### Changed
