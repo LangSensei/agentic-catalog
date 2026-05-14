@@ -163,9 +163,9 @@ Skills and agents that ship executable scripts (`scripts/*.js`, `scripts/*.py`, 
 | `EMPLOKE_WORKSPACE_DIR`  | inside any emploke task/session | Absolute path to the active workspace root.                   |
 | `EMPLOKE_SHARED_DIR`     | inside any emploke task/session | Per-machine shared dir (same path the MCP `${sharedDir}` placeholder resolves to). |
 | `EMPLOKE_WORKSPACE`      | inside any emploke task/session | Workspace UUID (routing key for `emploke ... --workspace <id>`). |
-| `EMPLOKE_RUN_KIND`       | inside any emploke task/session | `"task"` or `"session"`.                                      |
-| `EMPLOKE_RUN_ID`         | inside any emploke task/session | The task / session id.                                        |
-| `EMPLOKE_RUN_DIR`        | inside any emploke task/session | The spawned process's `cwd`.                                  |
+| `EMPLOKE_WORK_KIND`      | inside any emploke task/session | `"task"` or `"session"`.                                      |
+| `EMPLOKE_WORK_ID`        | inside any emploke task/session | The task / session id.                                        |
+| `EMPLOKE_WORK_DIR`       | inside any emploke task/session | The spawned process's `cwd`.                                  |
 
 **The convention**: scripts that need a workspace-scoped path should read `EMPLOKE_WORKSPACE_DIR` from env, with `cwd` as the only fallback. Inline, that's one line per language:
 
