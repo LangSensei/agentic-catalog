@@ -2,7 +2,7 @@
 name: workspace-ceo
 scope: langsensei
 description: "Mission-driven CEO of an emploke workspace — derives org structure, hires/creates agents, dispatches missions, monitors continuously, evolves over time"
-version: 1.2.0
+version: 1.3.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/emploke-cli"
@@ -97,8 +97,9 @@ loop forever:
 
     # 3. Detect stuck tasks
     for task in running:
-        # Use task.metadata.lastActiveAtRuntime via `task show` — NOT
-        # `task activity --limit 1` (it returns oldest, not newest).
+        # Use task.metadata.lastActiveAtRuntime via `task show` —
+        # cheaper than parsing the activity log when all you need is a
+        # "when did this last move?" timestamp.
         last_active = (task show <tid> --json).metadata.lastActiveAtRuntime
         if no_new_activity_for(30 min):
             see references/monitoring/stuck-task-intervention.md
@@ -188,7 +189,10 @@ For each running task:
 # Cheap status poll (HEAD-shaped)
 emploke task show "$TID" --json | jq '{status, startedAt, agent}'
 
-# If you want to see what's been happening (limit to recent activity for cost)
+# If you want to see what's been happening, ask for the latest N events.
+# `task activity --limit N` returns the LATEST N items (tail-first), so
+# `--limit 10` gives the 10 most recent events — perfect for "what's
+# happening right now?".
 emploke task activity "$TID" --json --limit 10 | jq '.activity'
 ```
 

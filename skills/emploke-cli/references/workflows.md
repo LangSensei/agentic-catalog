@@ -113,7 +113,9 @@ Three modes, pick the one that matches what you need:
 emploke task activity <tid> --json | jq
 ```
 
-Returns `{activity, result, cursor, totalItems?, truncated?}`. Use this when you want "what has happened so far" without subscribing.
+Returns `{activity, result, totalItems, truncated?}`. The `activity` array is **tail-first** — without `--limit` you get the entire log; with `--limit N` you get the latest N items, ASC-sorted by `seq`. Use this when you want "what has happened so far" without subscribing. Items themselves are the cursor — derive `hasOlder` from `activity[0].seq > 0` and `hasNewer` from `activity[-1].seq < totalItems - 1`.
+
+For older history (paging backward), pass `--before <seq>` to fetch the page immediately preceding `<seq>`. `--before` and `--after` are mutually exclusive.
 
 ### Live tail from now
 
@@ -125,7 +127,7 @@ Streams `event: activity` frames as NDJSON. Each line is one `ActivityItem` with
 
 ### Resume after disconnect
 
-When `--follow` exits, stderr's last line is:
+When `--follow` exits **cleanly** (server sent `event: end`, or the stream closed) or with a **mid-stream error** (`event: error`), stderr's last line is:
 
 ```
 last seq: 1234
@@ -134,19 +136,34 @@ last seq: 1234
 Pass that on the next invocation:
 
 ```sh
-emploke task activity <tid> --follow --cursor 1234 | jq -c
+emploke task activity <tid> --follow --after 1234 | jq -c
 ```
 
 This translates to `Last-Event-ID: 1234` and the server replays from `seq=1235` onward — no duplicates, no gaps.
 
+**Ctrl+C is the exception.** The process dies between frames and stderr is never flushed, so there is no `last seq:` line. Recover the seq from stdout instead — each printed NDJSON item carries its own `seq`:
+
+```sh
+# After Ctrl+C, derive the resume seq from the LAST line of stdout.
+N=$(printf '%s\n' "$LAST_STDOUT_LINE" | jq -r .seq)
+emploke task activity <tid> --follow --after "$N" | jq -c
+```
+
+If you piped stdout to a file, just read the tail:
+
+```sh
+N=$(tail -1 stream.ndjson | jq -r .seq)
+emploke task activity <tid> --follow --after "$N" | jq -c
+```
+
 ### History-then-tail (combine snapshot + live)
 
 ```sh
-N=$(emploke task activity <tid> --json | jq -r '.cursor')
-emploke task activity <tid> --follow --cursor "$N" | jq -c
+N=$(emploke task activity <tid> --json | jq -r '.activity[-1].seq')
+emploke task activity <tid> --follow --after "$N" | jq -c
 ```
 
-Use when you join an in-progress task and want both the existing log and live updates.
+Use when you join an in-progress task and want both the existing log and live updates. The snapshot's last item is the latest seq the server has emitted so far; passing it as `--after` to the follow stream picks up exactly where the snapshot ended.
 
 ---
 

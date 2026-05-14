@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.1 (2026-05-14)
+
+### Fixed
+- **Resume hint accuracy:** the `last seq: <N>` stderr hint is emitted on **every clean exit** (`event: end`, stream closed) AND on mid-stream `event: error`, not "only on non-zero exit" as the doc previously implied. Updated `SKILL.md` anti-pattern bullet to state this correctly.
+- **Document the Ctrl+C edge case:** the CLI process dies between frames on SIGINT and stderr is never flushed, so `last seq:` is NOT emitted. Both `SKILL.md` "Common SSE resume pattern" and `references/workflows.md` "Resume after disconnect" now show the recover-from-stdout pattern (`tail -1 | jq .seq`) for Ctrl+C, alongside the regular `--after` resume for clean exits.
+
+## 1.3.0 (2026-05-14)
+
+### Changed
+- **Activity API rewritten to tail-first** to match emploke#104. The one-shot endpoint now returns `{activity, result, totalItems, truncated?}` (no more `cursor` field — items themselves are the cursor; `totalItems` is now required, not optional). The `activity` array is tail-first — without `--limit` you get the entire log; with `--limit N` you get the LATEST N items, ASC-sorted by `seq`. Updated `SKILL.md` anti-pattern bullet + "Common SSE resume pattern" section, and `references/workflows.md` "Monitor a long-running task" section (one-shot snapshot, resume after disconnect, history-then-tail recipes).
+- **`--cursor` flag removed; replaced by `--before <seq>` (backward) and `--after <seq>` (forward), mutually exclusive.** `--before + --follow` is rejected (follow resumes forward only). Recipes that previously read `.cursor` from the response now derive the resume point from `activity[-1].seq` (latest seq we've seen).
+
 ## 1.2.0 (2026-05-14)
 
 ### Changed

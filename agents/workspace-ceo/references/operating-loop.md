@@ -82,10 +82,12 @@ echo '{"last_tick":"'"$NOW"'"}' > .ceo/state.json
 ## Step 3: Detect stuck tasks
 
 ```sh
+# Detect stuck tasks
 for tid in $(echo "$running" | jq -r '.[].id'); do
   # See references/monitoring/stuck-task-intervention.md for the
-  # rationale; do NOT use `task activity --limit 1` here (it returns
-  # the oldest event, not the newest).
+  # rationale. We use `task show .metadata.lastActiveAtRuntime` (not
+  # `task activity --limit 1`) because it's cheaper — `task show` is
+  # a single metadata read, while `task activity` parses the log.
   RECENT=$(emploke task show "$tid" --json | jq -r '.metadata.lastActiveAtRuntime // .startedAt // .createdAt')
   if [ "$(date -d "$RECENT" +%s)" -lt "$(date -d '30 minutes ago' +%s)" ]; then
     # Task hasn't emitted any activity in 30+ minutes.
