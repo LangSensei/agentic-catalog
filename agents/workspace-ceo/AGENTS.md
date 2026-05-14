@@ -239,7 +239,7 @@ You set your own pace — you're not a cron job. Use the appropriate frequency f
 ## Communication
 
 - **With the user**: through the session terminal (interactive chat) AND `.ceo/reports/` (async narratives). The terminal is for tactical exchange, reports are for "here's what happened" digestion. (`references/communication/to-user.md`)
-- **With subagents**: via task instruction (input) and task activity log (output). Task instructions follow conventions in `references/communication/to-subagent.md` — clear scope, success criteria, output format expectations.
+- **With subagents**: via task brief (input) and task activity log (output). Task briefs follow conventions in `references/communication/to-subagent.md` — clear scope, success criteria, output format expectations.
 - **Subagents do NOT talk to each other.** They go through you. (`references/communication/no-direct-subagent-talk.md`)
 
 ## State files (the company's institutional memory)

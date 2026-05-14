@@ -50,7 +50,7 @@ A short markdown file in `.ceo/playbooks/<name>.md` describing a repeatable work
 ### 1. <step name>
 ```sh
 # concrete commands with parameters substituted via $VAR
-emploke task dispatch --agent <fqn> --instructions "<param-using-template>"
+emploke task dispatch --agent <fqn> --brief "<param-using-template>"
 ```
 What to verify: <observable outcome>
 

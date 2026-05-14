@@ -36,7 +36,7 @@ emploke health    # CLI works + server reachable (exit 0 + JSON `ok`)
 Every workspace-scoped command requires an explicit selector. The CLI reads `EMPLOKE_WORKSPACE` from your env (already set), so commands work as-is:
 
 ```sh
-emploke task dispatch --agent writer --instructions "..."
+emploke task dispatch --agent writer --brief "..."
 ```
 
 To act on a different workspace, pass `--workspace <id>` per command:

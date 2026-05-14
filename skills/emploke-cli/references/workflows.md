@@ -67,11 +67,11 @@ esac
 
 ```sh
 AGENT="langsensei/writer"
-INSTRUCTIONS="Draft a blog post about X."
+BRIEF="Draft a blog post about X."
 
 # Try dispatch. If EntryNotReadyError, the formatError stderr tells us
 # exactly which fix command to run.
-DISPATCH=$(emploke task dispatch --agent "$AGENT" --instructions "$INSTRUCTIONS" --json 2>/tmp/err)
+DISPATCH=$(emploke task dispatch --agent "$AGENT" --brief "$BRIEF" --json 2>/tmp/err)
 RC=$?
 if [ $RC -ne 0 ]; then
   CODE=$(grep -oP 'HTTP \d+, \K[A-Za-z]+' /tmp/err || echo "")
@@ -271,10 +271,12 @@ emploke catalog agent install "file://$DIR" --json
 #    so you can edit AGENTS.md and re-install to iterate.
 emploke catalog agent show "local/$NAME" --json | jq '.status'
 
-# 5. Dispatch.
+# 5. Dispatch. `--brief` is the required short summary; `--details` (or
+#    `--details-file`) carries the longer-form input the agent reads.
 emploke task dispatch \
   --agent "local/$NAME" \
-  --instructions "Activities:
+  --brief "Generate this week's status report from the activities listed in details." \
+  --details "Activities:
   - shipped feature X
   - debugged Y for half a day
   - met with Z about roadmap" \
