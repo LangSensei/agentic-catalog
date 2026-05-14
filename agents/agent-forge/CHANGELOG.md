@@ -2,8 +2,13 @@
 
 ## 3.1.0 (2026-05-14)
 
+### Added
+- **CONTRIBUTING.md as a conventions source** — when the target catalog ships a `CONTRIBUTING.md` at its root, load it in full alongside `meta-agent-schema`. `meta-agent-schema` stays focused on schema (frontmatter, layout, naming); `CONTRIBUTING.md` covers catalog-specific conventions (workflow rules, runtime env contract for scripts, anti-patterns). Catalogs without `CONTRIBUTING.md` fall back to schema-only — and the agent keeps new entries minimal rather than inventing conventions.
+- **Creating a Skill** step explicitly directs the agent at the catalog's `CONTRIBUTING.md` → "Workspace path conventions for scripts" section when authoring scripts that need a workspace path (storage state, repo cache, …). The historical bug class (broken UUID-as-path / `workspace.json` walk-up resolvers shipped by 4 skills) is the case this guards against.
+
 ### Changed
 - MCP cross-platform rule: rename `${globalDir}` → `${sharedDir}` to match emploke's renamed placeholder (the old `${globalDir}` name is now rejected by the loader).
+- Rename the "Schema reference" section → "Schema and conventions reference" to reflect the dual source (schema + conventions).
 
 ## 3.0.0 (2026-05-13)
 

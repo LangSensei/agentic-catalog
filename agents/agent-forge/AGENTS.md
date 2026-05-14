@@ -49,9 +49,11 @@ Pick the mode at the start of the run and state it in the report.
 
 If Remote was requested but the target is unreachable (no network, no push rights, repo doesn't exist), fall back to Local and report the fallback reason.
 
-### Schema reference
+### Schema and conventions reference
 
 Catalogs are emploke-compatible, so the schema is fixed regardless of which catalog you target. **Load the `meta-agent-schema` skill in full before authoring anything** — it is the agent-facing single source of truth for layout, naming, frontmatter (skill / agent / mcp), MCP cross-platform rules, origin URI grammar, and CHANGELOG conventions.
+
+**Additionally, if the catalog ships a `CONTRIBUTING.md` at its root, load it in full.** `CONTRIBUTING.md` is the catalog-specific conventions source — it typically covers contributor workflow, the runtime env contract scripts can read (e.g. `EMPLOKE_WORKSPACE_DIR`), anti-patterns to avoid, and other rules the (schema-only) `meta-agent-schema` doesn't cover. Catalogs without a `CONTRIBUTING.md` fall back to schema-only; in that case do not invent conventions from memory — keep the new entry minimal.
 
 Concrete examples to study after loading the schema: read 2-3 existing entries in any reachable catalog (`agents/`, `skills/`, `mcps/` directories of any emploke marketplace).
 
@@ -78,7 +80,8 @@ In what follows, **"catalog root"** means `<workDir>` in Local mode and `<workDi
 1. Study 2-3 existing skills in the catalog root's `skills/` for structure reference (or any emploke marketplace if the catalog root is empty)
 2. Create `<catalog-root>/skills/<new-name>/SKILL.md` following the format defined in the `meta-agent-schema` skill (skills may declare `prereqs:`; agents may not)
 3. If the skill needs supporting files: scripts go in `scripts/`, templates in `templates/`, hook configs in `hooks/<runtime>/`, reference material in `references/`
-4. Create `<catalog-root>/skills/<new-name>/CHANGELOG.md`
+4. **If the skill ships scripts that need a workspace path** (`<workspace>/.playwright/`, `<workspace>/.repos/`, `<workspace>/.cache/`, etc.), follow the catalog's `CONTRIBUTING.md` → "Workspace path conventions for scripts" section. Do NOT improvise a resolver from memory — past skills have shipped broken UUID-as-path / `workspace.json` walk-up resolvers because no contract existed at the time. There is one now.
+5. Create `<catalog-root>/skills/<new-name>/CHANGELOG.md`
 
 ### Creating an MCP
 

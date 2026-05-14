@@ -2,8 +2,16 @@
 
 ## 3.1.0 (2026-05-14)
 
+### Added
+- **CONTRIBUTING.md as a conventions source** — when the catalog under lint ships a `CONTRIBUTING.md` at its root, load it in full alongside `meta-agent-schema`. Phase 9 (semantic code review) defers to `CONTRIBUTING.md` definitions over the listed patterns when the catalog ships its own. Catalogs without `CONTRIBUTING.md` skip Phase 9 conventions checks with a note in the report.
+- **Phase 9 — three new workspace-path anti-pattern checks** (scripts in `.js` / `.py` / `.sh` / `.ps1` and bash recipes inline in `SKILL.md` / `AGENTS.md`):
+  - **UUID-as-path bug** — `EMPLOKE_WORKSPACE` env var dereferenced inside a path-join / path-concat. The var is a UUID, not a path; the correct var is `EMPLOKE_WORKSPACE_DIR` (emploke runtime contract, see emploke#100).
+  - **`workspace.json` walk-up cargo-cult** — recursive `dirname(cwd)` loops looking for a `workspace.json` marker. emploke does not write this file.
+  - **`EMPLOKE_HOME` poking** — reads of `EMPLOKE_HOME` from skill/agent code. It's service-internal; emploke scrubs it from task subprocesses. Use `EMPLOKE_SHARED_DIR` for machine-shared writable state.
+- **Phase 3 — `${globalDir}` is a fatal error**, not just a missing-`${sharedDir}` warning. The emploke loader rejects `${globalDir}` outright, so any spec still using it would fail at install — lint catches it ahead of install.
+
 ### Changed
-- MCP cross-platform lint rule: rename `${globalDir}` → `${sharedDir}` to match emploke's renamed placeholder (the old `${globalDir}` name is now rejected by the loader, so any spec still using it will fail at install — the lint catches it ahead of install).
+- MCP cross-platform lint rule (Phase 3): rename `${globalDir}` → `${sharedDir}` reference to match emploke's renamed placeholder.
 
 ## 3.0.0 (2026-05-13)
 
