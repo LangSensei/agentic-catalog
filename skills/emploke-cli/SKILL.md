@@ -2,7 +2,7 @@
 name: emploke-cli
 scope: langsensei
 description: "Control an emploke server from the CLI — workspaces, agents, tasks, sessions, catalog"
-version: 1.0.0
+version: 1.1.0
 prereqs: |
   Requires the `emploke` CLI on PATH and a running emploke server (`emploke start`).
   Set `EMPLOKE_WORKSPACE=<id>` before any workspace-scoped command — `workspace use` was removed.

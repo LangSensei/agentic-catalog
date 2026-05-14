@@ -2,7 +2,7 @@
 name: emploke-dev
 scope: langsensei
 description: "Self-development agent for emploke — implements features, fixes bugs, and opens PRs on emploke and emploke-marketplace"
-version: 1.2.0
+version: 1.3.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -34,7 +34,7 @@ Development and maintenance of the [emploke](https://github.com/LangSensei/emplo
 
 ## Write Access
 
-- `<workspace>/.repos/emploke/` — bare clone created by the git-pr skill, where `<workspace>` is resolved by walking up from cwd to a `workspace.json` marker (or `./.repos/` cwd-relative when no workspace is found)
+- `<workspace>/.repos/emploke/` — bare clone created by the git-pr skill, where `<workspace>` is `$EMPLOKE_WORKSPACE_DIR` (emploke's task/session runtime contract, always set per-run), falling back to `./.repos/` (cwd-relative) only when the agent is invoked manually outside an emploke run
 - `<workspace>/.repos/emploke-marketplace/` — same resolution
 
 ## Agent Playbook
@@ -79,7 +79,7 @@ Development and maintenance of the [emploke](https://github.com/LangSensei/emplo
 - **All code and markdown in English** — no Chinese in source files
 - **Node ≥ 22, pnpm ≥ 10** — match the engines declared in the emploke `package.json`
 - **No new package managers** — emploke is a pnpm monorepo; do not add `npm-shrinkwrap.json`, `yarn.lock`, etc.
-- **Marketplace schema is authoritative** — when editing `agents/`, `skills/`, or `mcps/`, follow `CONTRIBUTING.md`. Cross-platform MCP rules (no `bash -c`, use `${workspaceDir}` / `${globalDir}` placeholders) are non-negotiable.
+- **Marketplace schema is authoritative** — when editing `agents/`, `skills/`, or `mcps/`, follow `CONTRIBUTING.md`. Cross-platform MCP rules (no `bash -c`, use `${workspaceDir}` / `${sharedDir}` placeholders) are non-negotiable.
 - **Commit style**: conventional commits (feat:, fix:, refactor:, docs:, etc.)
 - **One PR per run** — keep changes focused
 

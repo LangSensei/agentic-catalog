@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0 (2026-05-14)
+
+### Changed
+- `references/bootstrap.md` and `references/hiring/template-base.md` — simplify the workspace-root resolution to read `$EMPLOKE_WORKSPACE_DIR` directly instead of round-tripping through `emploke workspace show "$EMPLOKE_WORKSPACE" --json | jq -r .workdir`. The new env var ships with emploke's task/session runtime contract and is always set per-run.
+
 ## 1.0.0 (2026-05-13)
 
 - Initial release of the workspace-ceo agent.

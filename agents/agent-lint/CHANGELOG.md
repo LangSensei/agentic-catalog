@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.0 (2026-05-14)
+
+### Changed
+- MCP cross-platform lint rule: rename `${globalDir}` → `${sharedDir}` to match emploke's renamed placeholder (the old `${globalDir}` name is now rejected by the loader, so any spec still using it will fail at install — the lint catches it ahead of install).
+
 ## 3.0.0 (2026-05-13)
 
 ### Changed (BREAKING)

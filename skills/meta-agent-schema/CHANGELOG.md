@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0 (2026-05-14)
+
+### Changed
+- Placeholder substitution: rename `${globalDir}` → `${sharedDir}` to match emploke's renamed placeholder (the underlying field is `sharedDir`; the old `${globalDir}` name is now rejected by the loader as an unknown placeholder).
+
 ## 1.0.0 (2026-05-13)
 
 ### Added

@@ -2,7 +2,7 @@
 name: agent-forge
 scope: langsensei
 description: "Creates new emploke-compatible agents, skills, and MCPs in any catalog — defaults to writing into the current run's workDir; opens a PR only when the user names a target catalog repo"
-version: 3.0.0
+version: 3.1.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -86,7 +86,7 @@ Follow the format and naming rules in the `meta-agent-schema` skill:
 
 - File path: `<catalog-root>/mcps/<namespace>_<short>.json` (replace `/` in the FQN with `_`)
 - `_meta.name` is the FQN; `_meta.origin` is the file's GitHub URL
-- All cross-platform rules apply (no `bash -c`, no `$HOME`, use `${workspaceDir}` / `${globalDir}` for paths)
+- All cross-platform rules apply (no `bash -c`, no `$HOME`, use `${workspaceDir}` / `${sharedDir}` for paths)
 - Pretty-print with 2-space indent and a trailing newline
 
 In Local mode where the file is not yet committed to a repo, use a placeholder URL for `_meta.origin` and document it in the report; the user will fix it before publishing.

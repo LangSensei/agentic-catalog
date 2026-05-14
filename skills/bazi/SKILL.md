@@ -2,7 +2,7 @@
 name: bazi
 scope: langsensei
 description: "Chinese traditional calendar and BaZi (Four Pillars of Destiny) skill. Provides CLI scripts for birth chart analysis, marriage compatibility, and auspicious date selection. Wraps the china-testing/bazi library with lunar-python."
-version: 1.2.0
+version: 1.3.0
 prereqs: |
   Requires: Python 3.8+, Python Packages, Git. See `references/SETUP.md` for step-by-step setup instructions.
 ---
@@ -22,7 +22,7 @@ Chinese traditional calendar calculations, BaZi (Four Pillars of Destiny) analys
 1. Bare-clones `china-testing/bazi` to `<repos-dir>/china-testing-bazi/`
 2. Creates a detached worktree at `<repos-dir>/china-testing-bazi/worktrees/readonly/` pinned to commit `c425f0c`
 
-`<repos-dir>` is resolved by walking up from cwd to find a `workspace.json` marker (emploke writes one at the workspace root) — when found, repos live under `<workspace>/.repos/`. Otherwise it falls back to `./.repos/` (cwd-relative). Set `WORKSPACE_DIR` to override.
+`<repos-dir>` is `$EMPLOKE_WORKSPACE_DIR/.repos/` when the skill runs inside an emploke task / session (the `EMPLOKE_WORKSPACE_DIR` env var is emploke's runtime contract, always set per-run). When invoked manually outside an emploke run it falls back to `./.repos/` (cwd-relative); `cd` into the workspace root first.
 
 This happens silently on first invocation. Subsequent runs reuse the cached clone.
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.0 (2026-05-14)
+
+### Changed
+- MCP cross-platform rule: rename `${globalDir}` → `${sharedDir}` to match emploke's renamed placeholder (the old `${globalDir}` name is now rejected by the loader).
+
 ## 3.0.0 (2026-05-13)
 
 ### Changed (BREAKING)

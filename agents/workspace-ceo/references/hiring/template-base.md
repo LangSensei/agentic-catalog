@@ -8,7 +8,7 @@ Use this as the frame when you create a new local agent (decision-tree step 3).
 <workspace>/local-agents/<name>/AGENTS.md
 ```
 
-`<workspace>` is `$(emploke workspace show "$EMPLOKE_WORKSPACE" --json | jq -r .workdir)`.
+`<workspace>` is `$EMPLOKE_WORKSPACE_DIR` (emploke's task/session runtime contract injects it into every spawned process).
 
 `<name>` is your kebab-case role slug.
 
@@ -66,7 +66,7 @@ dependencies:
 
 ```sh
 NAME="<name>"
-DIR="$(emploke workspace show "$EMPLOKE_WORKSPACE" --json | jq -r .workdir)/local-agents/$NAME"
+DIR="$EMPLOKE_WORKSPACE_DIR/local-agents/$NAME"
 emploke catalog agent install "file://$DIR" --json
 ```
 

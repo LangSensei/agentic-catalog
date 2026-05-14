@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.0 (2026-05-14)
+
+### Fixed
+- **Workspace path resolution** — drop the buggy `EMPLOKE_WORKSPACE` (workspace UUID treated as a filesystem path) and `workspace.json` walk-up branches from the `project_root()` shell function. The recipe now reads `$EMPLOKE_WORKSPACE_DIR` (emploke's task/session runtime contract, always set per-run) and falls back to `$(pwd)` for manual debugging. Cache resolution at `$EMPLOKE_WORKSPACE_DIR/.repos/` is now reliable in every emploke-spawned task / session. Closes emploke-marketplace#14 (bug A).
+
+### Changed
+- Repository Setup intro rewritten to describe the new resolution.
+
 ## 1.5.0 (2026-05-13)
 
 ### Changed

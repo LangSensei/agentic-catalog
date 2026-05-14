@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 (2026-05-14)
+
+### Changed
+- Marketplace-schema review checklist: rename `${globalDir}` → `${sharedDir}` placeholder (matches emploke's renamed placeholder; `${globalDir}` is now rejected by the loader).
+
 ## 1.2.0 (2026-05-13)
 
 ### Added

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0 (2026-05-14)
+
+### Fixed
+- **Workspace path resolution** — drop the buggy `EMPLOKE_WORKSPACE` (workspace UUID treated as a filesystem path) and `workspace.json` walk-up branches from `scripts/lib/__init__.py`. The `_project_root()` resolver now reads `EMPLOKE_WORKSPACE_DIR` (emploke's task/session runtime contract, always set per-run) and falls back to `cwd` for manual debugging. Repository cache resolution at `$EMPLOKE_WORKSPACE_DIR/.repos/china-testing-bazi/` is now reliable in every emploke-spawned task. Closes emploke-marketplace#14 (bug A).
+
+### Changed
+- `SKILL.md` — rewrite the `<repos-dir>` resolution note to describe the new contract.
+- `_repos_dir()` — collapse the dead `if root:` branch (the new resolver never returns `None`).
+
 ## 1.2.0 (2026-05-11)
 
 - Drop SWAT-era cache path. The bazi reference repo is now provisioned under `<repos-dir>/china-testing-bazi/` where `<repos-dir>` is `<workspace>/.repos/` when a `workspace.json` marker is found by walking up from cwd, or `./.repos/` (cwd-relative) otherwise. `WORKSPACE_DIR` / `EMPLOKE_WORKSPACE` env vars override the marker walk-up. Existing users can keep the old clone (it is harmless) or delete it and let auto-provisioning re-clone (`rm -rf ~/.swat/repos/china-testing-bazi`).

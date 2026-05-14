@@ -2,7 +2,7 @@
 name: agent-lint
 scope: langsensei
 description: "Validates structural and semantic compliance of emploke-compatible agents, skills, and MCPs in any catalog directory — read-only; runs against a local catalog by default and never pushes"
-version: 3.0.0
+version: 3.1.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -120,7 +120,7 @@ For each `mcps/*.json`:
 - `_meta.origin` points at the same file's GitHub URL on this branch
 - The on-disk filename is `<namespace>_<short>.json` (matching the FQN with `/` replaced by `_`)
 - **Cross-platform:** `command` is a bare executable name (no `bash`, no `/usr/bin/...`); no shell wrappers in `args`; no `$HOME` / `${VAR}` in `args` or `env`
-- `${workspaceDir}` / `${globalDir}` placeholders, if present, are spelled exactly (typos are rejected by the loader)
+- `${workspaceDir}` / `${sharedDir}` placeholders, if present, are spelled exactly (typos are rejected by the loader)
 
 #### Phase 4: Hook configuration
 

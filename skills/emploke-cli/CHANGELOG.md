@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0 (2026-05-14)
+
+### Changed
+- `references/workflows.md` — simplify the "Author and install a local agent" recipe to read `$EMPLOKE_WORKSPACE_DIR` directly instead of round-tripping through `emploke workspace show "$EMPLOKE_WORKSPACE" --json | jq -r .workdir`. The new env var ships with emploke's task/session runtime contract and is always set per-run.
+
 ## 1.0.0 (2026-05-13)
 
 - Initial release.
