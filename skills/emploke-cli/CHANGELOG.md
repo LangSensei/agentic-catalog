@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.1 (2026-05-14)
+
+### Fixed
+- **Resume hint accuracy:** the `last seq: <N>` stderr hint is emitted on **every clean exit** (`event: end`, stream closed) AND on mid-stream `event: error`, not "only on non-zero exit" as the doc previously implied. Updated `SKILL.md` anti-pattern bullet to state this correctly.
+- **Document the Ctrl+C edge case:** the CLI process dies between frames on SIGINT and stderr is never flushed, so `last seq:` is NOT emitted. Both `SKILL.md` "Common SSE resume pattern" and `references/workflows.md` "Resume after disconnect" now show the recover-from-stdout pattern (`tail -1 | jq .seq`) for Ctrl+C, alongside the regular `--after` resume for clean exits.
+
 ## 1.3.0 (2026-05-14)
 
 ### Changed

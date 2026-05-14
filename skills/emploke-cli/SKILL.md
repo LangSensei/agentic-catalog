@@ -2,7 +2,7 @@
 name: emploke-cli
 scope: langsensei
 description: "Control an emploke server from the CLI — workspaces, agents, tasks, sessions, catalog"
-version: 1.3.0
+version: 1.3.1
 ---
 
 # emploke-cli skill
@@ -89,7 +89,7 @@ Exit code 2 means **"the command itself is wrong"** — never retry it without c
 - **Don't poll without backoff.** `while true; do emploke task list; done` is wrong. If you need to wait for a task, use `emploke task activity <tid> --follow` (real-time SSE) instead of polling `task list`.
 - **Don't use `--follow` for one-shot data.** `--follow` blocks until the task terminates. For "what's the latest activity right now?" use `emploke task activity <tid>` (no `--follow`) and read the JSON.
 - **Don't `--purge` casually.** Default `task rm` (no flag) cancels the running subprocess + removes the metadata row, but **keeps the workdir + runtime per-task state on disk** for post-mortem (`stderr.log`, etc). `task rm --purge` additionally removes those — use only after you're sure you don't need the post-mortem material.
-- **Don't ignore `last seq:` on stderr** when streaming. If `--follow` exits non-zero, the stderr's last line is `last seq: <N>` — pass `--after <N>` to the next `--follow` invocation to resume without gaps or duplicates.
+- **Don't ignore `last seq:` on stderr** when streaming. On every clean `--follow` exit (`event: end` from the server, or stream closed) AND on mid-stream-error exit, the CLI prints `last seq: <N>` to stderr — pass `--after <N>` to the next `--follow` invocation to resume without gaps or duplicates. **Caveat:** Ctrl+C kills the process between frames and stderr is not flushed; recover the seq from stdout in that case (`... | tail -1 | jq .seq`) since each printed item carries its own `seq`.
 - **Don't construct workspace ids from the dashboard URL.** Always `emploke workspace list --json | jq` to get a current id.
 
 ## Common SSE resume pattern
@@ -102,9 +102,14 @@ Exit code 2 means **"the command itself is wrong"** — never retry it without c
 N=$(emploke task activity <tid> --json | jq -r '.activity[-1].seq')
 emploke task activity <tid> --follow --after "$N" | jq -c
 
-# Resume after Ctrl+C / disconnect
-# (stderr's last line on a clean --follow exit is `last seq: <N>`)
+# Resume after a clean --follow exit (server sent event: end, or
+# stream closed). stderr's last line on either of those is `last seq: <N>`.
 emploke task activity <tid> --follow --after <N> | jq -c
+
+# Resume after Ctrl+C — stderr was not flushed, so derive the last
+# seq from stdout instead. Each NDJSON line carries its own seq.
+N=$(printf '%s\n' "$LAST_STDOUT_LINE" | jq -r .seq)
+emploke task activity <tid> --follow --after "$N" | jq -c
 ```
 
 ## What this skill is NOT

@@ -127,7 +127,7 @@ Streams `event: activity` frames as NDJSON. Each line is one `ActivityItem` with
 
 ### Resume after disconnect
 
-When `--follow` exits, stderr's last line is:
+When `--follow` exits **cleanly** (server sent `event: end`, or the stream closed) or with a **mid-stream error** (`event: error`), stderr's last line is:
 
 ```
 last seq: 1234
@@ -140,6 +140,21 @@ emploke task activity <tid> --follow --after 1234 | jq -c
 ```
 
 This translates to `Last-Event-ID: 1234` and the server replays from `seq=1235` onward — no duplicates, no gaps.
+
+**Ctrl+C is the exception.** The process dies between frames and stderr is never flushed, so there is no `last seq:` line. Recover the seq from stdout instead — each printed NDJSON item carries its own `seq`:
+
+```sh
+# After Ctrl+C, derive the resume seq from the LAST line of stdout.
+N=$(printf '%s\n' "$LAST_STDOUT_LINE" | jq -r .seq)
+emploke task activity <tid> --follow --after "$N" | jq -c
+```
+
+If you piped stdout to a file, just read the tail:
+
+```sh
+N=$(tail -1 stream.ndjson | jq -r .seq)
+emploke task activity <tid> --follow --after "$N" | jq -c
+```
 
 ### History-then-tail (combine snapshot + live)
 
