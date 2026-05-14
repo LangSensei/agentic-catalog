@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 (2026-05-14)
+
+### Added
+- New "Runtime-agnostic file references in agent / skill bodies" section. Documents the `<SKILL_DIR>` placeholder convention (already used by `sop` 1.0.4+ and `scientific-method` 1.0.5+) for skills referring to their own sibling files, and the abstract-reference pattern for agents referring to a dependency skill's files. Lists antipatterns (any provider config dir like `.github/`, `.claude/`, `.gemini/`, `.cursor/`, `.windsurf/`, `.codex/` followed by emploke content subdirs; `<scope>__<short>` flatten conventions; absolute / `$HOME` paths) with the rationale that catalog content must not bake any one runtime's materialisation layout into the body. Surfaced after the `agency-role-reference` PR (#16) iterated through several wrong path schemes before settling on `<SKILL_DIR>`. Companion lint rule lives in `agent-lint` 3.2.0+.
+
+### Changed
+- Description updated to call out the new section.
+
 ## 1.1.0 (2026-05-14)
 
 ### Changed

@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.2.0 (2026-05-14)
+
+### Added
+- **Creating an Agent step 3** — when the agent body references files inside a dependency skill, refer abstractly or via `<SKILL_DIR>`; never hardcode any specific runtime's parent dir (`.github/`, `.claude/`, `.gemini/`, etc.).
+- **Creating a Skill step 4** — same rule applies when the skill body references its own sibling files. Use `<SKILL_DIR>` per the convention established by `sop` 1.0.4+ / `scientific-method` 1.0.5+. Renumbered the workspace-path-conventions step from 4 to 5.
+
+Both new steps point at the new `meta-agent-schema` 1.2.0 section "Runtime-agnostic file references in agent / skill bodies" for the full rule + antipatterns. Surfaced after the `agency-role-reference` PR (#16) iterated through several wrong path schemes (hardcoded `skills/...`, then `.github/skills/<scope>__<name>/...`) before settling on `<SKILL_DIR>` — agent-forge previously had no guidance on this dimension and would have regenerated the same bug class for any provider's content layout.
+
 ## 3.1.0 (2026-05-14)
 
 ### Added

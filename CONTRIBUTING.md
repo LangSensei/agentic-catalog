@@ -188,6 +188,41 @@ The `cwd` fallback supports manual debugging (`cd <workspace> && node scripts/au
 
 MCP specs use the `${workspaceDir}` / `${sharedDir}` placeholders described in the MCP section above — different mechanism (string substitution at provision time), same underlying intent.
 
+## Path conventions inside skill / agent bodies
+
+Catalog content (the markdown body of `AGENTS.md` and `SKILL.md`, plus any `references/*.md` / `templates/*.md`) MUST NOT hardcode any specific runtime's on-disk layout. Different runtimes materialise installed skills under different parent directories — Copilot CLI uses `.github/`, Claude Code uses `.claude/`, Gemini CLI uses `.gemini/`, others use `.cursor/` / `.windsurf/` / `.codex/`. Catalog content has to stay portable across all of them.
+
+### When a skill needs to reference its own sibling files
+
+Use the `<SKILL_DIR>` placeholder (convention established by `sop` 1.0.4+ and `scientific-method` 1.0.5+):
+
+```sh
+# In a skill's SKILL.md body:
+cp <SKILL_DIR>/templates/plan.md .
+cat <SKILL_DIR>/references/checklist.md
+```
+
+Document the placeholder once in the skill body, near where it first appears:
+
+> `<SKILL_DIR>` is the directory containing this `SKILL.md`. Resolve from your runtime context.
+
+LLM-driven runtimes resolve the placeholder from runtime context — they know where their provisioner puts skill files.
+
+### When an agent needs to reference a dependency skill's files
+
+Same pattern — refer to `<SKILL_DIR>` in the dependency skill, not to a hardcoded path. Or, when describing intent rather than running a command, refer to the skill abstractly: "consult the `<dep-skill>` skill's `references/<file>`".
+
+### Antipatterns (forbidden in agent / skill bodies)
+
+| Antipattern | Why forbidden |
+| --- | --- |
+| Any provider config dir followed by an emploke content subdir — `.github/skills/`, `.github/hooks/`, `.claude/skills/`, `.gemini/skills/`, `.cursor/`, `.windsurf/`, `.codex/`, etc. | Couples to one specific runtime's materialisation layout. Different runtimes use different parent dirs; the body shouldn't pick |
+| Implementation-detail naming conventions written literally — e.g. `<scope>__<short>` flatten convention or any other provisioner-specific transform | Couples to one runtime's provisioner; the flatten rule is a runtime concern, not a content concern |
+| Absolute `/home/...`, `~/...`, `C:\Users\...` paths | Per-host coupling, also non-cross-platform |
+| `${HOME}`, `$HOME`, `~` in body recipes (excluding MCP `env` map keys) | Same |
+
+These patterns are also flagged by the `agent-lint` agent's static checks. The full rule + rationale lives in the `meta-agent-schema` skill.
+
 ## Naming rules
 
 | Field | Grammar |

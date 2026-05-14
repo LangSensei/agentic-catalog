@@ -1,8 +1,8 @@
 ---
 name: meta-agent-schema
 scope: langsensei
-description: "Schema for emploke-compatible agents, skills, and MCPs — frontmatter, layout, naming, dependency origins, MCP cross-platform rules, CHANGELOG conventions"
-version: 1.1.0
+description: "Schema for emploke-compatible agents, skills, and MCPs — frontmatter, layout, naming, dependency origins, MCP cross-platform rules, runtime-agnostic file references, CHANGELOG conventions"
+version: 1.2.0
 ---
 
 # Meta-Agent Schema Skill
@@ -176,6 +176,58 @@ Dependency origins (`dependencies.skills`, `dependencies.mcps`) are bare URI str
 
 - `https://github.com/<owner>/<repo>/tree/<ref>[/path]` — recommended for shared catalog entries; supports any public GitHub repo
 - `file:<absolute-path>` — local-only; never commit a `file:` origin
+
+## Runtime-agnostic file references in agent / skill bodies
+
+Catalog content (the markdown body of `AGENTS.md` and `SKILL.md`) MUST NOT hardcode any specific runtime's on-disk layout. The same skill or agent body should work whether the runtime materialises files under `.github/` (Copilot CLI), `.claude/` (Claude Code), `.gemini/` (Gemini CLI), `.cursor/`, `.windsurf/`, `.codex/`, or any other provider's per-project config directory. Each runtime owns the choice of where to put files; the body just refers to them logically.
+
+### When a skill needs to reference its own sibling files
+
+Use the `<SKILL_DIR>` placeholder. The convention is established by the marketplace's `sop` and `scientific-method` skills:
+
+```sh
+# In a skill's SKILL.md body (or any reference file inside that skill):
+cp <SKILL_DIR>/templates/plan.md .
+cat <SKILL_DIR>/references/checklist.md
+```
+
+Document `<SKILL_DIR>` once, near where it first appears in the skill body — for example: `> <SKILL_DIR> is the directory containing this SKILL.md. Resolve from your runtime context.`
+
+LLM-driven runtimes resolve the placeholder from runtime context — they know where THEIR provisioner puts skill files, the body doesn't need to.
+
+### When an agent needs to reference a dependency skill's files
+
+Same pattern — refer to `<SKILL_DIR>` in the dependent skill, not a hardcoded path:
+
+```sh
+# In an agent body that depends on `agency-role-reference`:
+cat <SKILL_DIR>/references/index.md   # in the dependent skill's body
+```
+
+Or, when the agent body is describing what to consult rather than executing a command, refer to the skill abstractly: "consult the `agency-role-reference` skill's `references/index.md`" — the LLM and its tools will locate it.
+
+### Antipatterns
+
+The following patterns are forbidden in agent / skill bodies because they couple to one runtime's implementation:
+
+| Antipattern | Why forbidden |
+| --- | --- |
+| Any provider config dir followed by an emploke content subdir — `.github/skills/`, `.github/hooks/`, `.claude/skills/`, `.gemini/skills/`, `.cursor/`, `.windsurf/`, `.codex/`, etc. | Couples to one specific runtime's materialisation layout. Different runtimes use different parent dirs; the body shouldn't pick |
+| Implementation-detail naming conventions written literally — e.g. `<scope>__<short>` flatten convention or any other provisioner-specific transform | Couples to one runtime's provisioner; the flatten rule is a runtime concern, not a content concern |
+| Absolute `/home/...`, `~/...`, `C:\Users\...` paths | Per-host coupling, also non-cross-platform |
+| `${HOME}`, `$HOME`, `~` in body recipes (excluding MCP `env` map keys) | Same |
+
+These patterns are also flagged by the `agent-lint` agent's static checks.
+
+### Rationale
+
+Catalog content is fetched once and replayed against many runtimes / many users / many host environments. Anything that bakes one runtime's choices into the body causes silent breakage when:
+
+- A user installs the same skill against a runtime that uses a different config dir (Copilot uses `.github/`, Claude Code uses `.claude/`, Gemini CLI uses `.gemini/`, etc.)
+- A runtime team renames its materialisation layout (the `__` flatten rule, the parent dir name, etc.)
+- The user's catalog uses a different scope name than the one assumed by the hardcoded path
+
+The `<SKILL_DIR>` placeholder + abstract references shift these decisions out of catalog content and into runtime concerns, where they belong.
 
 ## CHANGELOG conventions
 

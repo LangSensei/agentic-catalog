@@ -2,7 +2,7 @@
 name: agent-lint
 scope: langsensei
 description: "Validates structural and semantic compliance of emploke-compatible agents, skills, and MCPs in any catalog directory — read-only; runs against a local catalog by default and never pushes"
-version: 3.1.0
+version: 3.2.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -180,6 +180,16 @@ Beyond structural and content-level checks, review hook scripts, templates, and 
    - `EMPLOKE_WORKSPACE_DIR` is the workspace root path. Flag scripts that use `EMPLOKE_WORKSPACE` in a path-join / path-concat context — that var is the workspace UUID, not a path.
    - emploke does not write a `workspace.json` marker; flag scripts that walk up from `cwd` looking for one.
    - `EMPLOKE_HOME` is not part of the runtime contract for scripts; flag reads of it. Scripts that need a machine-shared writable directory should read `EMPLOKE_SHARED_DIR`.
+8. **Runtime-agnostic file references in agent / skill bodies** — Per `meta-agent-schema` 1.2.0+ "Runtime-agnostic file references in agent / skill bodies", catalog content (the markdown body of `AGENTS.md` / `SKILL.md`, plus any `references/*.md` / `templates/*.md`) MUST NOT hardcode any runtime's on-disk layout. Different runtimes use different parent dirs — Copilot uses `.github/`, Claude Code uses `.claude/`, Gemini CLI uses `.gemini/`, others use `.cursor/` / `.windsurf/` / `.codex/`. Flag the following antipatterns when they appear as **prescribed paths or recipes** in agent or skill bodies. Exclusions:
+   - **NOT in `CHANGELOG.md`** — provenance / migration notes legitimately reference past patterns
+   - **NOT in `scripts/` content** — scripts run inside the runtime and may legitimately know the layout (use other Phase 9 checks for script-side conventions)
+   - **NOT when the body is documenting the antipattern itself** (e.g. `meta-agent-schema` and `agent-forge` describe the antipatterns to teach what NOT to do — the surrounding prose makes intent clear)
+
+   Antipatterns to flag:
+   - **Any provider config dir followed by an emploke content subdir** used as an instruction to read / write / `cat` something. Common forms (NOT exhaustive — apply the principle to any provider): `.github/skills/`, `.github/hooks/`, `.claude/skills/`, `.claude/hooks/`, `.gemini/skills/`, `.gemini/hooks/`, `.cursor/`, `.windsurf/`, `.codex/`. The pattern: `.<provider>/(skills|hooks)/...` written as a literal path the body tells the LLM to read or write.
+   - **Implementation-detail naming conventions** written literally as path components — e.g. `<scope>__<short>` flatten convention (`langsensei__sop`, etc.) or any other provisioner-specific transform
+   - **Absolute or per-host paths**: `/home/...`, `~/...`, `C:\Users\...`, or `${HOME}` / `$HOME` / `~` in body recipes (NOT in MCP `env` map keys, where they're invalid for a different reason already covered by Phase 3)
+   - **Recommended fixes** for all of the above: use `<SKILL_DIR>` placeholder (when a skill refers to its own siblings) or describe the goal abstractly (when an agent refers to a dependency skill's files). Established by `sop` 1.0.4+ and `scientific-method` 1.0.5+; spelled out in `meta-agent-schema` 1.2.0+.
 
 ### Delivery
 
