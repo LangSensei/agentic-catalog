@@ -16,10 +16,10 @@ for tid in $(echo "$running" | jq -r '.[].id'); do
   # I last see activity from this subprocess". Fall back to startedAt
   # then createdAt for tasks the runtime hasn't reported on yet.
   #
-  # DO NOT use `task activity --limit 1` for this: --limit returns the
-  # OLDEST N items (it pages from seq 0 ascending), so .activity[0] is
-  # the FIRST event, not the most recent. AGE would grow monotonically
-  # with task lifetime and you'd mass-cancel healthy long-running work.
+  # We use `task show` (single metadata read) rather than
+  # `task activity --limit 1` (parses the log) because `task show` is
+  # strictly cheaper — both report the same "most recent activity"
+  # timestamp now that activity is tail-first.
   RECENT=$(emploke task show "$tid" --json | jq -r '.metadata.lastActiveAtRuntime // .startedAt // .createdAt')
   AGE_MIN=$(( ($(date +%s) - $(date -d "$RECENT" +%s)) / 60 ))
   if [ "$AGE_MIN" -ge 30 ]; then
@@ -34,6 +34,7 @@ When you detect a stuck task, don't immediately kill it. Triage:
 
 1. **Read the last activity entries**:
    ```sh
+   # Tail-first: --limit 20 returns the LATEST 20 events, ASC-sorted.
    emploke task activity "$tid" --json --limit 20 | jq '.activity[] | {ts: .timestamp, kind: .kind, summary: (.text // .description // "" | tostring | .[0:120])}'
    ```
 2. **Look for the last meaningful step.** What was the agent doing right before it went silent?

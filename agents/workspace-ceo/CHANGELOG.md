@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 (2026-05-14)
+
+### Changed
+- **Drop the stale "don't use `task activity --limit 1`" anti-pattern warning** in three places (`AGENTS.md`, `references/operating-loop.md`, `references/monitoring/stuck-task-intervention.md`). The warning was true pre-emploke#104 (`--limit` returned oldest-N), but emploke#104 made the activity API tail-first, so `--limit N` now returns the LATEST N items. Replaced the "DO NOT" framing with the genuine rationale — `task show .metadata.lastActiveAtRuntime` is preferred for stuck-detection because it's a cheaper single metadata read, not because `task activity --limit 1` would give the wrong answer.
+- **Add a one-line note where `--limit N` is used** (`AGENTS.md` continuous-monitoring example, `stuck-task-intervention.md` triage step) clarifying that the tail-first default is what the CEO wants for "what's happening right now?".
+
 ## 1.2.0 (2026-05-14)
 
 ### Added
