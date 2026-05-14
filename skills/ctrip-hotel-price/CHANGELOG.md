@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.0 (2026-05-14)
+
+### Fixed
+- **Workspace path resolution** — drop the buggy `EMPLOKE_WORKSPACE` (workspace UUID treated as a filesystem path) and `workspace.json` walk-up branches from `scripts/lib/storage-state.js`. The resolver now reads `EMPLOKE_WORKSPACE_DIR` (emploke's task/session runtime contract, always set per-run) and falls back to `cwd` for manual debugging. Storage-state file resolution at `$EMPLOKE_WORKSPACE_DIR/.playwright/storage-state.json` is now reliable in every emploke-spawned task. Closes emploke-marketplace#14 (bug A).
+
+### Changed
+- `SKILL.md` — rewrite the "Storage State" section to describe the new resolution.
+
 ## 1.4.0 (2026-05-13)
 
 ### Changed

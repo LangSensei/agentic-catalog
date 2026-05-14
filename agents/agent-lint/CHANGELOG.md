@@ -1,5 +1,20 @@
 # Changelog
 
+## 3.1.0 (2026-05-14)
+
+### Added
+- **Conventions doc loaded from canonical URL** — load <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md> alongside `meta-agent-schema` before running Phase 9. If the fetch fails, Phase 9 conventions checks are skipped with a note.
+- **Phase 9 — three workspace-path conventions checks** for scripts (`.js` / `.py` / `.sh` / `.ps1` and bash recipes inline in `SKILL.md` / `AGENTS.md`):
+  - `EMPLOKE_WORKSPACE_DIR` is the workspace root path; `EMPLOKE_WORKSPACE` in a path-join context is a bug (var is a UUID, not a path).
+  - emploke does not write a `workspace.json` marker; flag scripts that walk up from cwd looking for one.
+  - `EMPLOKE_HOME` is not part of the runtime contract for scripts; flag reads of it. Scripts that need a machine-shared writable directory should read `EMPLOKE_SHARED_DIR`.
+- **Phase 3 — unrecognized placeholder is a fatal error.** Only `${workspaceDir}` and `${sharedDir}` are accepted; any other `${name}` is rejected by the loader.
+
+### Changed
+- Boundary updated to describe MCP validation as `_meta.name` + cross-platform rules.
+- MCP cross-platform lint rule (Phase 3): rename `${globalDir}` → `${sharedDir}` reference.
+- Strip historical / migration / compatibility narrative from instructions; keep forward-only.
+
 ## 3.0.0 (2026-05-13)
 
 ### Changed (BREAKING)

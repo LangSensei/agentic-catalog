@@ -15,8 +15,10 @@ fi
 emploke workspace show "$EMPLOKE_WORKSPACE" --json > /dev/null \
   || { echo "workspace $EMPLOKE_WORKSPACE not registered"; exit 1; }
 
-WORKDIR=$(emploke workspace show "$EMPLOKE_WORKSPACE" --json | jq -r .workdir)
-cd "$WORKDIR"
+# emploke's task/session runtime contract injects EMPLOKE_WORKSPACE_DIR
+# (absolute path to the workspace root) into every spawned process, so
+# we can `cd` straight there without a `workspace show | jq` round-trip.
+cd "$EMPLOKE_WORKSPACE_DIR"
 ```
 
 ## Initialize state directory

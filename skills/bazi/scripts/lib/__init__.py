@@ -33,38 +33,22 @@ SKILL_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 
 
 def _project_root():
-    """Find the workspace root by walking up from cwd looking for ``workspace.json``.
+    """Find the workspace root.
 
     Resolution order:
-        1. ``WORKSPACE_DIR`` env var (explicit override)
-        2. ``EMPLOKE_WORKSPACE`` env var (legacy override)
-        3. Nearest ancestor directory containing ``workspace.json``
-        4. ``None`` if no marker found
+        1. ``EMPLOKE_WORKSPACE_DIR`` env var — emploke's task/session
+           runtime contract (always set per-run, see emploke's runtime
+           env contract in ``docs/architecture.md``).
+        2. ``cwd`` — fallback when the script is invoked manually outside
+           an emploke run (e.g. local debugging). Assumes the caller has
+           ``cd``'d into the workspace root.
     """
-    if os.environ.get("WORKSPACE_DIR"):
-        return os.environ["WORKSPACE_DIR"]
-    if os.environ.get("EMPLOKE_WORKSPACE"):
-        return os.environ["EMPLOKE_WORKSPACE"]
-    cur = os.getcwd()
-    while True:
-        if os.path.isfile(os.path.join(cur, "workspace.json")):
-            return cur
-        parent = os.path.dirname(cur)
-        if parent == cur:
-            return None
-        cur = parent
+    return os.environ.get("EMPLOKE_WORKSPACE_DIR") or os.getcwd()
 
 
 def _repos_dir():
-    """Resolve the bare-clone root.
-
-    Workspace-local under ``<workspace>/.repos`` when a workspace is
-    detected; cwd-relative ``./.repos`` fallback otherwise.
-    """
-    root = _project_root()
-    if root:
-        return os.path.join(root, ".repos")
-    return os.path.join(os.getcwd(), ".repos")
+    """Resolve the bare-clone root: ``<workspace>/.repos``."""
+    return os.path.join(_project_root(), ".repos")
 
 
 # Auto-provision the bazi calculation repo on first run

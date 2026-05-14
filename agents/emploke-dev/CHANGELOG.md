@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 (2026-05-14)
+
+### Changed
+- **Write Access** section rewritten to describe the new workspace resolution via `$EMPLOKE_WORKSPACE_DIR` (emploke's task/session runtime contract from PR emploke#100). Drops the obsolete "walk up to `workspace.json` marker" wording.
+- **Marketplace schema constraint** — placeholder rename `${globalDir}` → `${sharedDir}` (matches the placeholder name shipped by emploke's runtime).
+
 ## 1.2.0 (2026-05-13)
 
 ### Added

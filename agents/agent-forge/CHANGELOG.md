@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.1.0 (2026-05-14)
+
+### Added
+- **Conventions doc loaded from canonical URL** — load <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md> alongside `meta-agent-schema`. `meta-agent-schema` covers schema (frontmatter, layout, naming); the conventions doc covers the rest (workflow, runtime env contract for scripts).
+- **Creating a Skill** step 4 points at the conventions doc → "Workspace path conventions for scripts" when authoring scripts that need a workspace path.
+
+### Changed
+- **Creating an MCP**: drop the `_meta.origin` instruction. The emploke MCP validator confirms install origin is an install-time fact (persisted on the SQLite catalog row), not part of the file.
+- MCP cross-platform rule: rename `${globalDir}` → `${sharedDir}`.
+- Rename "Schema reference" section → "Schema and conventions reference".
+- Strip historical / migration / compatibility narrative from instructions; keep forward-only.
+
 ## 3.0.0 (2026-05-13)
 
 ### Changed (BREAKING)

@@ -2,7 +2,7 @@
 name: agent-lint
 scope: langsensei
 description: "Validates structural and semantic compliance of emploke-compatible agents, skills, and MCPs in any catalog directory — read-only; runs against a local catalog by default and never pushes"
-version: 3.0.0
+version: 3.1.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -20,7 +20,7 @@ Structural and semantic validation of emploke-compatible agents, skills, and MCP
 **In scope:**
 - Validating `AGENTS.md` and `SKILL.md` frontmatter (required fields, semver format)
 - Checking dependency origin URIs (skills, MCPs) resolve to existing entries (in the linted catalog or any other public GitHub repo)
-- Validating MCP specs (`_meta.name`, `_meta.origin`, cross-platform rules)
+- Validating MCP specs (`_meta.name`, cross-platform rules)
 - Verifying hook configuration (hook JSON validity, script pairing across runtimes)
 - Checking `CHANGELOG.md` existence and version consistency with frontmatter
 - Validating `references/SETUP.md` structure (if present) for skills
@@ -87,6 +87,8 @@ Lint the changed files plus any files that cross-reference them (e.g., if an `AG
 
 The `meta-agent-schema` skill is the authoritative format spec — every check below validates against it. Load that skill in full at the start of the run; do not improvise schema rules from memory.
 
+**Additionally, load the conventions doc** at <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md>. It is the source of Phase 9's workspace-path checks (runtime env contract for scripts). If the fetch fails, skip Phase 9 conventions checks with a note in the report.
+
 Execute each check phase in order. For each item checked, record pass/fail/warning with the file location.
 
 #### Phase 1: SKILL.md frontmatter
@@ -117,10 +119,9 @@ For each `agents/*/AGENTS.md`:
 For each `mcps/*.json`:
 - Well-formed JSON, pretty-printed with 2-space indent + trailing newline
 - `_meta.name` is set and uses the `<namespace>/<short>` form
-- `_meta.origin` points at the same file's GitHub URL on this branch
 - The on-disk filename is `<namespace>_<short>.json` (matching the FQN with `/` replaced by `_`)
 - **Cross-platform:** `command` is a bare executable name (no `bash`, no `/usr/bin/...`); no shell wrappers in `args`; no `$HOME` / `${VAR}` in `args` or `env`
-- `${workspaceDir}` / `${globalDir}` placeholders, if present, are spelled exactly (typos are rejected by the loader)
+- Only `${workspaceDir}` and `${sharedDir}` placeholders are accepted; any other `${name}` is rejected by the loader. Report any unrecognized placeholder as a fatal error and stop further lint of the offending file.
 
 #### Phase 4: Hook configuration
 
@@ -175,6 +176,10 @@ Beyond structural and content-level checks, review hook scripts, templates, and 
 4. **PowerShell reserved variable names** — Flag `$input` (case-insensitive) when used as a custom variable in `.ps1` scripts. `$input` is a PowerShell automatic variable and silently shadows intended values. Suggest `$hookInput` or similar.
 5. **Duplicate comments** — Detect consecutive identical comment lines in hook scripts (`.sh`, `.ps1`, `.js`)
 6. **String literal hygiene** — Flag user-facing message literals with stray spaces before punctuation (e.g., `'## Synthesis' .`) or consecutive punctuation (`..`)
+7. **Workspace path conventions** — Verify scripts (`.js`, `.py`, `.sh`, `.ps1`, and bash recipes inline in `SKILL.md` / `AGENTS.md`) use the runtime env contract correctly. The conventions doc loaded at the start of the run is the authoritative source — defer to it.
+   - `EMPLOKE_WORKSPACE_DIR` is the workspace root path. Flag scripts that use `EMPLOKE_WORKSPACE` in a path-join / path-concat context — that var is the workspace UUID, not a path.
+   - emploke does not write a `workspace.json` marker; flag scripts that walk up from `cwd` looking for one.
+   - `EMPLOKE_HOME` is not part of the runtime contract for scripts; flag reads of it. Scripts that need a machine-shared writable directory should read `EMPLOKE_SHARED_DIR`.
 
 ### Delivery
 

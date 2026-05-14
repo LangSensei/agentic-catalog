@@ -2,7 +2,7 @@
 name: emploke-review
 scope: langsensei
 description: "Code review agent for emploke — reviews PRs for style, correctness, and consistency, submits inline comments"
-version: 1.2.0
+version: 1.3.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -65,7 +65,7 @@ Code review for the [emploke](https://github.com/LangSensei/emploke) control pla
    - **Style:** TypeScript / Biome conventions (`biome check` clean), `camelCase` locals / `PascalCase` types, no `any` without justification, consistent import ordering
    - **Correctness:** Logic bugs, unhandled rejections, missing `await`, resource leaks, race conditions, boundary cases, broken atomic-write semantics in `packages/fs`
    - **Consistency:** Does the change follow the layering in `docs/architecture.md`? Does it preserve the repository-pattern boundaries between `catalog`, `workspace`, `session`, `task`, `runtime`, `server`?
-   - **Marketplace schema (when applicable):** Does the change conform to `CONTRIBUTING.md`? Are dependency origins valid GitHub URIs? Are MCP specs cross-platform (no `bash -c`, no `$HOME`, only `${workspaceDir}` / `${globalDir}` placeholders)?
+   - **Marketplace schema (when applicable):** Does the change conform to `CONTRIBUTING.md`? Are dependency origins valid GitHub URIs? Are MCP specs cross-platform (no `bash -c`, no `$HOME`, only `${workspaceDir}` / `${sharedDir}` placeholders)?
 
 4. **Prepare review:**
    - Collect inline comments with specific file path, line number, and actionable feedback

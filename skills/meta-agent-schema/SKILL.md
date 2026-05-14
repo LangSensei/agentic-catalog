@@ -2,7 +2,7 @@
 name: meta-agent-schema
 scope: langsensei
 description: "Schema for emploke-compatible agents, skills, and MCPs — frontmatter, layout, naming, dependency origins, MCP cross-platform rules, CHANGELOG conventions"
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Meta-Agent Schema Skill
@@ -109,8 +109,7 @@ The display title above the frontmatter (`# {Agent Name} Agent`) is human-readab
 ```json
 {
   "_meta": {
-    "name": "<namespace>/<short>",
-    "origin": "https://github.com/<owner>/<repo>/tree/<ref>/mcps/<namespace>_<short>.json"
+    "name": "<namespace>/<short>"
   },
   "type": "stdio",
   "command": "...",
@@ -121,7 +120,6 @@ The display title above the frontmatter (`# {Agent Name} Agent`) is human-readab
 Required `_meta.*`:
 
 - `_meta.name` is the MCP spec FQN. Reverse-DNS namespaces are preferred (`io.playwright/mcp`); single-segment vendor names (`acme/cli`, `azure/mcp`) are also OK.
-- `_meta.origin` MUST point at this same file's GitHub URL.
 
 Filename rule: the on-disk filename is `<namespace>_<short>.json` (replace `/` in the FQN with `_`). For example, the MCP whose `_meta.name` is `io.playwright/mcp` lives at `mcps/io.playwright_mcp.json`.
 
@@ -147,19 +145,18 @@ Two placeholders are supported in any string field of an MCP spec (`command`, an
 | Placeholder | Resolves to | Use for |
 | --- | --- | --- |
 | `${workspaceDir}` | The absolute path of the active emploke workspace | State scoped to a single project (per-workspace cookies, repo-local credentials, browser login state that should reset between projects) |
-| `${globalDir}` | A stable per-machine directory (`<EMPLOKE_HOME>/shared` by default) | State that genuinely belongs to the user account, not any single project (a global API token cache, a shared CA bundle, model weights downloaded once per machine) |
+| `${sharedDir}` | A stable per-machine directory (exposed to subprocesses as `$EMPLOKE_SHARED_DIR`) | State that genuinely belongs to the user account, not any single project (a global API token cache, a shared CA bundle, model weights downloaded once per machine) |
 
 emploke substitutes both before writing `.mcp.json` to the workDir. The substituted paths use forward slashes regardless of host OS, so the same JSON value bytes ship to Windows and POSIX. A typo in a placeholder (`${workspceDir}`) is rejected at install time with a clear error — placeholders aren't silently passed through.
 
-Pick `${globalDir}` over `${workspaceDir}` only when the state genuinely belongs to the user account rather than the project — e.g. a model download cache or a global API token jar.
+Pick `${sharedDir}` over `${workspaceDir}` only when the state genuinely belongs to the user account rather than the project — e.g. a model download cache or a global API token jar.
 
 #### Example
 
 ```json
 {
   "_meta": {
-    "name": "io.playwright/mcp",
-    "origin": "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
+    "name": "io.playwright/mcp"
   },
   "type": "stdio",
   "command": "npx",
@@ -175,7 +172,7 @@ Pick `${globalDir}` over `${workspaceDir}` only when the state genuinely belongs
 
 ## Origin URI grammar
 
-Dependencies (`dependencies.skills`, `dependencies.mcps`) and MCP `_meta.origin` are bare URI strings. Two schemes are accepted:
+Dependency origins (`dependencies.skills`, `dependencies.mcps`) are bare URI strings. Two schemes are accepted:
 
 - `https://github.com/<owner>/<repo>/tree/<ref>[/path]` — recommended for shared catalog entries; supports any public GitHub repo
 - `file:<absolute-path>` — local-only; never commit a `file:` origin

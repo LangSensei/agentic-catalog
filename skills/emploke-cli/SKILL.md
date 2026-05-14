@@ -2,10 +2,10 @@
 name: emploke-cli
 scope: langsensei
 description: "Control an emploke server from the CLI — workspaces, agents, tasks, sessions, catalog"
-version: 1.0.0
+version: 1.1.0
 prereqs: |
   Requires the `emploke` CLI on PATH and a running emploke server (`emploke start`).
-  Set `EMPLOKE_WORKSPACE=<id>` before any workspace-scoped command — `workspace use` was removed.
+  Set `EMPLOKE_WORKSPACE=<id>` before any workspace-scoped command.
 ---
 
 # emploke-cli skill
@@ -46,14 +46,7 @@ export EMPLOKE_WORKSPACE=ws-X
 emploke task dispatch --agent writer --instructions "..."
 ```
 
-❌ **Do NOT do this:**
-
-```sh
-emploke workspace use ws-X            # REMOVED — exits 2 with a redirection message
-emploke task dispatch ...             # would race with other clients if it worked
-```
-
-**Why this matters for you specifically.** The server's "current workspace" was a single shared variable across every CLI process, every dashboard tab, every other AI agent connected to the same emploke server. If you set it, then a human switched it via dashboard, your next command would silently target the wrong workspace. The CLI no longer reads that variable. Pass `--workspace` or set the env, every time.
+The CLI does not consult any server-side shared "current workspace" state — every workspace-scoped command must carry its own selector. This keeps your commands process-local and immune to interference from other clients (other CLI sessions, dashboard tabs, AI agents on the same server).
 
 If you create a new workspace mid-task, **immediately update your env**:
 

@@ -2,7 +2,7 @@
 name: xiaohongshu
 scope: langsensei
 description: "Xiaohongshu (小红书) browser automation skill. Use when browsing/searching content, extracting post data, or interacting with the platform via playwright. Requires pre-authenticated storage state."
-version: 1.4.0
+version: 1.5.0
 prereqs: |
   Requires: Playwright, Chromium, Chinese Fonts, Auth. See `references/SETUP.md` for step-by-step setup instructions.
 dependencies:
@@ -14,7 +14,7 @@ dependencies:
 
 ## Storage State
 
-This skill requires a pre-authenticated browser state at `<workspace>/.playwright/storage-state.json` (auto-resolved by walking up from cwd to find `workspace.json`; falls back to `./.playwright/storage-state.json` when no workspace context is found). All scripts accept `--storage-state <path>` to override per-invocation. The state file is shared with other playwright-using skills and the playwright MCP in the same workspace, so logging in once serves every component. To switch xiaohongshu accounts, delete the file and re-authenticate. If missing or expired, fail the run — debrief will notify the user to re-authenticate via OpenClaw.
+This skill requires a pre-authenticated browser state at `$EMPLOKE_WORKSPACE_DIR/.playwright/storage-state.json` (auto-resolved from emploke's runtime env contract; falls back to `./.playwright/storage-state.json` when invoked manually outside an emploke run). All scripts accept `--storage-state <path>` to override per-invocation. The state file is shared with other playwright-using skills and the playwright MCP in the same workspace, so logging in once serves every component. To switch xiaohongshu accounts, delete the file and re-authenticate. If missing or expired, fail the run — debrief will notify the user to re-authenticate via OpenClaw.
 
 ## CLI Scripts
 

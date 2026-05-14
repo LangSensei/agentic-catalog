@@ -218,7 +218,7 @@ When you need a specialist that doesn't exist in the marketplace yet, write the 
 ```sh
 # 1. Pick a name and a directory under the workspace.
 NAME="report-writer"
-DIR="$(emploke workspace show "$EMPLOKE_WORKSPACE" --json | jq -r .workdir)/local-agents/$NAME"
+DIR="$EMPLOKE_WORKSPACE_DIR/local-agents/$NAME"
 mkdir -p "$DIR"
 
 # 2. Write the AGENTS.md file (frontmatter + body).

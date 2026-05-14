@@ -2,35 +2,25 @@
 name: git-pr
 scope: langsensei
 description: "Git branch management and GitHub PR workflow using worktrees"
-version: 1.5.0
+version: 1.6.0
 ---
 
 # Git PR Skill
 
 ## Repository Setup
 
-Bare clones are cached so subsequent runs re-fetch instead of re-cloning. The cache location is resolved by walking up from the current directory to find a `workspace.json` marker (which emploke writes at the workspace root); when found, the cache lives under `<workspace>/.repos/`. With no workspace context, it falls back to `./.repos/` (cwd-relative). The `WORKSPACE_DIR` env var (or `EMPLOKE_WORKSPACE`) overrides both, so a host can pin the workspace root explicitly.
+Bare clones are cached so subsequent runs re-fetch instead of re-cloning. The cache lives under `<workspace>/.repos/`, where `<workspace>` is `$EMPLOKE_WORKSPACE_DIR` (emploke's task/session runtime contract — always set per-run). When the script is invoked manually outside an emploke run (e.g. local debugging), `$EMPLOKE_WORKSPACE_DIR` is unset and the cache falls back to `./.repos/` (cwd-relative); `cd` into the workspace root first.
 
 ```bash
 # --- workspace + repos-dir resolver (paste once at the top of the playbook) ---
 project_root() {
-  if [ -n "${WORKSPACE_DIR:-}" ]; then echo "$WORKSPACE_DIR"; return; fi
-  if [ -n "${EMPLOKE_WORKSPACE:-}" ]; then echo "$EMPLOKE_WORKSPACE"; return; fi
-  local dir="$(pwd)"
-  while [ "$dir" != "/" ] && [ "$dir" != "" ]; do
-    if [ -f "$dir/workspace.json" ]; then echo "$dir"; return; fi
-    dir="$(dirname "$dir")"
-  done
+  # `EMPLOKE_WORKSPACE_DIR` is emploke's runtime contract — always set inside
+  # a task/session. `pwd` is the manual-invocation fallback.
+  echo "${EMPLOKE_WORKSPACE_DIR:-$(pwd)}"
 }
 
 repos_dir() {
-  local root
-  root="$(project_root)"
-  if [ -n "$root" ]; then
-    echo "$root/.repos"
-  else
-    echo "$(pwd)/.repos"
-  fi
+  echo "$(project_root)/.repos"
 }
 
 # --- per-repo bare clone ---

@@ -2,7 +2,7 @@
 name: agent-forge
 scope: langsensei
 description: "Creates new emploke-compatible agents, skills, and MCPs in any catalog — defaults to writing into the current run's workDir; opens a PR only when the user names a target catalog repo"
-version: 3.0.0
+version: 3.1.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -49,9 +49,11 @@ Pick the mode at the start of the run and state it in the report.
 
 If Remote was requested but the target is unreachable (no network, no push rights, repo doesn't exist), fall back to Local and report the fallback reason.
 
-### Schema reference
+### Schema and conventions reference
 
 Catalogs are emploke-compatible, so the schema is fixed regardless of which catalog you target. **Load the `meta-agent-schema` skill in full before authoring anything** — it is the agent-facing single source of truth for layout, naming, frontmatter (skill / agent / mcp), MCP cross-platform rules, origin URI grammar, and CHANGELOG conventions.
+
+**Additionally, load the conventions doc** at <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md>. The conventions doc covers rules `meta-agent-schema` does not (workflow, runtime env contract for scripts, etc.). If the fetch fails, keep new entries minimal rather than inventing conventions from memory.
 
 Concrete examples to study after loading the schema: read 2-3 existing entries in any reachable catalog (`agents/`, `skills/`, `mcps/` directories of any emploke marketplace).
 
@@ -78,22 +80,21 @@ In what follows, **"catalog root"** means `<workDir>` in Local mode and `<workDi
 1. Study 2-3 existing skills in the catalog root's `skills/` for structure reference (or any emploke marketplace if the catalog root is empty)
 2. Create `<catalog-root>/skills/<new-name>/SKILL.md` following the format defined in the `meta-agent-schema` skill (skills may declare `prereqs:`; agents may not)
 3. If the skill needs supporting files: scripts go in `scripts/`, templates in `templates/`, hook configs in `hooks/<runtime>/`, reference material in `references/`
-4. Create `<catalog-root>/skills/<new-name>/CHANGELOG.md`
+4. **If the skill ships scripts that need a workspace path** (`<workspace>/.playwright/`, `<workspace>/.repos/`, `<workspace>/.cache/`, etc.), follow the conventions doc → "Workspace path conventions for scripts" section for the env contract scripts can read.
+5. Create `<catalog-root>/skills/<new-name>/CHANGELOG.md`
 
 ### Creating an MCP
 
 Follow the format and naming rules in the `meta-agent-schema` skill:
 
 - File path: `<catalog-root>/mcps/<namespace>_<short>.json` (replace `/` in the FQN with `_`)
-- `_meta.name` is the FQN; `_meta.origin` is the file's GitHub URL
-- All cross-platform rules apply (no `bash -c`, no `$HOME`, use `${workspaceDir}` / `${globalDir}` for paths)
+- `_meta.name` is the FQN
+- All cross-platform rules apply (no `bash -c`, no `$HOME`, use `${workspaceDir}` / `${sharedDir}` for paths)
 - Pretty-print with 2-space indent and a trailing newline
-
-In Local mode where the file is not yet committed to a repo, use a placeholder URL for `_meta.origin` and document it in the report; the user will fix it before publishing.
 
 ### Delivery
 
-**Local mode:** The deliverable is the set of files written to the workDir. The report must list every file with its path relative to the workDir, plus any placeholders (e.g. MCP `_meta.origin`) the user needs to fix before publishing into a catalog.
+**Local mode:** The deliverable is the set of files written to the workDir. The report must list every file with its path relative to the workDir.
 
 **Remote mode:**
 

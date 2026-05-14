@@ -71,8 +71,7 @@ Authoritative validator: [`packages/catalog/src/agent/agent-frontmatter.ts`](htt
 ```json
 {
   "_meta": {
-    "name": "<namespace>/<short>",
-    "origin": "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/<namespace>_<short>.json"
+    "name": "<namespace>/<short>"
   },
   "type": "stdio",
   "command": "...",
@@ -84,7 +83,6 @@ Rules:
 
 - `_meta.name` is the MCP spec FQN. Reverse-DNS namespaces are preferred (`io.playwright/mcp`); single-segment vendor names (`acme/cli`, `azure/mcp`) are also OK.
 - The on-disk filename is `<namespace>_<short>.json` (replace `/` in the FQN with `_`).
-- `_meta.origin` MUST point at this same file's GitHub URL.
 - Other fields (`type`, `command`, `args`, `env`, …) follow the MCP client-config convention.
 - Pretty-print with 2-space indent and a trailing newline.
 - Other `_meta.*` keys (e.g. registry sub-objects) survive untouched on re-write.
@@ -123,7 +121,7 @@ strings inside any custom object you put in the spec):
 | Placeholder        | Resolves to                                                                 | Use for                                                          |
 | ------------------ | --------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | `${workspaceDir}`  | The absolute path of the active emploke workspace.                           | State scoped to a single project (per-workspace cookies, repo-local credentials, browser login state that should reset between projects). |
-| `${globalDir}`     | A stable per-machine directory (`<EMPLOKE_HOME>/shared` by default).        | State that genuinely belongs to the user account, not any single project (a global API token cache, a shared CA bundle, model weights downloaded once per machine). |
+| `${sharedDir}`     | A stable per-machine directory (exposed to subprocesses as `$EMPLOKE_SHARED_DIR`). | State that genuinely belongs to the user account, not any single project (a global API token cache, a shared CA bundle, model weights downloaded once per machine). |
 
 emploke substitutes both before writing `.mcp.json` to the session/task
 workdir. The substituted paths use forward slashes regardless of host
@@ -136,8 +134,7 @@ Example — playwright with a per-workspace login state file (matches what `mcps
 ```json
 {
   "_meta": {
-    "name": "io.playwright/mcp",
-    "origin": "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
+    "name": "io.playwright/mcp"
   },
   "type": "stdio",
   "command": "npx",
@@ -151,9 +148,45 @@ Example — playwright with a per-workspace login state file (matches what `mcps
 }
 ```
 
-Pick `${globalDir}` over `${workspaceDir}` only when the state genuinely belongs to the user account rather than the project — e.g. a model download cache or a global API token jar.
+Pick `${sharedDir}` over `${workspaceDir}` only when the state genuinely belongs to the user account rather than the project — e.g. a model download cache or a global API token jar.
 
 Authoritative validator: [`packages/catalog/src/mcp/mcp-format.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/mcp/mcp-format.ts).
+
+## Workspace path conventions for scripts
+
+Skills and agents that ship executable scripts (`scripts/*.js`, `scripts/*.py`, inline `bash` recipes in `SKILL.md` / `AGENTS.md`) often need to resolve paths inside the active workspace — typically `<workspace>/.playwright/storage-state.json`, `<workspace>/.repos/`, `<workspace>/.ceo/`, and similar.
+
+**The contract**: emploke's task / session runtime injects a fixed set of `EMPLOKE_*` env vars into every spawned subprocess. See [`docs/architecture.md` → "Runtime env contract"](https://github.com/LangSensei/emploke/blob/main/docs/architecture.md) for the authoritative list. The ones a marketplace script will normally care about:
+
+| Env var                  | Set when                       | Meaning                                                       |
+| ------------------------ | ------------------------------ | ------------------------------------------------------------- |
+| `EMPLOKE_WORKSPACE_DIR`  | inside any emploke task/session | Absolute path to the active workspace root.                   |
+| `EMPLOKE_SHARED_DIR`     | inside any emploke task/session | Per-machine shared dir (same path the MCP `${sharedDir}` placeholder resolves to). |
+| `EMPLOKE_WORKSPACE`      | inside any emploke task/session | Workspace UUID (routing key for `emploke ... --workspace <id>`). |
+| `EMPLOKE_RUN_KIND`       | inside any emploke task/session | `"task"` or `"session"`.                                      |
+| `EMPLOKE_RUN_ID`         | inside any emploke task/session | The task / session id.                                        |
+| `EMPLOKE_RUN_DIR`        | inside any emploke task/session | The spawned process's `cwd`.                                  |
+
+**The convention**: scripts that need a workspace-scoped path should read `EMPLOKE_WORKSPACE_DIR` from env, with `cwd` as the only fallback. Inline, that's one line per language:
+
+```js
+// node
+const workspaceDir = process.env.EMPLOKE_WORKSPACE_DIR || process.cwd();
+```
+
+```python
+# python
+workspace_dir = os.environ.get("EMPLOKE_WORKSPACE_DIR") or os.getcwd()
+```
+
+```bash
+# bash
+workspace_dir="${EMPLOKE_WORKSPACE_DIR:-$(pwd)}"
+```
+
+The `cwd` fallback supports manual debugging (`cd <workspace> && node scripts/auth.js`). Inside an emploke run the env var is always set, so the fallback path is never taken.
+
+MCP specs use the `${workspaceDir}` / `${sharedDir}` placeholders described in the MCP section above — different mechanism (string substitution at provision time), same underlying intent.
 
 ## Naming rules
 
@@ -167,7 +200,7 @@ Authoritative validator: [`packages/catalog/src/skill/validate.ts`](https://gith
 
 ## Origin URI grammar
 
-Dependencies and MCP `_meta.origin` are bare URI strings. Two schemes are accepted in Phase 2:
+Dependency origins (`dependencies.skills`, `dependencies.mcps`) are bare URI strings. Two schemes are accepted in Phase 2:
 
 - `https://github.com/<owner>/<repo>/tree/<ref>[/path]` — recommended for shared catalog entries
 - `file:<absolute-path>` — local-only; never commit a `file:` origin

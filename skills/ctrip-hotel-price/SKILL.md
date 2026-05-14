@@ -2,7 +2,7 @@
 name: ctrip-hotel-price
 scope: langsensei
 description: "Ctrip (携程) hotel price query tool. Use when checking hotel prices, comparing rates, or monitoring price changes on Ctrip via Playwright browser automation. Requires pre-authenticated storage state."
-version: 1.4.0
+version: 1.5.0
 prereqs: |
   Requires: Playwright, Chromium, Chinese Fonts, Auth. See `references/SETUP.md` for step-by-step setup instructions.
 ---
@@ -11,7 +11,7 @@ prereqs: |
 
 ## Storage State
 
-This skill requires a pre-authenticated browser state at `<workspace>/.playwright/storage-state.json` (auto-resolved by walking up from cwd to find `workspace.json`; falls back to `./.playwright/storage-state.json` when no workspace context is found). The state file is shared with other playwright-using skills and the playwright MCP in the same workspace, so logging in once serves every component. To switch ctrip accounts, delete the file and re-authenticate. If missing or expired, fail the run — debrief will notify the user to re-authenticate.
+This skill requires a pre-authenticated browser state at `$EMPLOKE_WORKSPACE_DIR/.playwright/storage-state.json` (auto-resolved from emploke's runtime env contract; falls back to `./.playwright/storage-state.json` when invoked manually outside an emploke run). The state file is shared with other playwright-using skills and the playwright MCP in the same workspace, so logging in once serves every component. To switch ctrip accounts, delete the file and re-authenticate. If missing or expired, fail the run — debrief will notify the user to re-authenticate.
 
 ## CLI Scripts
 
