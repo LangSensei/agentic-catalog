@@ -2,7 +2,7 @@
 name: agent-forge
 scope: langsensei
 description: "Creates new emploke-compatible agents, skills, and MCPs in any catalog — defaults to writing into the current run's workDir; opens a PR only when the user names a target catalog repo"
-version: 3.1.0
+version: 3.2.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -73,15 +73,17 @@ In what follows, **"catalog root"** means `<workDir>` in Local mode and `<workDi
 
 1. Study 2-3 existing agents in the catalog root's `agents/` for reference (or any emploke marketplace if the catalog root is empty)
 2. Create `<catalog-root>/agents/<new-name>/AGENTS.md` following the format defined in the `meta-agent-schema` skill
-3. Create `<catalog-root>/agents/<new-name>/CHANGELOG.md` with the initial release entry (format per `meta-agent-schema`)
+3. **If the agent body references files inside a dependency skill** (e.g. "consult `<dep-skill>`'s `references/index.md`"), refer to the skill abstractly or via `<SKILL_DIR>` — never hardcode any specific runtime's parent dir (`.github/`, `.claude/`, `.gemini/`, etc.). See `meta-agent-schema` → "Runtime-agnostic file references in agent / skill bodies" for the rule.
+4. Create `<catalog-root>/agents/<new-name>/CHANGELOG.md` with the initial release entry (format per `meta-agent-schema`)
 
 ### Creating a Skill
 
 1. Study 2-3 existing skills in the catalog root's `skills/` for structure reference (or any emploke marketplace if the catalog root is empty)
 2. Create `<catalog-root>/skills/<new-name>/SKILL.md` following the format defined in the `meta-agent-schema` skill (skills may declare `prereqs:`; agents may not)
 3. If the skill needs supporting files: scripts go in `scripts/`, templates in `templates/`, hook configs in `hooks/<runtime>/`, reference material in `references/`
-4. **If the skill ships scripts that need a workspace path** (`<workspace>/.playwright/`, `<workspace>/.repos/`, `<workspace>/.cache/`, etc.), follow the conventions doc → "Workspace path conventions for scripts" section for the env contract scripts can read.
-5. Create `<catalog-root>/skills/<new-name>/CHANGELOG.md`
+4. **If the skill body references its own sibling files** (e.g. `cp templates/plan.md .` or `cat references/checklist.md`), use the `<SKILL_DIR>` placeholder — never hardcode any specific runtime's parent dir (`.github/`, `.claude/`, `.gemini/`, etc.) or a provisioner-specific naming convention. Document the placeholder once in the body. See `meta-agent-schema` → "Runtime-agnostic file references in agent / skill bodies" for the full rule and antipatterns list.
+5. **If the skill ships scripts that need a workspace path** (`<workspace>/.playwright/`, `<workspace>/.repos/`, `<workspace>/.cache/`, etc.), follow the conventions doc → "Workspace path conventions for scripts" section for the env contract scripts can read.
+6. Create `<catalog-root>/skills/<new-name>/CHANGELOG.md`
 
 ### Creating an MCP
 

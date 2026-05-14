@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.0 (2026-05-14)
+
+### Added
+- **Phase 9 check 8 — runtime-agnostic file references in agent / skill bodies.** Flags any provider config dir (`.github/`, `.claude/`, `.gemini/`, `.cursor/`, `.windsurf/`, `.codex/`, etc.) followed by emploke content subdirs (`skills/`, `hooks/`); `<scope>__<short>` flatten conventions written literally as path components; and absolute / `$HOME` / `~` paths. Applies to `AGENTS.md` / `SKILL.md` bodies and reference markdown files. Exclusions: CHANGELOG provenance, `scripts/` content (legitimate runtime-side use), and antipattern-documentation prose itself. Companion check to `meta-agent-schema` 1.2.0's new "Runtime-agnostic file references in agent / skill bodies" section. Surfaced after the `agency-role-reference` PR (#16) iterated through several wrong path schemes; this lint catches the same bug class going forward — for any current OR future provider.
+
 ## 3.1.0 (2026-05-14)
 
 ### Added
