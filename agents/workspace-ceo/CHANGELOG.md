@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0 (2026-05-14)
+
+### Added
+- New optional dependency on the `agency-role-reference` skill (a pointer index of ~185 generic role templates from `msitarzewski/agency-agents`, MIT-licensed). CEO now consults this index as a starting point in the "Create local" branch of the hiring decision tree, then specializes the upstream template for the active mission before writing the resulting `local-agents/<name>/AGENTS.md`. Catalog stays clean (no fork of generic templates); upstream improvements flow automatically.
+
+### Changed
+- `references/hiring/decision-tree.md` step 3 (Create local) — added step 3 to consult the role library; renumbered subsequent steps.
+- `references/hiring/writing-good-agent-prompts.md` — new "Before you start: check the role library" section at the top guides the drafting flow into the library first when the role is generic.
+
 ## 1.1.0 (2026-05-14)
 
 ### Changed
