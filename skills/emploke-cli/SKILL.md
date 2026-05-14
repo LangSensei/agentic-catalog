@@ -2,7 +2,7 @@
 name: emploke-cli
 scope: langsensei
 description: "Control an emploke server from the CLI — workspaces, agents, tasks, sessions, catalog"
-version: 1.3.1
+version: 1.4.0
 ---
 
 # emploke-cli skill

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0 (2026-05-14)
+
+### Changed
+- Update task dispatch examples in `SKILL.md` and `references/workflows.md` from `--instructions` to `--brief` (and optional `--details`) to track the CLI flag rename in `LangSensei/emploke#113`.
+
 ## 1.3.1 (2026-05-14)
 
 ### Fixed

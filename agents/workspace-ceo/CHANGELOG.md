@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0 (2026-05-14)
+
+### Changed
+- Update env var references from `EMPLOKE_RUN_KIND/_ID/_DIR` to `EMPLOKE_WORK_KIND/_ID/_DIR` to track `LangSensei/emploke#110`.
+- Update task dispatch examples and prose from `--instructions` to `--brief` (and optional `--details`) to track the CLI flag rename in `LangSensei/emploke#113`.
+
 ## 1.3.0 (2026-05-14)
 
 ### Changed
