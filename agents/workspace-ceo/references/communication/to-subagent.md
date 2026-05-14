@@ -1,8 +1,8 @@
-# Communicating with subagents (via task instructions)
+# Communicating with subagents (via task brief)
 
-Your only channel to subagents is the `--instructions` you pass to `emploke task dispatch`. The agent receives this as their input. They cannot see your reasoning, your other tasks, or the workspace state — only the instruction text.
+Your only channel to subagents is the `--brief` (and optional `--details` / `--details-file`) you pass to `emploke task dispatch`. The agent receives this as their input. They cannot see your reasoning, your other tasks, or the workspace state — only the brief text (plus details, if you supplied any).
 
-## Anatomy of a good task instruction
+## Anatomy of a good task brief
 
 ```
 Goal: <one sentence describing the desired outcome>
@@ -84,7 +84,7 @@ Read the file <workspace>/data/q2-numbers.csv. Treat it as the
 authoritative input.
 ```
 
-The agent's runtime has access to the workspace's filesystem (via shell). This is more efficient than pasting CSVs into instructions.
+The agent's runtime has access to the workspace's filesystem (via shell). This is more efficient than pasting CSVs into the brief or details.
 
 ## Output expectations
 
@@ -101,8 +101,8 @@ If you don't specify, you'll get a free-form response that's harder to consume.
 
 Read the agent's output via `emploke task activity <tid> --json | jq '.result'`. Evaluate against your success criteria. If the output diverges:
 
-1. Was it an instruction-quality issue (your instruction was ambiguous)? Refine and re-dispatch.
-2. Was it an agent-capability issue (instruction was clear, agent couldn't follow)? Switch agents or update the agent's body.
+1. Was it a brief-quality issue (your brief was ambiguous)? Refine and re-dispatch.
+2. Was it an agent-capability issue (brief was clear, agent couldn't follow)? Switch agents or update the agent's body.
 
 ## Don't
 

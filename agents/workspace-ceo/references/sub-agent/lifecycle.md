@@ -39,7 +39,7 @@ Dispatch a probe task (see `hiring/probe-tasks.md`):
 ```sh
 emploke task dispatch \
   --agent "local/<name>" \
-  --instructions "<probe instruction>" \
+  --brief "<probe instruction>" \
   --json
 ```
 

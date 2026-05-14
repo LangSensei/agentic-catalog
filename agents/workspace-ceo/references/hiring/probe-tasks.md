@@ -18,7 +18,7 @@ Goal: confirm the agent can fetch and parse a known data source.
 
 Dispatch:
   emploke task dispatch --agent <fqn> \
-    --instructions "Fetch the latest closing price of stock symbol AAPL from your default data source. Return as JSON: {symbol, price, asOf, source}."
+    --brief "Fetch the latest closing price of stock symbol AAPL from your default data source. Return as JSON: {symbol, price, asOf, source}."
 
 Verify:
   - Output is valid JSON
@@ -37,13 +37,10 @@ Goal: confirm the agent follows format constraints + cites sources + doesn't inv
 
 Dispatch:
   emploke task dispatch --agent <fqn> \
-    --instructions "Write a 100-word summary of the following 3 facts. Use only these facts; do not invent. Cite each fact by its number.
-
-    1. The Eiffel Tower was completed in 1889.
+    --brief "Write a 100-word summary of the 3 facts in --details. Use only those facts; do not invent. Cite each fact by its number. Output format: markdown, single paragraph." \
+    --details "1. The Eiffel Tower was completed in 1889.
     2. It is 330 meters tall.
-    3. It was originally intended to be temporary.
-
-    Output format: markdown, single paragraph."
+    3. It was originally intended to be temporary."
 
 Verify:
   - Output is markdown, single paragraph
@@ -62,7 +59,7 @@ Goal: confirm the agent can read a file and produce a small diff.
 
 Dispatch:
   emploke task dispatch --agent <fqn> \
-    --instructions "Read the file <workspace>/probe/hello.txt. Add a line that says 'CEO probe: <today's date>' at the end. Output the updated file content."
+    --brief "Read the file <workspace>/probe/hello.txt. Add a line that says 'CEO probe: <today's date>' at the end. Output the updated file content."
 
 Verify:
   - Output contains the original content unchanged
@@ -81,7 +78,7 @@ Goal: confirm the agent follows the exploration discipline (frames question, lis
 
 Dispatch:
   emploke task dispatch --agent <fqn> \
-    --instructions "Investigate: what is the current best-practice library for parsing markdown in Node.js? Output a markdown report with sections: Question, Sources Consulted, Findings, Recommendation."
+    --brief "Investigate: what is the current best-practice library for parsing markdown in Node.js? Output a markdown report with sections: Question, Sources Consulted, Findings, Recommendation."
 
 Verify:
   - Output has all 4 sections

@@ -63,14 +63,14 @@ If the task is in a logical loop OR you've already extended once:
 
 ```sh
 emploke task rm "$tid"   # cancel
-# Then redispatch with a refined instruction:
-emploke task dispatch --agent <same-agent> --instructions "<refined>" --json
+# Then redispatch with a refined brief:
+emploke task dispatch --agent <same-agent> --brief "<refined>" --json
 ```
 
 Update the mission's `tasks.json` to point to the new task ID. Append to `progress.md`:
 
 ```
-[YYYY-MM-DDTHH:MM:SSZ] Cancelled stuck task $tid (loop detected); redispatched as $newTid with refined instructions.
+[YYYY-MM-DDTHH:MM:SSZ] Cancelled stuck task $tid (loop detected); redispatched as $newTid with refined brief.
 ```
 
 ### 3. Cancel + switch agent
@@ -80,7 +80,7 @@ If you've already redispatched once with the same agent and it's stuck again, th
 ```sh
 emploke task rm "$tid"
 # Pick a different agent from your roster (or reuse hiring decision tree).
-emploke task dispatch --agent <different-agent> --instructions "<orig>" --json
+emploke task dispatch --agent <different-agent> --brief "<orig>" --json
 ```
 
 Update `hires.md` with a failure entry for the original agent.

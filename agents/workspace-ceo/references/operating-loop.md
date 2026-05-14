@@ -124,7 +124,7 @@ if [ -n "$NEXT" ]; then
   # If yes, dispatch:
   TID=$(emploke task dispatch \
         --agent <chosen-agent-from-org-chart> \
-        --instructions "$(craft_instructions_for "$NEXT")" \
+        --brief "$(craft_brief_for "$NEXT")" \
         --json | jq -r .id)
   # Track the mapping.
   jq --arg step "$NEXT" --arg tid "$TID" '.[$step] = $tid' \
