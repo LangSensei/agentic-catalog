@@ -87,12 +87,7 @@ Lint the changed files plus any files that cross-reference them (e.g., if an `AG
 
 The `meta-agent-schema` skill is the authoritative format spec — every check below validates against it. Load that skill in full at the start of the run; do not improvise schema rules from memory.
 
-**Additionally, load the conventions doc** before running Phase 9. Resolution order:
-
-1. **Catalog-local** (preferred when available): `<catalog-root>/CONTRIBUTING.md` (resolution rules 1 and 3 above — local catalog) or `<workDir>/repo/CONTRIBUTING.md` (rule 2 — remote catalog).
-2. **Canonical URL fallback** (catalog doesn't ship its own): fetch <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md> (raw: <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md>). Private forks may have their own conventions — prefer the local file when it exists.
-
-The conventions doc is the source of Phase 9's anti-pattern definitions (runtime env contract, workspace-path anti-patterns, etc.). When the catalog under lint ships its own, defer to it over the listed patterns. If both load steps fail (no network, no local file), skip Phase 9 conventions checks with a note in the report.
+**Additionally, load the conventions doc** at <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md>. It is the source of Phase 9's workspace-path checks (runtime env contract for scripts). If the fetch fails, skip Phase 9 conventions checks with a note in the report.
 
 Execute each check phase in order. For each item checked, record pass/fail/warning with the file location.
 

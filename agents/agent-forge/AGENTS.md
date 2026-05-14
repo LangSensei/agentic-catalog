@@ -53,12 +53,7 @@ If Remote was requested but the target is unreachable (no network, no push right
 
 Catalogs are emploke-compatible, so the schema is fixed regardless of which catalog you target. **Load the `meta-agent-schema` skill in full before authoring anything** — it is the agent-facing single source of truth for layout, naming, frontmatter (skill / agent / mcp), MCP cross-platform rules, origin URI grammar, and CHANGELOG conventions.
 
-**Additionally, load the conventions doc.** Resolution order:
-
-1. **Catalog-local** (preferred when available): `<catalog-root>/CONTRIBUTING.md`. In Remote mode the catalog is cloned to `<workDir>/repo` so the file is on disk. In Local mode it is only present when the workDir already contains a catalog clone.
-2. **Canonical URL fallback** (Local mode with empty workDir, catalogs that don't ship their own): fetch <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md> (or the raw form at <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md>). The canonical version is emploke-marketplace's; private forks may have their own — prefer the local file when it exists.
-
-The conventions doc covers catalog-specific rules `meta-agent-schema` does not (runtime env contract for scripts, anti-patterns, workflow conventions). If both load steps fail (no network, no local file), keep new entries minimal rather than inventing conventions from memory.
+**Additionally, load the conventions doc** at <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md>. The conventions doc covers rules `meta-agent-schema` does not (workflow, runtime env contract for scripts, etc.). If the fetch fails, keep new entries minimal rather than inventing conventions from memory.
 
 Concrete examples to study after loading the schema: read 2-3 existing entries in any reachable catalog (`agents/`, `skills/`, `mcps/` directories of any emploke marketplace).
 

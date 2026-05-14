@@ -3,7 +3,7 @@
 ## 3.1.0 (2026-05-14)
 
 ### Added
-- **CONTRIBUTING.md as a conventions source** — load the conventions doc alongside `meta-agent-schema` before running Phase 9. Resolution: catalog-local file when available, else fall back to the canonical URL <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md>. If both load steps fail (no network, no local), Phase 9 conventions checks are skipped with a note.
+- **Conventions doc loaded from canonical URL** — load <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md> alongside `meta-agent-schema` before running Phase 9. If the fetch fails, Phase 9 conventions checks are skipped with a note.
 - **Phase 9 — three workspace-path conventions checks** for scripts (`.js` / `.py` / `.sh` / `.ps1` and bash recipes inline in `SKILL.md` / `AGENTS.md`):
   - `EMPLOKE_WORKSPACE_DIR` is the workspace root path; `EMPLOKE_WORKSPACE` in a path-join context is a bug (var is a UUID, not a path).
   - emploke does not write a `workspace.json` marker; flag scripts that walk up from cwd looking for one.

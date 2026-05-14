@@ -3,7 +3,7 @@
 ## 3.1.0 (2026-05-14)
 
 ### Added
-- **CONTRIBUTING.md as a conventions source** — load the conventions doc alongside `meta-agent-schema`. Resolution: catalog-local file when available, else fall back to the canonical URL <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md>. The URL anchor is necessary because installed agents in Local mode often start with an empty workDir.
+- **Conventions doc loaded from canonical URL** — load <https://raw.githubusercontent.com/LangSensei/emploke-marketplace/main/CONTRIBUTING.md> alongside `meta-agent-schema`. `meta-agent-schema` covers schema (frontmatter, layout, naming); the conventions doc covers the rest (workflow, runtime env contract for scripts).
 - **Creating a Skill** step 4 points at the conventions doc → "Workspace path conventions for scripts" when authoring scripts that need a workspace path.
 
 ### Changed
