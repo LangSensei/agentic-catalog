@@ -2,10 +2,7 @@
 name: emploke-cli
 scope: langsensei
 description: "Control an emploke server from the CLI — workspaces, agents, tasks, sessions, catalog"
-version: 1.1.0
-prereqs: |
-  Requires the `emploke` CLI on PATH and a running emploke server (`emploke start`).
-  Set `EMPLOKE_WORKSPACE=<id>` before any workspace-scoped command.
+version: 1.2.0
 ---
 
 # emploke-cli skill
@@ -21,39 +18,34 @@ You're an AI controlling an emploke server through its CLI. This skill teaches y
 
 If the user just wants you to read repo files or run shell commands, this skill is irrelevant.
 
-## Setup (do once per shell session)
+## Setup
+
+emploke injects what you need into your env when it spawns your task or session:
+
+- `EMPLOKE_SERVER` — server URL (the CLI uses this automatically)
+- `EMPLOKE_WORKSPACE` — workspace UUID (workspace-scoped commands inherit it)
+
+Quick verification:
 
 ```sh
-emploke health                                # confirm server is up (exit 0 + JSON `ok`)
-emploke workspace list --json                 # find or note the workspace id you'll work in
-export EMPLOKE_WORKSPACE=<id-from-above>      # MANDATORY — see "Workspace discipline" below
+emploke health    # CLI works + server reachable (exit 0 + JSON `ok`)
 ```
 
-If `emploke health` fails with `server unreachable`, ask the user to run `emploke start` (or pass `--server http://...` if they're pointing at a remote one).
+## Workspace discipline
 
-## Workspace discipline (read this carefully)
-
-**Every workspace-scoped command requires an explicit selector.** The CLI will refuse with exit 1 + a usage error if it can't find one.
-
-✅ **Two valid sources** (both process-local, race-free):
+Every workspace-scoped command requires an explicit selector. The CLI reads `EMPLOKE_WORKSPACE` from your env (already set), so commands work as-is:
 
 ```sh
-# (a) per-command flag
-emploke task dispatch --workspace ws-X --agent writer --instructions "..."
-
-# (b) shell-session env (preferred for long sessions)
-export EMPLOKE_WORKSPACE=ws-X
 emploke task dispatch --agent writer --instructions "..."
 ```
 
-The CLI does not consult any server-side shared "current workspace" state — every workspace-scoped command must carry its own selector. This keeps your commands process-local and immune to interference from other clients (other CLI sessions, dashboard tabs, AI agents on the same server).
-
-If you create a new workspace mid-task, **immediately update your env**:
+To act on a different workspace, pass `--workspace <id>` per command:
 
 ```sh
-NEW_WS=$(emploke workspace add --name "..." --workdir "..." --json | jq -r .id)
-export EMPLOKE_WORKSPACE="$NEW_WS"
+emploke task list --workspace ws-Y
 ```
+
+The CLI does not consult any server-side shared "current workspace" state — selectors are process-local, immune to interference from other clients (other CLI sessions, dashboard tabs, AI agents on the same server).
 
 ## Output discipline
 
@@ -116,7 +108,6 @@ emploke task activity <tid> --follow --cursor <N> | jq -c
 
 - **Not a substitute for `--help`.** Concrete flag lists / new subcommands change with releases; consult `emploke <cmd> --help` for the canonical surface.
 - **Not a server admin guide.** This skill assumes the server is running and configured. Service lifecycle (`emploke start / stop / restart / serve`) is a separate concern.
-- **Not for emploke-runtime-internal agents that already have workspace scope.** If you're an agent already running inside an emploke task runtime where the host has wired up `EMPLOKE_WORKSPACE` for you, you can skip the workspace-discovery step in setup.
 
 ## See also
 
