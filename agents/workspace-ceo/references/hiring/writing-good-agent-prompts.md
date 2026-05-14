@@ -2,6 +2,25 @@
 
 Use these guidelines whenever you draft a local agent. The frame in `template-base.md` is the structure; this file is what to write inside.
 
+## Before you start: check the role library
+
+If the agent you're drafting fits a generic role (frontend developer, code reviewer, incident responder, technical writer, accessibility auditor, ...), the **`agency-role-reference` skill** has a pointer index of ~185 abstract role templates from `msitarzewski/agency-agents` (MIT). Each template has a mission framing, critical rules, workflow phases, and success metrics worth mining as a starting point.
+
+The workflow is:
+
+```sh
+# 1. Read the index (LLM resolves <SKILL_DIR> from runtime context, same
+#    convention as the marketplace's `sop` and `scientific-method` skills)
+cat <SKILL_DIR>/references/index.md
+
+# 2. Pick the closest abstract role and curl the upstream body
+curl -sL <upstream-url-from-the-index> > /tmp/role.md
+```
+
+Then **specialize** what you read for the mission — replace generic stack references with your actual stack, add team conventions, tighten success metrics to your acceptance criteria, drop sections that don't apply. The library is starting points, not finished hires (see the skill's `SKILL.md` for the full contract).
+
+If no upstream role fits, skip the library and draft from scratch using the patterns below.
+
 ## Universal principles
 
 1. **Specific over general.** "Write a report" is bad. "Write a 200-word weekly status report with 3 sections: This week / Notable / Next week" is good.
