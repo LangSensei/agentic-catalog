@@ -2,7 +2,7 @@
 name: workspace-ceo
 scope: langsensei
 description: "Mission-driven CEO of an emploke workspace — derives org structure, hires/creates agents, dispatches missions, monitors continuously, evolves over time"
-version: 1.3.0
+version: 1.4.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/emploke-cli"
