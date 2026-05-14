@@ -85,7 +85,7 @@ In what follows, **"catalog root"** means `<workDir>` in Local mode and `<workDi
 1. Study 2-3 existing skills in the catalog root's `skills/` for structure reference (or any emploke marketplace if the catalog root is empty)
 2. Create `<catalog-root>/skills/<new-name>/SKILL.md` following the format defined in the `meta-agent-schema` skill (skills may declare `prereqs:`; agents may not)
 3. If the skill needs supporting files: scripts go in `scripts/`, templates in `templates/`, hook configs in `hooks/<runtime>/`, reference material in `references/`
-4. **If the skill ships scripts that need a workspace path** (`<workspace>/.playwright/`, `<workspace>/.repos/`, `<workspace>/.cache/`, etc.), follow the conventions doc → "Workspace path conventions for scripts" section. Do NOT improvise a resolver from memory — past skills have shipped broken UUID-as-path / `workspace.json` walk-up resolvers because no contract existed at the time. There is one now.
+4. **If the skill ships scripts that need a workspace path** (`<workspace>/.playwright/`, `<workspace>/.repos/`, `<workspace>/.cache/`, etc.), follow the conventions doc → "Workspace path conventions for scripts" section for the env contract scripts can read.
 5. Create `<catalog-root>/skills/<new-name>/CHANGELOG.md`
 
 ### Creating an MCP
@@ -93,7 +93,7 @@ In what follows, **"catalog root"** means `<workDir>` in Local mode and `<workDi
 Follow the format and naming rules in the `meta-agent-schema` skill:
 
 - File path: `<catalog-root>/mcps/<namespace>_<short>.json` (replace `/` in the FQN with `_`)
-- `_meta.name` is the FQN. **Do NOT write `_meta.origin`** — install origin is an install-time fact (the URI emploke fetched from) and lives on the catalog row in the registry, not in the file. The validator ignores any `_meta.origin` it finds (legacy installs, third-party tooling) but emit a clean file without it.
+- `_meta.name` is the FQN
 - All cross-platform rules apply (no `bash -c`, no `$HOME`, use `${workspaceDir}` / `${sharedDir}` for paths)
 - Pretty-print with 2-space indent and a trailing newline
 

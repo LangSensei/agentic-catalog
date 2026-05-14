@@ -121,8 +121,6 @@ Required `_meta.*`:
 
 - `_meta.name` is the MCP spec FQN. Reverse-DNS namespaces are preferred (`io.playwright/mcp`); single-segment vendor names (`acme/cli`, `azure/mcp`) are also OK.
 
-Do NOT write `_meta.origin`. Install origin is an install-time fact (the URI emploke fetched from) and lives on the catalog row in the registry, not in the file. The validator ignores any `_meta.origin` it finds (legacy installs, third-party tooling) but authors should not add it.
-
 Filename rule: the on-disk filename is `<namespace>_<short>.json` (replace `/` in the FQN with `_`). For example, the MCP whose `_meta.name` is `io.playwright/mcp` lives at `mcps/io.playwright_mcp.json`.
 
 Other top-level fields (`type`, `command`, `args`, `env`, …) follow the [MCP client-config convention](https://modelcontextprotocol.io). Other `_meta.*` keys (e.g. registry sub-objects) survive untouched on re-write.

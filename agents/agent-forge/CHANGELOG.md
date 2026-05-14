@@ -3,13 +3,14 @@
 ## 3.1.0 (2026-05-14)
 
 ### Added
-- **CONTRIBUTING.md as a conventions source** — load the conventions doc alongside `meta-agent-schema`. Resolution: catalog-local file when available (Remote-mode worktree or Local-mode preloaded catalog), else fall back to the canonical URL <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md>. The URL anchor is necessary because installed agents in Local mode often start with an empty workDir — no local file to load. `meta-agent-schema` stays focused on schema (frontmatter, layout, naming); the conventions doc covers catalog-specific rules (workflow, runtime env contract for scripts, anti-patterns).
-- **Creating a Skill** step explicitly directs the agent at the conventions doc → "Workspace path conventions for scripts" section when authoring scripts that need a workspace path (storage state, repo cache, …). The historical bug class (broken UUID-as-path / `workspace.json` walk-up resolvers shipped by 4 skills) is the case this guards against.
+- **CONTRIBUTING.md as a conventions source** — load the conventions doc alongside `meta-agent-schema`. Resolution: catalog-local file when available, else fall back to the canonical URL <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md>. The URL anchor is necessary because installed agents in Local mode often start with an empty workDir.
+- **Creating a Skill** step 4 points at the conventions doc → "Workspace path conventions for scripts" when authoring scripts that need a workspace path.
 
 ### Changed
-- **Creating an MCP**: drop the `_meta.origin` instruction. The emploke MCP validator confirms install origin is an install-time fact (persisted on the SQLite catalog row), not part of the file — authors should emit a clean spec without it. Also dropped the "Local mode: leave a placeholder URL for `_meta.origin`" workaround (no longer needed).
-- MCP cross-platform rule: rename `${globalDir}` → `${sharedDir}` to match emploke's renamed placeholder (the old `${globalDir}` name is now rejected by the loader).
-- Rename the "Schema reference" section → "Schema and conventions reference" to reflect the dual source (schema + conventions).
+- **Creating an MCP**: drop the `_meta.origin` instruction. The emploke MCP validator confirms install origin is an install-time fact (persisted on the SQLite catalog row), not part of the file.
+- MCP cross-platform rule: rename `${globalDir}` → `${sharedDir}`.
+- Rename "Schema reference" section → "Schema and conventions reference".
+- Strip historical / migration / compatibility narrative from instructions; keep forward-only.
 
 ## 3.0.0 (2026-05-13)
 

@@ -83,7 +83,6 @@ Rules:
 
 - `_meta.name` is the MCP spec FQN. Reverse-DNS namespaces are preferred (`io.playwright/mcp`); single-segment vendor names (`acme/cli`, `azure/mcp`) are also OK.
 - The on-disk filename is `<namespace>_<short>.json` (replace `/` in the FQN with `_`).
-- **Do NOT write `_meta.origin`.** Install origin is an install-time fact (the URI emploke fetched from) and lives on the catalog row in the registry, not in the file. The validator ignores any `_meta.origin` it finds (legacy installs, third-party tooling) but authors should not add it. See [`packages/catalog/src/mcp/mcp-format.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/mcp/mcp-format.ts) for the rationale.
 - Other fields (`type`, `command`, `args`, `env`, …) follow the MCP client-config convention.
 - Pretty-print with 2-space indent and a trailing newline.
 - Other `_meta.*` keys (e.g. registry sub-objects) survive untouched on re-write.
@@ -187,13 +186,7 @@ workspace_dir="${EMPLOKE_WORKSPACE_DIR:-$(pwd)}"
 
 The `cwd` fallback supports manual debugging (`cd <workspace> && node scripts/auth.js`). Inside an emploke run the env var is always set, so the fallback path is never taken.
 
-**Anti-patterns** (do NOT do these):
-
-- ❌ **Using `$EMPLOKE_WORKSPACE` as a path.** That env var is the workspace UUID (a routing key), not a filesystem path. Past skills hit this bug and produced relative paths like `fe751922-.../.playwright/storage-state.json` that never exist on disk.
-- ❌ **Walking up from `cwd` looking for a `workspace.json` marker.** emploke does not write any marker file at the workspace root; this dance is pure cargo-cult.
-- ❌ **Reading `$EMPLOKE_HOME`** from a skill/agent script. That's emploke's own service-internal directory (holds `global.db`, `runtime.json`, server logs). It is deliberately scrubbed from the task path so agents can't accidentally corrupt it. Use `$EMPLOKE_SHARED_DIR` if you need a machine-shared writable directory.
-
-**MCP specs** use the `${workspaceDir}` / `${sharedDir}` placeholders described in the MCP section above — different mechanism (string substitution at provision time), same underlying intent.
+MCP specs use the `${workspaceDir}` / `${sharedDir}` placeholders described in the MCP section above — different mechanism (string substitution at provision time), same underlying intent.
 
 ## Naming rules
 

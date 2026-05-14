@@ -124,11 +124,9 @@ For each `agents/*/AGENTS.md`:
 For each `mcps/*.json`:
 - Well-formed JSON, pretty-printed with 2-space indent + trailing newline
 - `_meta.name` is set and uses the `<namespace>/<short>` form
-- **Warn if `_meta.origin` is present** — emploke ignores it (origin lives on the install-time SQLite row, not the file), but a stale `_meta.origin` in source is a sign of an out-of-date author template. Suggest removing it.
 - The on-disk filename is `<namespace>_<short>.json` (matching the FQN with `/` replaced by `_`)
 - **Cross-platform:** `command` is a bare executable name (no `bash`, no `/usr/bin/...`); no shell wrappers in `args`; no `$HOME` / `${VAR}` in `args` or `env`
-- `${workspaceDir}` / `${sharedDir}` placeholders, if present, are spelled exactly (typos are rejected by the loader)
-- **Legacy `${globalDir}` placeholder is a fatal error** — it was renamed to `${sharedDir}` and the emploke loader now rejects `${globalDir}` as unknown. Any spec still using it would fail at install. Report and stop further lint of the offending file until the placeholder is fixed.
+- Only `${workspaceDir}` and `${sharedDir}` placeholders are accepted; any other `${name}` is rejected by the loader. Report any unrecognized placeholder as a fatal error and stop further lint of the offending file.
 
 #### Phase 4: Hook configuration
 
@@ -183,10 +181,10 @@ Beyond structural and content-level checks, review hook scripts, templates, and 
 4. **PowerShell reserved variable names** — Flag `$input` (case-insensitive) when used as a custom variable in `.ps1` scripts. `$input` is a PowerShell automatic variable and silently shadows intended values. Suggest `$hookInput` or similar.
 5. **Duplicate comments** — Detect consecutive identical comment lines in hook scripts (`.sh`, `.ps1`, `.js`)
 6. **String literal hygiene** — Flag user-facing message literals with stray spaces before punctuation (e.g., `'## Synthesis' .`) or consecutive punctuation (`..`)
-7. **Workspace path anti-patterns in scripts** — Flag scripts (`.js`, `.py`, `.sh`, `.ps1`, and bash recipes inline in `SKILL.md` / `AGENTS.md`) that contain any of these. The conventions doc loaded at the start of the run (catalog-local or canonical) is the authoritative source — defer to its definitions over this checklist:
-   - **UUID-as-path bug** — `EMPLOKE_WORKSPACE` env var dereferenced inside a path-join / path-concat context (`path.join(process.env.EMPLOKE_WORKSPACE, ...)`, `"$EMPLOKE_WORKSPACE/..."`, `os.path.join(os.environ["EMPLOKE_WORKSPACE"], ...)`). The var is the workspace UUID, not a filesystem path — use `EMPLOKE_WORKSPACE_DIR` instead.
-   - **`workspace.json` walk-up cargo-cult** — any loop that recursively `dirname`s `cwd` looking for a file named `workspace.json`. emploke does not write this marker; `EMPLOKE_WORKSPACE_DIR` is the authoritative workspace-root mechanism.
-   - **`EMPLOKE_HOME` poking from skill/agent code** — reads of `EMPLOKE_HOME` (`process.env.EMPLOKE_HOME`, `os.environ["EMPLOKE_HOME"]`, `$EMPLOKE_HOME`). emploke scrubs this from task subprocesses (it's service-internal). Use `EMPLOKE_SHARED_DIR` if the script needs a machine-shared writable directory.
+7. **Workspace path conventions** — Verify scripts (`.js`, `.py`, `.sh`, `.ps1`, and bash recipes inline in `SKILL.md` / `AGENTS.md`) use the runtime env contract correctly. The conventions doc loaded at the start of the run is the authoritative source — defer to it.
+   - `EMPLOKE_WORKSPACE_DIR` is the workspace root path. Flag scripts that use `EMPLOKE_WORKSPACE` in a path-join / path-concat context — that var is the workspace UUID, not a path.
+   - emploke does not write a `workspace.json` marker; flag scripts that walk up from `cwd` looking for one.
+   - `EMPLOKE_HOME` is not part of the runtime contract for scripts; flag reads of it. Scripts that need a machine-shared writable directory should read `EMPLOKE_SHARED_DIR`.
 
 ### Delivery
 

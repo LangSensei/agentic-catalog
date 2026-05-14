@@ -3,7 +3,8 @@
 ## 1.1.0 (2026-05-14)
 
 ### Changed
-- `references/workflows.md` — simplify the "Author and install a local agent" recipe to read `$EMPLOKE_WORKSPACE_DIR` directly instead of round-tripping through `emploke workspace show "$EMPLOKE_WORKSPACE" --json | jq -r .workdir`. The new env var ships with emploke's task/session runtime contract and is always set per-run.
+- `references/workflows.md`: simplify the "Author and install a local agent" recipe to read `$EMPLOKE_WORKSPACE_DIR` directly instead of round-tripping through `emploke workspace show "$EMPLOKE_WORKSPACE" --json | jq -r .workdir`. The env var ships with emploke's task/session runtime contract and is always set per-run.
+- Strip historical / migration / compatibility narrative from `SKILL.md` (prereqs note, "Why this matters for you specifically" paragraph, "❌ Do NOT do this" sample). Marketplace content is provisioned into a clean runtime context every spawn — agents only need correct forward instructions.
 
 ## 1.0.0 (2026-05-13)
 

@@ -3,8 +3,9 @@
 ## 1.1.0 (2026-05-14)
 
 ### Changed
-- MCP frontmatter: drop the `_meta.origin` requirement. emploke's MCP validator confirms install origin is an install-time fact (the URI emploke fetched from, persisted on the SQLite catalog row), not part of the file. The validator tolerates `_meta.origin` (legacy installs, third-party tooling) but authors should not write it. Updated the schema description, both example JSONs, and the "Origin URI grammar" section (origin now describes dependency origins only).
-- Placeholder substitution: rename `${globalDir}` → `${sharedDir}` to match emploke's renamed placeholder (the underlying field is `sharedDir`; the old `${globalDir}` name is now rejected by the loader as an unknown placeholder).
+- MCP frontmatter: drop the `_meta.origin` requirement. emploke's MCP validator confirms install origin is an install-time fact (the URI emploke fetched from, persisted on the SQLite catalog row), not part of the file. Updated the schema description, both example JSONs, and the "Origin URI grammar" section (origin now describes dependency origins only).
+- Placeholder substitution: rename `${globalDir}` → `${sharedDir}` to match emploke's runtime placeholder.
+- Strip historical / migration / compatibility narrative from instructions. Marketplace content is provisioned into a clean runtime context every spawn — agents only need correct forward instructions, not history of what changed.
 
 ## 1.0.0 (2026-05-13)
 

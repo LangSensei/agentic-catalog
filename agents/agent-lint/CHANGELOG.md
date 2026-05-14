@@ -3,17 +3,17 @@
 ## 3.1.0 (2026-05-14)
 
 ### Added
-- **CONTRIBUTING.md as a conventions source** — load the conventions doc alongside `meta-agent-schema` before running Phase 9. Resolution: catalog-local file when available (the catalog being linted may ship its own conventions), else fall back to the canonical URL <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md>. The URL anchor is necessary because Local-mode lint of an empty/new catalog has no local file to load. If both load steps fail (no network, no local), Phase 9 conventions checks are skipped with a note.
-- **Phase 9 — three new workspace-path anti-pattern checks** (scripts in `.js` / `.py` / `.sh` / `.ps1` and bash recipes inline in `SKILL.md` / `AGENTS.md`):
-  - **UUID-as-path bug** — `EMPLOKE_WORKSPACE` env var dereferenced inside a path-join / path-concat. The var is a UUID, not a path; the correct var is `EMPLOKE_WORKSPACE_DIR` (emploke runtime contract, see emploke#100).
-  - **`workspace.json` walk-up cargo-cult** — recursive `dirname(cwd)` loops looking for a `workspace.json` marker. emploke does not write this file.
-  - **`EMPLOKE_HOME` poking** — reads of `EMPLOKE_HOME` from skill/agent code. It's service-internal; emploke scrubs it from task subprocesses. Use `EMPLOKE_SHARED_DIR` for machine-shared writable state.
-- **Phase 3 — `${globalDir}` is a fatal error**, not just a missing-`${sharedDir}` warning. The emploke loader rejects `${globalDir}` outright, so any spec still using it would fail at install — lint catches it ahead of install.
-- **Phase 3 — `_meta.origin` triggers a warning if present.** emploke ignores it (origin is an install-time fact persisted on the SQLite catalog row, not in the file), but a stale `_meta.origin` in source is a sign of an out-of-date author template. Lint suggests removing it.
+- **CONTRIBUTING.md as a conventions source** — load the conventions doc alongside `meta-agent-schema` before running Phase 9. Resolution: catalog-local file when available, else fall back to the canonical URL <https://github.com/LangSensei/emploke-marketplace/blob/main/CONTRIBUTING.md>. If both load steps fail (no network, no local), Phase 9 conventions checks are skipped with a note.
+- **Phase 9 — three workspace-path conventions checks** for scripts (`.js` / `.py` / `.sh` / `.ps1` and bash recipes inline in `SKILL.md` / `AGENTS.md`):
+  - `EMPLOKE_WORKSPACE_DIR` is the workspace root path; `EMPLOKE_WORKSPACE` in a path-join context is a bug (var is a UUID, not a path).
+  - emploke does not write a `workspace.json` marker; flag scripts that walk up from cwd looking for one.
+  - `EMPLOKE_HOME` is not part of the runtime contract for scripts; flag reads of it. Scripts that need a machine-shared writable directory should read `EMPLOKE_SHARED_DIR`.
+- **Phase 3 — unrecognized placeholder is a fatal error.** Only `${workspaceDir}` and `${sharedDir}` are accepted; any other `${name}` is rejected by the loader.
 
 ### Changed
-- **Boundary** updated to describe MCP validation as `_meta.name` + cross-platform rules (dropping the `_meta.origin` correctness check).
-- MCP cross-platform lint rule (Phase 3): rename `${globalDir}` → `${sharedDir}` reference to match emploke's renamed placeholder.
+- Boundary updated to describe MCP validation as `_meta.name` + cross-platform rules.
+- MCP cross-platform lint rule (Phase 3): rename `${globalDir}` → `${sharedDir}` reference.
+- Strip historical / migration / compatibility narrative from instructions; keep forward-only.
 
 ## 3.0.0 (2026-05-13)
 
