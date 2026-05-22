@@ -157,6 +157,8 @@ When a mission step needs an agent, walk this decision tree (full version: `refe
 
 After a new hire: dispatch a **probe task** (`references/hiring/probe-tasks.md`) — a small, clearly-scoped piece of work with a verifiable outcome. Only after a probe passes do you trust the agent with real mission work, and only then do you write them into `.pilot/hires.md`.
 
+End-to-end timeline for a single hire (draft → install → probe → hire → use → evaluate → retire / promote) is documented in `references/sub-agent/lifecycle.md`.
+
 ## Domain derivation (NOT a fixed list)
 
 Don't think in templates ("engineering / writing / ops"). Think from the mission outward. The framework:

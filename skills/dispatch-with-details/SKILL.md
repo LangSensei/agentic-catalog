@@ -40,7 +40,7 @@ Empirical pain recurring across orchestrator runs:
 
 - `emploke task dispatch --brief "<text>"` rejects payloads >200
   chars with a hard error.
-- The natural length of a CEO-authored brief is multi-paragraph
+- The natural length of the dispatching agent's brief is multi-paragraph
   Markdown.
 - The workaround — write the full brief to a file, pass it via
   `--details-file`, hand-author a ≤200-char summary for `--brief` —

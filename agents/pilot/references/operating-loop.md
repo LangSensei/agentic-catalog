@@ -58,7 +58,7 @@ case "$STATUS" in
     # Apply failure handling per AGENTS.md.
     # Quick triage:
     #   - error type "EntryNotReadyError" → run the fix command, retry once
-    #   - other typed code → consult references/error-codes.md, decide retry / replace agent / escalate
+    #   - other typed code → consult references/error-codes.md in the `langsensei/emploke-cli` skill, decide retry / replace agent / escalate
     #   - generic stderr only → likely instruction-quality issue; re-dispatch with clearer instructions
     ;;
 
