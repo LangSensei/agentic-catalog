@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.3.0 (2026-05-22)
+
+### Changed
+- Drop the Phase 2 check that required `## Domain`, `## Boundary`, `## Write Access` body sections on every agent. Drop the Phase 8 sub-rules that named those specific sections (duplicate-line and orphan-reference checks are now generalised to any section). Companion schema relaxation lives in `meta-agent-schema` 1.3.0+. Other Phase 2 frontmatter checks (required fields, semver, dependency resolution, `prereqs` rejection) and other Phase 8 content checks stay.
+
 ## 3.2.0 (2026-05-14)
 
 ### Added
