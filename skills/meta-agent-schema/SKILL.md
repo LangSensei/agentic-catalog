@@ -2,7 +2,7 @@
 name: meta-agent-schema
 scope: langsensei
 description: "Schema for emploke-compatible agents, skills, and MCPs — frontmatter, layout, naming, dependency origins, MCP cross-platform rules, runtime-agnostic file references, CHANGELOG conventions"
-version: 1.2.0
+version: 1.3.0
 ---
 
 # Meta-Agent Schema Skill
@@ -95,12 +95,7 @@ Optional fields: `dependencies.skills`, `dependencies.mcps`.
 
 ### Required body sections (agent)
 
-Every `AGENTS.md` body must include these sections in order:
-
-- `## Domain` — one paragraph describing what the agent does
-- `## Boundary` — two bullet groups, `**In scope:**` and `**Out of scope:**`
-- `## Write Access` — which paths the agent may write to (or `(none)`)
-- `## Agent Playbook` — the agent's actual instructions
+Every `AGENTS.md` body must include the agent's actual instructions, conventionally under a `## Agent Playbook` heading. Additional structural sections (e.g. `## Setup`, `## Domain`, `## Boundary`, `## Write Access`) are optional conventions individual agents or catalogs may adopt; they are not lint-enforced.
 
 The display title above the frontmatter (`# {Agent Name} Agent`) is human-readable and may differ from the kebab-case `name` field.
 

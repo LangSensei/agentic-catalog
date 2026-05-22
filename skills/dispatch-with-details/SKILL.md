@@ -36,7 +36,7 @@ file, summary auto-derived, task id parsed out" workflow.
 
 ## Why this skill exists
 
-Empirical pain from `langsensei/workspace-ceo` runs:
+Empirical pain recurring across orchestrator runs:
 
 - `emploke task dispatch --brief "<text>"` rejects payloads >200
   chars with a hard error.
@@ -81,7 +81,7 @@ function Invoke-EmplokeDispatch {
         $summary = ($summary.Substring(0, 197)).TrimEnd() + '...'
     }
 
-    # Use 2>$null to keep Node ExperimentalWarning out of JSON parsing.
+    # Use 2>$null to keep stderr noise out of the captured JSON.
     $raw = & emploke task dispatch `
         --agent  $Agent `
         --brief  $summary `
@@ -89,7 +89,7 @@ function Invoke-EmplokeDispatch {
         --json `
         @ExtraArgs 2>$null | Out-String
 
-    # Regex-extract task id rather than ConvertFrom-Json (see lessons).
+    # Regex-extract task id rather than parsing JSON (host-shell JSON parsers can choke on stderr/stdout interleavings).
     if ($raw -match '"(?:id|taskId)"\s*:\s*"([^"]+)"') {
         return $Matches[1]
     }
@@ -141,7 +141,7 @@ emploke_dispatch() {
 
 The caller MUST:
 1. Author the full brief as a file (convention:
-   `.ceo/active-missions/<mission-id>/dispatch-brief.md`).
+   `<workspace>/<orchestrator-state-dir>/active-missions/<mission-id>/dispatch-brief.md`).
 2. Ensure the file's first heading or first paragraph reads as a
    useful one-line summary for `--brief`.
 3. Persist the returned task id (convention: write to
@@ -149,23 +149,13 @@ The caller MUST:
    `langsensei/dispatch-watchdog`.
 
 The skill does not log; logging the dispatch event is the caller's
-responsibility (e.g. CEO writes to `decisions.log`).
-
-## Cross-platform notes
-
-- Both variants deliberately avoid `ConvertFrom-Json` / `jq` parsing
-  of the CLI's `--json` output. Node's `ExperimentalWarning` and
-  certain control characters in stderr/stdout interleavings break
-  those parsers; regex on raw text is robust enough for the single
-  field we need.
+responsibility (e.g. orchestrator writes to its own decisions log).
 
 ## Anti-patterns
 
 - **Do not** call `emploke task dispatch --brief "<entire long
   brief>"` and re-try on rejection. Author the brief in a file from
   the start.
-- **Do not** parse the dispatch output with `ConvertFrom-Json` —
-  Node ExperimentalWarning + control characters frequently break it.
 
 ## CHANGELOG
 

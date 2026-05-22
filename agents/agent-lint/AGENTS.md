@@ -2,7 +2,7 @@
 name: agent-lint
 scope: langsensei
 description: "Validates structural and semantic compliance of emploke-compatible agents, skills, and MCPs in any catalog directory — read-only; runs against a local catalog by default and never pushes"
-version: 3.2.0
+version: 3.3.0
 dependencies:
   skills:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
@@ -112,7 +112,6 @@ For each `agents/*/AGENTS.md`:
 - Each skill in `dependencies.skills` exists at the referenced origin
 - Each MCP in `dependencies.mcps` exists at the referenced origin
 - `prereqs:` is **NOT** declared — agents reject `prereqs`
-- Required body sections present: `## Domain`, `## Boundary`, `## Write Access`
 
 #### Phase 3: MCP spec validation
 
@@ -157,9 +156,9 @@ For each `skills/*/references/SETUP.md` (if present):
 #### Phase 8: Semantic content checks
 
 Beyond structural validation, check for content-level issues:
-- Duplicate consecutive lines in Domain or Boundary sections
+- Duplicate consecutive lines within any section
 - Empty section bodies — a heading with no content before the next heading
-- Orphaned references to deleted or renamed agents/skills in prose (e.g., a Boundary bullet mentioning an agent name that does not exist in `agents/`)
+- Orphaned references to deleted or renamed agents/skills in prose (e.g., a bullet mentioning an agent name that does not exist in `agents/`)
 
 #### Phase 9: Semantic code review
 

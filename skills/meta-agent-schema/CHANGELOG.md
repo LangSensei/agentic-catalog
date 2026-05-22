@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 (2026-05-22)
+
+### Changed
+- Drop SWAT-style required body sections (`## Domain`, `## Boundary`, `## Write Access`) from the agent schema. They are now optional structural conventions, not lint-enforced. The only body convention that remains is the agent's actual instructions (conventionally under `## Agent Playbook`). Companion lint relaxation lives in `agent-lint` 3.3.0+.
+
 ## 1.2.0 (2026-05-14)
 
 ### Added

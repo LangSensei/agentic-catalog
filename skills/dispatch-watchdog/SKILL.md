@@ -43,8 +43,7 @@ The emploke runtime delivers a notification to the orchestrator's
 session when a watchdog process associated with the session reaches a
 terminal state — **but only if the watchdog was spawned through the
 correct primitive**. Four spawn patterns commonly tried in practice,
-and the empirical outcome of each in a Windows + PowerShell
-environment:
+and the empirical outcome of each:
 
 | # | Pattern | Outcome |
 |---|---|---|
@@ -66,7 +65,7 @@ mode:async + detach:true primitive:
 
 ```pwsh
 # Step 1 — write the watchdog script. Adjust $tid, $interval, $log path.
-$missionDir = "$env:EMPLOKE_WORKSPACE\.ceo\active-missions\<mission-id>"
+$missionDir = "$env:EMPLOKE_WORKSPACE_DIR\.pilot\active-missions\<mission-id>"
 $tid        = "<task-id>"
 $interval   = 60   # seconds between polls
 $logPath    = Join-Path $missionDir "watchdog.log"
@@ -75,8 +74,7 @@ $body = @"
 `$ErrorActionPreference = 'Continue'
 while (`$true) {
     `$raw = & emploke task show '$tid' --json 2>`$null
-    # Avoid ConvertFrom-Json — Node ExperimentalWarning + control
-    # characters break it. Regex-extract status from raw text.
+    # Regex-extract status to avoid host-shell JSON parser quirks.
     if (`$raw -match '"status"\s*:\s*"([^"]+)"') {
         `$status = `$Matches[1]
         "`$(Get-Date -Format o) status=`$status" | Add-Content '$logPath'
@@ -105,7 +103,7 @@ the session when the watchdog exits.
 
 ```bash
 # Step 1 — write the watchdog script.
-mission_dir="${EMPLOKE_WORKSPACE}/.ceo/active-missions/<mission-id>"
+mission_dir="${EMPLOKE_WORKSPACE_DIR}/.pilot/active-missions/<mission-id>"
 tid="<task-id>"
 interval=60
 log_path="${mission_dir}/watchdog.log"
@@ -172,14 +170,6 @@ The caller (orchestrator) MUST:
    liveness signal).
 3. On notification, read `watchdog.log`'s last line for the final
    status and proceed.
-
-## Cross-platform notes
-
-- The polling loop deliberately avoids `ConvertFrom-Json` /
-  `jq` parsing on the CLI's `--json` output because the Node
-  runtime's `ExperimentalWarning` and certain control characters
-  break those parsers. Regex extraction of `status` is sufficient and
-  robust.
 
 ## CHANGELOG
 
