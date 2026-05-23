@@ -57,7 +57,7 @@ description: "What the agent does, one line."
 version: 1.0.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
+    - "https://github.com/LangSensei/emploke/tree/main/first-party/skills/git-pr"
   mcps:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
 ---
@@ -220,8 +220,6 @@ Same pattern — refer to `<SKILL_DIR>` in the dependency skill, not to a hardco
 | Implementation-detail naming conventions written literally — e.g. `<scope>__<short>` flatten convention or any other provisioner-specific transform | Couples to one runtime's provisioner; the flatten rule is a runtime concern, not a content concern |
 | Absolute `/home/...`, `~/...`, `C:\Users\...` paths | Per-host coupling, also non-cross-platform |
 | `${HOME}`, `$HOME`, `~` in body recipes (excluding MCP `env` map keys) | Same |
-
-These patterns are also flagged by the `agent-lint` agent's static checks. The full rule + rationale lives in the `meta-agent-schema` skill.
 
 ## Naming rules
 
