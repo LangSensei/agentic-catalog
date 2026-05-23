@@ -221,8 +221,6 @@ Same pattern — refer to `<SKILL_DIR>` in the dependency skill, not to a hardco
 | Absolute `/home/...`, `~/...`, `C:\Users\...` paths | Per-host coupling, also non-cross-platform |
 | `${HOME}`, `$HOME`, `~` in body recipes (excluding MCP `env` map keys) | Same |
 
-These patterns are also flagged by the `agent-lint` agent's static checks. The full rule + rationale lives in the `meta-agent-schema` skill.
-
 ## Naming rules
 
 | Field | Grammar |
