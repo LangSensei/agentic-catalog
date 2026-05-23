@@ -1,13 +1,15 @@
 # Emploke Marketplace
 
-The official catalog of capabilities for [emploke](https://github.com/LangSensei/emploke) — agents, skills, and MCP servers, packaged in the Phase-2 catalog schema.
+The author's personal extensions catalog for [emploke](https://github.com/LangSensei/emploke), published under the `langsensei` scope. Entries here are opt-in installs — they are **not** bundled with emploke.
 
-This repo is the Phase-2 successor to [`swat-marketplace`](https://github.com/LangSensei/swat-marketplace): same content, re-shaped to emploke's frontmatter / `_meta` JSON conventions so entries can be installed directly from GitHub via the emploke dashboard.
+Official emploke-bundled agents and skills (the canonical `git-pr`, `meta-agent-schema`, `emploke-dev`, `pilot`, etc.) now live in [`emploke/first-party`](https://github.com/LangSensei/emploke/tree/main/first-party) and are pre-installed with emploke. This repo only carries the extras.
+
+The catalog is intentionally **flat** — no domain subdirectories. The content spans textile (dyeing, finishing, compliance), finance (A-share research, fund holdings, sector scoring), lifestyle (wedding planning, hotel scouting, bazi, amap), gaming (Roco Kingdom), content (Xiaohongshu research, Tao Te Ching decks), dev-tools (`go-dev`, `qq-email`, `sop`), and methods (`scientific-method`, `agency-role-reference`).
 
 ## Contents
 
-- **`agents/`** — Specialized agent personas (e.g. `emploke-dev`, `wedding-planner`, `a-share-analyst`). Each agent ships an `AGENTS.md` with frontmatter and a markdown body.
-- **`skills/`** — Reusable capabilities consumed by agents (e.g. `git-pr`, `debrief`, `xiaohongshu`). Each skill ships a `SKILL.md` plus any scripts, templates, hooks, and reference material it needs.
+- **`agents/`** — Specialized agent personas (e.g. `wedding-planner`, `a-share-analyst`, `dye-finish-advisor`). Each agent ships an `AGENTS.md` with frontmatter and a markdown body.
+- **`skills/`** — Reusable capabilities consumed by agents (e.g. `xiaohongshu`, `amap`, `eastmoney-data`). Each skill ships a `SKILL.md` plus any scripts, templates, hooks, and reference material it needs.
 - **`mcps/`** — Model Context Protocol server configs (`<namespace>_<short>.json`), each carrying a top-level `_meta` block with the FQN and origin URL.
 
 ## Install
@@ -23,8 +25,8 @@ The emploke dashboard accepts any GitHub `https://github.com/<owner>/<repo>/tree
 Examples:
 
 ```
-https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr
-https://github.com/LangSensei/emploke-marketplace/tree/main/agents/emploke-dev
+https://github.com/LangSensei/emploke-marketplace/tree/main/skills/xiaohongshu
+https://github.com/LangSensei/emploke-marketplace/tree/main/agents/wedding-planner
 https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json
 ```
 

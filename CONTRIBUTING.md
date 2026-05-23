@@ -57,7 +57,7 @@ description: "What the agent does, one line."
 version: 1.0.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/git-pr"
+    - "https://github.com/LangSensei/emploke/tree/main/first-party/skills/git-pr"
   mcps:
     - "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
 ---
