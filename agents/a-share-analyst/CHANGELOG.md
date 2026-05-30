@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.10.0 (2026-05-30)
+
+Self-awareness and epistemic-honesty layer, inspired by `leslieyeo/serenity-reply` skill craft (four-tier evidence layering, self-doubt rituals, insight-exclusivity calibration, perishable-data isolation, failure-log loop). Designed to prevent the agent from producing reports that "look uniformly hard" when they actually mix hard data with subjective judgment.
+
+### Added
+- **Evidence Tiering section** — every analytical claim must be tagged `[L1]` (filings), `[L2]` (cross-sectional inference), `[L3]` (model extrapolation), or `[L4]` (subjective). Recommendation strength must match the dominant tier; reports must include evidence-mix distribution. (Inspired by serenity-reply's four-tier directness scale)
+- **Evidence Independence Self-Check (Gate 2)** — companion to Evidence Tiering. Counts truly independent sources behind each thesis (filings + Wind + sell-side reports citing same channel check = 1 source, not 3). Single-source theses cannot be marked "high conviction". Guards against data-homogeneity illusion endemic to A-share research ecosystem. (Inspired by serenity-reply's Gate 2 "独立证据 vs 自我宣称" self-check)
+- **Self-Doubt Section** — every individual stock and holding-review report must end with mandatory "我没想清楚的 3 件事" listing 3 concrete uncertainties, each tagged **[影响推荐]** or **[仅影响置信度]**. Generic disclaimers are explicitly forbidden. (Inspired by serenity-reply's "我自己也没想清楚的" reflection)
+- **Insight Exclusivity Calibration** (inside Moat Assessment step 5) — each moat insight tagged 🌍 Generic / 🏭 Industry-shared / 🎯 Operator-exclusive. Reports where all insights are Generic must flag "no exclusive information edge". Operator-exclusive insights require domain justification and only apply when the operator profile explicitly identifies a relevant domain. (Inspired by serenity-reply's model exclusivity calibration)
+- **Supply-chain chokepoint** added as a recognized moat type alongside brand/cost/switching costs/network effect/scale
+- **Macro Context Bootstrap** in Data Sourcing Strategy — agent reads `<workspace_dir>/data/a-share-analyst/macro-pulse.md` before any analysis to inject current macro context. Bootstrap protocol auto-initializes the file from the bundled template on first run. Staleness >60 days or many unfilled `<TODO>` fields trigger explicit warnings in the report. (Inspired by serenity-reply's perishable-data isolation pattern via `references/market-pulse.md`)
+- **Failure Log Protocol section** — agent maintains workspace-persistent `failure-log.md` recording past misjudgments. New analyses must check the log for applicable patterns. Auto-initialized from bundled skeleton on first run. Entries triggered by miscalibrated trigger conditions, underperformance >15% vs outlook, or explicit operator feedback. After ≥10 entries, recurring patterns are proposed for promotion to permanent checklist items.
+- **High-Risk Query Refusal Protocol** (new top-level section) — agent refuses to engage with queries involving 梭哈 / 全仓 / 借钱买股 / 加杠杆 / 卖房买股 / 把养老金投入 etc. Switches out of analyst voice into plain risk-warning voice, offers risk-bounded alternative analyses (e.g., "5% / 10% / 20% 仓位下的 risk-reward profile"). (Inspired by serenity-reply's high-risk-query exit-from-persona protocol)
+- **Honest Boundaries section** — every analysis must include a "诚实边界" closing block citing the limitations that actually apply (insider data lag, small-cap liquidity trap, no on-the-ground access, known data-source bugs, sample bias toward large-cap, macro-pulse staleness dependency, no backtesting, no alt-data, final responsibility on operator). Cite only the relevant ones, not all 9 by rote. (Inspired by serenity-reply's "诚实边界" / agent-level limitations disclosure)
+- New file: `references/macro-pulse.md` — bundled template, copied to workspace on first run
+- New file: `references/failure-log-template.md` — bundled skeleton, copied to workspace on first run
+
+### Workspace state
+- Two active files are now persisted per workspace at `<workspace_dir>/data/a-share-analyst/`:
+  - `macro-pulse.md` — operator-maintained macro snapshot (monthly update cadence)
+  - `failure-log.md` — agent-appended record of past misjudgments
+
+### Changed
+- (none — all changes are additive; existing rules and workflows unchanged)
+
+### Not Changed
+- Investment Philosophy Constraints, Sell Decision Framework, Devil's Advocate Step — these v1.4.0 mechanisms remain authoritative
+- Conviction-Weighted Concentration Thresholds — unchanged
+- All four workflow types (Individual Stock / Holding Review / ETF / Portfolio Synthesis) — playbook steps untouched; new sections layered on top
+- Dependencies, Data Sourcing priority order, Boundary, Write Access
+
 ## 1.9.0 (2026-05-13)
 
 ### Changed
