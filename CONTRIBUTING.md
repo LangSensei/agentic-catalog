@@ -1,11 +1,11 @@
-# Contributing to Emploke Marketplace
+# Contributing to Agentic Catalog
 
-This catalog uses emploke's Phase-2 schema. Please read this whole guide before opening a PR.
+This catalog uses glyph's Phase-2 schema. Please read this whole guide before opening a PR.
 
 ## Layout
 
 ```
-emploke-marketplace/
+agentic-catalog/
   skills/<short-name>/SKILL.md          (+ any sibling files: scripts/, templates/, references/, hooks/)
   agents/<short-name>/AGENTS.md         (+ any sibling files)
   mcps/<namespace>_<short>.json
@@ -26,9 +26,9 @@ prereqs: |                                      # OPTIONAL — keep short
   Requires: <one-line summary>. See `references/SETUP.md` for step-by-step setup.
 dependencies:                                   # OPTIONAL
   skills:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/skills/<other-skill>"
+    - "https://github.com/LangSensei/agentic-catalog/tree/main/skills/<other-skill>"
   mcps:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/<file>.json"
+    - "https://github.com/LangSensei/agentic-catalog/tree/main/mcps/<file>.json"
 ---
 # Skill body (markdown, verbatim)
 ```
@@ -39,7 +39,7 @@ Rules:
 - `dependencies.skills` and `dependencies.mcps` are **arrays of bare origin URI strings**. Object form (`{origin: ...}`) is accepted by the parser but discouraged.
 - Cross-marketplace deps are allowed: any other public GitHub repo URL of the form `https://github.com/<owner>/<repo>/tree/<ref>/<path>` works.
 
-Authoritative validator: [`packages/catalog/src/skill/skill-frontmatter.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/skill/skill-frontmatter.ts).
+Authoritative validator: [`packages/catalog/src/skill/skill-frontmatter.ts`](https://github.com/glyphs-ai/glyph/blob/main/packages/catalog/src/skill/skill-frontmatter.ts).
 
 ## Agent — `agents/<name>/AGENTS.md`
 
@@ -57,14 +57,14 @@ description: "What the agent does, one line."
 version: 1.0.0
 dependencies:
   skills:
-    - "https://github.com/LangSensei/emploke/tree/main/first-party/skills/git-pr"
+    - "https://github.com/glyphs-ai/glyph/tree/main/first-party/skills/git-pr"
   mcps:
-    - "https://github.com/LangSensei/emploke-marketplace/tree/main/mcps/io.playwright_mcp.json"
+    - "https://github.com/LangSensei/agentic-catalog/tree/main/mcps/io.playwright_mcp.json"
 ---
 # Agent body
 ```
 
-Authoritative validator: [`packages/catalog/src/agent/agent-frontmatter.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/agent/agent-frontmatter.ts).
+Authoritative validator: [`packages/catalog/src/agent/agent-frontmatter.ts`](https://github.com/glyphs-ai/glyph/blob/main/packages/catalog/src/agent/agent-frontmatter.ts).
 
 ## MCP — `mcps/<namespace>_<short>.json`
 
@@ -107,12 +107,12 @@ The four rules:
    script inside your MCP project and call it directly.
 3. **`args` are literal strings** — no `$HOME`, no `${VAR}`, no `~/`.
    The MCP server receives every arg verbatim.
-4. **For paths that can't be hardcoded, use emploke's placeholder
-   substitution** (see below). emploke resolves these at provision
+4. **For paths that can't be hardcoded, use glyph's placeholder
+   substitution** (see below). glyph resolves these at provision
    time, before the MCP child is spawned, so the path the server sees
    is already absolute and platform-correct.
 
-### emploke placeholder substitution
+### glyph placeholder substitution
 
 Two placeholders are supported in any string field of an MCP spec
 (`command`, any element of `args`, any value of `env`, plus nested
@@ -120,10 +120,10 @@ strings inside any custom object you put in the spec):
 
 | Placeholder        | Resolves to                                                                 | Use for                                                          |
 | ------------------ | --------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `${workspaceDir}`  | The absolute path of the active emploke workspace.                           | State scoped to a single project (per-workspace cookies, repo-local credentials, browser login state that should reset between projects). |
-| `${sharedDir}`     | A stable per-machine directory (exposed to subprocesses as `$EMPLOKE_SHARED_DIR`). | State that genuinely belongs to the user account, not any single project (a global API token cache, a shared CA bundle, model weights downloaded once per machine). |
+| `${workspaceDir}`  | The absolute path of the active glyph workspace.                           | State scoped to a single project (per-workspace cookies, repo-local credentials, browser login state that should reset between projects). |
+| `${sharedDir}`     | A stable per-machine directory (exposed to subprocesses as `$glyph_SHARED_DIR`). | State that genuinely belongs to the user account, not any single project (a global API token cache, a shared CA bundle, model weights downloaded once per machine). |
 
-emploke substitutes both before writing `.mcp.json` to the session/task
+glyph substitutes both before writing `.mcp.json` to the session/task
 workdir. The substituted paths use forward slashes regardless of host
 OS, so the same JSON value bytes ship to Windows and POSIX. A typo in
 a placeholder (`${workspceDir}`) is rejected at install time with a
@@ -150,41 +150,41 @@ Example — playwright with a per-workspace login state file (matches what `mcps
 
 Pick `${sharedDir}` over `${workspaceDir}` only when the state genuinely belongs to the user account rather than the project — e.g. a model download cache or a global API token jar.
 
-Authoritative validator: [`packages/catalog/src/mcp/mcp-format.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/mcp/mcp-format.ts).
+Authoritative validator: [`packages/catalog/src/mcp/mcp-format.ts`](https://github.com/glyphs-ai/glyph/blob/main/packages/catalog/src/mcp/mcp-format.ts).
 
 ## Workspace path conventions for scripts
 
 Skills and agents that ship executable scripts (`scripts/*.js`, `scripts/*.py`, inline `bash` recipes in `SKILL.md` / `AGENTS.md`) often need to resolve paths inside the active workspace — typically `<workspace>/.playwright/storage-state.json`, `<workspace>/.repos/`, `<workspace>/.ceo/`, and similar.
 
-**The contract**: emploke's task / session runtime injects a fixed set of `EMPLOKE_*` env vars into every spawned subprocess. See [`docs/architecture.md` → "Runtime env contract"](https://github.com/LangSensei/emploke/blob/main/docs/architecture.md) for the authoritative list. The ones a marketplace script will normally care about:
+**The contract**: glyph's task / session runtime injects a fixed set of `glyph_*` env vars into every spawned subprocess. See [`docs/architecture.md` → "Runtime env contract"](https://github.com/glyphs-ai/glyph/blob/main/docs/architecture.md) for the authoritative list. The ones a marketplace script will normally care about:
 
 | Env var                  | Set when                       | Meaning                                                       |
 | ------------------------ | ------------------------------ | ------------------------------------------------------------- |
-| `EMPLOKE_WORKSPACE_DIR`  | inside any emploke task/session | Absolute path to the active workspace root.                   |
-| `EMPLOKE_SHARED_DIR`     | inside any emploke task/session | Per-machine shared dir (same path the MCP `${sharedDir}` placeholder resolves to). |
-| `EMPLOKE_WORKSPACE`      | inside any emploke task/session | Workspace UUID (routing key for `emploke ... --workspace <id>`). |
-| `EMPLOKE_WORK_KIND`      | inside any emploke task/session | `"task"` or `"session"`.                                      |
-| `EMPLOKE_WORK_ID`        | inside any emploke task/session | The task / session id.                                        |
-| `EMPLOKE_WORK_DIR`       | inside any emploke task/session | The spawned process's `cwd`.                                  |
+| `glyph_WORKSPACE_DIR`  | inside any glyph task/session | Absolute path to the active workspace root.                   |
+| `glyph_SHARED_DIR`     | inside any glyph task/session | Per-machine shared dir (same path the MCP `${sharedDir}` placeholder resolves to). |
+| `glyph_WORKSPACE`      | inside any glyph task/session | Workspace UUID (routing key for `glyph ... --workspace <id>`). |
+| `glyph_WORK_KIND`      | inside any glyph task/session | `"task"` or `"session"`.                                      |
+| `glyph_WORK_ID`        | inside any glyph task/session | The task / session id.                                        |
+| `glyph_WORK_DIR`       | inside any glyph task/session | The spawned process's `cwd`.                                  |
 
-**The convention**: scripts that need a workspace-scoped path should read `EMPLOKE_WORKSPACE_DIR` from env, with `cwd` as the only fallback. Inline, that's one line per language:
+**The convention**: scripts that need a workspace-scoped path should read `glyph_WORKSPACE_DIR` from env, with `cwd` as the only fallback. Inline, that's one line per language:
 
 ```js
 // node
-const workspaceDir = process.env.EMPLOKE_WORKSPACE_DIR || process.cwd();
+const workspaceDir = process.env.glyph_WORKSPACE_DIR || process.cwd();
 ```
 
 ```python
 # python
-workspace_dir = os.environ.get("EMPLOKE_WORKSPACE_DIR") or os.getcwd()
+workspace_dir = os.environ.get("glyph_WORKSPACE_DIR") or os.getcwd()
 ```
 
 ```bash
 # bash
-workspace_dir="${EMPLOKE_WORKSPACE_DIR:-$(pwd)}"
+workspace_dir="${glyph_WORKSPACE_DIR:-$(pwd)}"
 ```
 
-The `cwd` fallback supports manual debugging (`cd <workspace> && node scripts/auth.js`). Inside an emploke run the env var is always set, so the fallback path is never taken.
+The `cwd` fallback supports manual debugging (`cd <workspace> && node scripts/auth.js`). Inside an glyph run the env var is always set, so the fallback path is never taken.
 
 MCP specs use the `${workspaceDir}` / `${sharedDir}` placeholders described in the MCP section above — different mechanism (string substitution at provision time), same underlying intent.
 
@@ -216,7 +216,7 @@ Same pattern — refer to `<SKILL_DIR>` in the dependency skill, not to a hardco
 
 | Antipattern | Why forbidden |
 | --- | --- |
-| Any provider config dir followed by an emploke content subdir — `.github/skills/`, `.github/hooks/`, `.claude/skills/`, `.gemini/skills/`, `.cursor/`, `.windsurf/`, `.codex/`, etc. | Couples to one specific runtime's materialisation layout. Different runtimes use different parent dirs; the body shouldn't pick |
+| Any provider config dir followed by an glyph content subdir — `.github/skills/`, `.github/hooks/`, `.claude/skills/`, `.gemini/skills/`, `.cursor/`, `.windsurf/`, `.codex/`, etc. | Couples to one specific runtime's materialisation layout. Different runtimes use different parent dirs; the body shouldn't pick |
 | Implementation-detail naming conventions written literally — e.g. `<scope>__<short>` flatten convention or any other provisioner-specific transform | Couples to one runtime's provisioner; the flatten rule is a runtime concern, not a content concern |
 | Absolute `/home/...`, `~/...`, `C:\Users\...` paths | Per-host coupling, also non-cross-platform |
 | `${HOME}`, `$HOME`, `~` in body recipes (excluding MCP `env` map keys) | Same |
@@ -229,7 +229,7 @@ Same pattern — refer to `<SKILL_DIR>` in the dependency skill, not to a hardco
 | `scope` | `^[a-z0-9]+(-[a-z0-9]+)*(\.[a-z0-9]+(-[a-z0-9]+)*)*$`, ≤ 64 chars (reverse-DNS allowed) |
 | FQN | computed as `<scope>/<name>` |
 
-Authoritative validator: [`packages/catalog/src/skill/validate.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog/src/skill/validate.ts).
+Authoritative validator: [`packages/catalog/src/skill/validate.ts`](https://github.com/glyphs-ai/glyph/blob/main/packages/catalog/src/skill/validate.ts).
 
 ## Origin URI grammar
 
@@ -238,13 +238,13 @@ Dependency origins (`dependencies.skills`, `dependencies.mcps`) are bare URI str
 - `https://github.com/<owner>/<repo>/tree/<ref>[/path]` — recommended for shared catalog entries
 - `file:<absolute-path>` — local-only; never commit a `file:` origin
 
-Authoritative parser: [`packages/catalog-fetcher/src/origin.ts`](https://github.com/LangSensei/emploke/blob/main/packages/catalog-fetcher/src/origin.ts).
+Authoritative parser: [`packages/catalog-fetcher/src/origin.ts`](https://github.com/glyphs-ai/glyph/blob/main/packages/catalog-fetcher/src/origin.ts).
 
 ## Submission checklist
 
 1. Fork this repo, branch `feat/add-<my-thing>`.
 2. Add your skill / agent / mcp under the correct directory.
-3. Verify locally: install via the emploke dashboard pointing at your fork's branch URL and exercise the entry.
+3. Verify locally: install via the glyph dashboard pointing at your fork's branch URL and exercise the entry.
 4. `git push` and open a PR.
 5. CI (when enabled) re-runs the upstream validators against every changed file.
 
