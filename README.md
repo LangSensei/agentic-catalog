@@ -46,15 +46,3 @@ The frontmatter / JSON conventions used here are defined by the [MetaAgents](htt
 - Origins: [`origin.ts`](https://github.com/glyphs-ai/glyph/blob/main/packages/catalog/src/fetcher/origin.ts)
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for layout and frontmatter rules.
-
-## History
-
-This repo was previously named `emploke-marketplace` (and before that, `swat-marketplace`). GitHub auto-redirects the old URLs, but install origins should be updated to the new path.
-
-Every entry was originally migrated from `swat-marketplace` (commit `42f6d91`). The mechanical mapping was:
-
-- `skills/<n>/SKILL.md` → `skills/<n>/SKILL.md` (frontmatter rewritten, sibling files copied verbatim)
-- `squads/<n>/MANIFEST.md` → `agents/<n>/AGENTS.md` (renamed file + parent dir, frontmatter rewritten)
-- `mcps/<n>.json` → `mcps/<namespace>_<short>.json` (with new `_meta.{name,origin}`)
-- Short-name dependency arrays were rewritten as bare GitHub origin URI strings pointing into this repo.
-- Skill `prereq:` (path to a setup file) was replaced by a short `prereqs:` summary pointer; the original `references/SETUP.md` is preserved as a sibling file.
